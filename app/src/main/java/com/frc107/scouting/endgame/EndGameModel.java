@@ -3,6 +3,7 @@ package com.frc107.scouting.endgame;
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.model.BaseModel;
+import com.frc107.scouting.model.FormStatus;
 import com.frc107.scouting.model.question.Question;
 import com.frc107.scouting.model.question.RadioQuestion;
 import com.frc107.scouting.model.question.ToggleQuestion;
@@ -40,6 +41,18 @@ public class EndGameModel extends BaseModel {
 
     @Override
     public void onRadioQuestionAnswered(int questionId, int answerId) { }
+
+    @Override
+    public FormStatus getFormStatus() {
+        int unfinishedQuestionId = getFirstUnfinishedQuestionId();
+        FormStatus status = new FormStatus(unfinishedQuestionId);
+
+        if (unfinishedQuestionId == -1) {
+            status.setFinished();
+        }
+
+        return status;
+    }
 
     public String finish() {
         StringBuilder builder = new StringBuilder();

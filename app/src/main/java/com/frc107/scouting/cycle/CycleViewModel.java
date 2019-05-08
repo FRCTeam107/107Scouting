@@ -15,10 +15,6 @@ public class CycleViewModel extends BaseViewModel {
         ((CycleModel) model).setAllDefense(allDefense);
     }
 
-    public boolean cycleCanBeFinished() {
-        return ((CycleModel) model).cycleCanBeFinished();
-    }
-
     public boolean hasUsedStartingItem() {
         return ((CycleModel) model).hasUsedStartingItem();
     }

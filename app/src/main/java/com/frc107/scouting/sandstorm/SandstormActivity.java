@@ -10,6 +10,7 @@ import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.cycle.CycleActivity;
+import com.frc107.scouting.model.FormStatus;
 import com.frc107.scouting.utils.ViewUtils;
 import com.frc107.scouting.ui.BaseActivity;
 import com.frc107.scouting.ui.questionWrappers.RadioWrapper;
@@ -70,9 +71,9 @@ public class SandstormActivity extends BaseActivity {
     }
 
     public void goToCycle(View view) {
-        int unfinishedQuestionId = viewModel.getFirstUnfinishedQuestionId();
-        if (unfinishedQuestionId != -1) {
-            ViewUtils.requestFocusToUnfinishedQuestion(findViewById(unfinishedQuestionId), this);
+        FormStatus status = viewModel.getFormStatus();
+        if (!status.isFinished()) {
+            focusOnView(status.getUnfinishedQuestionId());
             return;
         }
         viewModel.finish();

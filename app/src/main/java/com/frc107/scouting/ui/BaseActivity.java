@@ -13,6 +13,7 @@ import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.admin.AdminActivity;
 import com.frc107.scouting.utils.PermissionUtils;
+import com.frc107.scouting.utils.ViewUtils;
 
 import java.io.File;
 
@@ -80,5 +81,9 @@ public class BaseActivity extends AppCompatActivity {
             intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", file));
             startActivity(Intent.createChooser(intent, "Share app"));
         }
+    }
+
+    public void focusOnView(int viewId) {
+        ViewUtils.requestFocusToUnfinishedQuestion(findViewById(viewId), this);
     }
 }

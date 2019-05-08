@@ -3,6 +3,7 @@ package com.frc107.scouting.sandstorm;
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.model.BaseModel;
+import com.frc107.scouting.model.FormStatus;
 import com.frc107.scouting.model.question.NumberQuestion;
 import com.frc107.scouting.model.question.Question;
 import com.frc107.scouting.model.question.RadioQuestion;
@@ -66,6 +67,18 @@ public class SandstormModel extends BaseModel {
                 placedStartingGamePiece = answerId != R.id.sandstormNothingPlacedItemPlaced_Radiobtn;
                 break;
         }
+    }
+
+    @Override
+    public FormStatus getFormStatus() {
+        int unfinishedQuestionId = getFirstUnfinishedQuestionId();
+        FormStatus status = new FormStatus(unfinishedQuestionId);
+
+        if (unfinishedQuestionId == -1) {
+            status.setFinished();
+        }
+
+        return status;
     }
 
     public int getTeamNumber() {

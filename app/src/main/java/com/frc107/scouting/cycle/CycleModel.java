@@ -3,6 +3,7 @@ package com.frc107.scouting.cycle;
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.model.BaseModel;
+import com.frc107.scouting.model.FormStatus;
 import com.frc107.scouting.model.question.Question;
 import com.frc107.scouting.model.question.RadioQuestion;
 import com.frc107.scouting.model.question.ToggleQuestion;
@@ -92,11 +93,16 @@ public class CycleModel extends BaseModel {
         itemPlacedRadioQuestion.setNeedsAnswer(needsAnswers);
     }
 
-    public boolean cycleCanBeFinished() {
-        if (areNoQuestionsAnswered() || isFormComplete())
-            return true;
+    @Override
+    public FormStatus getFormStatus() {
+        int unfinishedQuestionId = getFirstUnfinishedQuestionId();
+        FormStatus status = new FormStatus(unfinishedQuestionId);
 
-        return false;
+        if (unfinishedQuestionId == -1 || areNoQuestionsAnswered()) {
+            status.setFinished();
+        }
+
+        return status;
     }
 
     public boolean hasUsedStartingItem() {

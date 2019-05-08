@@ -8,8 +8,8 @@ import android.widget.Toast;
 
 import com.frc107.scouting.R;
 import com.frc107.scouting.ScoutingStrings;
+import com.frc107.scouting.model.FormStatus;
 import com.frc107.scouting.utils.PermissionUtils;
-import com.frc107.scouting.utils.ViewUtils;
 import com.frc107.scouting.ui.BaseActivity;
 import com.frc107.scouting.ui.questionWrappers.RadioWrapper;
 
@@ -57,15 +57,12 @@ public class EndGameActivity extends BaseActivity {
     }
 
     public void saveData(View view) {
-        int unfinishedQuestionId = viewModel.getFirstUnfinishedQuestionId();
-        if (unfinishedQuestionId != -1) {
-            ViewUtils.requestFocusToUnfinishedQuestion(findViewById(unfinishedQuestionId), this);
+        if (!PermissionUtils.verifyWritePermissions(this))
             return;
-        }
 
-        boolean hasWritePermissions = PermissionUtils.getPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (!hasWritePermissions) {
-            Toast.makeText(getApplicationContext(), "No write permissions.", Toast.LENGTH_LONG).show();
+        FormStatus status = viewModel.getFormStatus();
+        if (!status.isFinished()) {
+            focusOnView(status.getUnfinishedQuestionId());
             return;
         }
 

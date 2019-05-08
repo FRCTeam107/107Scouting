@@ -33,7 +33,7 @@ public abstract class BaseModel {
 
     public int getFirstUnfinishedQuestionId() {
         for (int i = 0; i < questions.size(); i++) {
-            Question question = questions.get(i);
+            Question question = questions.valueAt(i);
             if (!question.needsAnswer())
                 continue;
 
@@ -43,10 +43,12 @@ public abstract class BaseModel {
         return -1;
     }
 
+    public abstract FormStatus getFormStatus();
+
     // TODO: This should probably have an implementation per-model, so we can avoid things like cycleCanBeFinished. It's bad pattern.
-    public boolean isFormComplete() {
+    public boolean areAllQuestionsFinished() {
         for (int i = 0; i < questions.size(); i++) {
-            Question question = questions.get(i);
+            Question question = questions.valueAt(i);
             if (!question.needsAnswer())
                 continue;
 
@@ -58,7 +60,7 @@ public abstract class BaseModel {
 
     public boolean areNoQuestionsAnswered() {
         for (int i = 0; i < questions.size(); i++) {
-            Question question = questions.get(i);
+            Question question = questions.valueAt(i);
             if (!question.needsAnswer())
                 continue;
 
@@ -140,7 +142,7 @@ public abstract class BaseModel {
     public String getAnswerCSVRow() {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < questions.size(); i++) {
-            Question question = questions.get(i);
+            Question question = questions.valueAt(i);
             if (!question.answerCanBeIgnored()) {
                 if (i > 0)
                     stringBuilder.append(',');
@@ -161,7 +163,7 @@ public abstract class BaseModel {
 
     public void clearAllQuestions() {
         for (int i = 0; i < questions.size(); i++) {
-            Question question = questions.get(i);
+            Question question = questions.valueAt(i);
             question.setAnswer(null);
         }
     }

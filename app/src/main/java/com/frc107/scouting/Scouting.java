@@ -109,8 +109,4 @@ public class Scouting {
     public String getEventKey() {
         return eventKey;
     }
-
-    // TODO: Go through radiogroups and fix formatting
-    // TODO: naming conventions
-    // TODO: update button strings, example being save button in cycle
 }

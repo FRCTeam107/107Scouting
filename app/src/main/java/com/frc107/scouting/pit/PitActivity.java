@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.frc107.scouting.BuildConfig;
 import com.frc107.scouting.R;
+import com.frc107.scouting.model.FormStatus;
 import com.frc107.scouting.utils.PermissionUtils;
 import com.frc107.scouting.utils.ViewUtils;
 import com.frc107.scouting.ui.BaseActivity;
@@ -92,15 +93,12 @@ public class PitActivity extends BaseActivity {
     }
 
     public void savePitData(View view) {
-        int unfinishedQuestionId = viewModel.getFirstUnfinishedQuestionId();
-        if (unfinishedQuestionId != -1) {
-            ViewUtils.requestFocus(findViewById(unfinishedQuestionId), this);
+        if (!PermissionUtils.verifyWritePermissions(this))
             return;
-        }
 
-        boolean hasWritePermissions = PermissionUtils.getPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (!hasWritePermissions) {
-            Toast.makeText(getApplicationContext(), "No write permissions.", Toast.LENGTH_LONG).show();
+        FormStatus status = viewModel.getFormStatus();
+        if (!status.isFinished()) {
+            focusOnView(status.getUnfinishedQuestionId());
             return;
         }
 

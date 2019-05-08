@@ -12,15 +12,15 @@ import android.widget.RadioGroup;
 import com.frc107.scouting.R;
 import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.admin.AdminActivity;
+import com.frc107.scouting.model.FormStatus;
+import com.frc107.scouting.ui.BaseActivity;
 import com.frc107.scouting.utils.PermissionUtils;
 import com.frc107.scouting.utils.ViewUtils;
 import com.frc107.scouting.endgame.EndGameActivity;
 import com.frc107.scouting.MainActivity;
 import com.frc107.scouting.ui.questionWrappers.RadioWrapper;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class CycleActivity extends AppCompatActivity {
+public class CycleActivity extends BaseActivity {
     private RadioWrapper pickupLocationWrapper;
     private RadioWrapper itemPickedUpWrapper;
     private RadioWrapper itemPlacedWrapper;
@@ -129,17 +129,13 @@ public class CycleActivity extends AppCompatActivity {
     }
 
     private void goToEndGame() {
-        boolean cycleCanBeFinished = viewModel.cycleCanBeFinished();
-        int unfinishedQuestionId = viewModel.getFirstUnfinishedQuestionId();
-        if (!cycleCanBeFinished && unfinishedQuestionId != -1) {
-            ViewUtils.requestFocusToUnfinishedQuestion(findViewById(unfinishedQuestionId), this);
+        FormStatus status = viewModel.getFormStatus();
+        if (!status.isFinished()) {
+            focusOnView(status.getUnfinishedQuestionId());
             return;
         }
 
-        if (!PermissionUtils.verifyWritePermissions(this))
-            return;
-
-        if (cycleCanBeFinished && unfinishedQuestionId == -1)
+        if (status.getUnfinishedQuestionId() == -1)
             viewModel.finishCycle();
 
         int teamNumber = viewModel.getTeamNumber();
@@ -152,21 +148,13 @@ public class CycleActivity extends AppCompatActivity {
     }
 
     public void goToNextCycle(View view) {
-        boolean cycleCanBeFinished = viewModel.cycleCanBeFinished();
-        int unfinishedQuestionId = viewModel.getFirstUnfinishedQuestionId();
-        /**
-         * TODO: I think you don't need to check unfinishedQuestionId. Just check cycleCanBeFinished
-         * and then use unfinishedQuestionId inside the if block
-         */
-        if (!cycleCanBeFinished && unfinishedQuestionId != -1) {
-            ViewUtils.requestFocusToUnfinishedQuestion(findViewById(unfinishedQuestionId), this);
+        FormStatus status = viewModel.getFormStatus();
+        if (!status.isFinished()) {
+            focusOnView(status.getUnfinishedQuestionId());
             return;
         }
 
-        if (!PermissionUtils.verifyWritePermissions(this))
-            return;
-
-        if (unfinishedQuestionId == -1)
+        if (status.getUnfinishedQuestionId() == -1)
             viewModel.finishCycle();
 
         if (viewModel.hasUsedStartingItem()) {

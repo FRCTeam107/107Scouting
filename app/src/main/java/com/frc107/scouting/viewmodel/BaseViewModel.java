@@ -3,16 +3,21 @@ package com.frc107.scouting.viewmodel;
 import androidx.lifecycle.ViewModel;
 
 import com.frc107.scouting.model.BaseModel;
+import com.frc107.scouting.model.FormStatus;
 
 public abstract class BaseViewModel extends ViewModel {
     protected BaseModel model;
+
+    public FormStatus getFormStatus() {
+        return model.getFormStatus();
+    }
 
     public int getFirstUnfinishedQuestionId() {
         return model.getFirstUnfinishedQuestionId();
     }
 
     public boolean isFormComplete() {
-        return model.isFormComplete();
+        return model.areAllQuestionsFinished();
     }
 
     public boolean areNoQuestionsAnswered() {

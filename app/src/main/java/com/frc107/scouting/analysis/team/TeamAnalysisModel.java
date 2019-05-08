@@ -18,7 +18,7 @@ public class TeamAnalysisModel implements IAnalysisListener {
     private boolean hab1, hab2, hab3;
     private double opr;
     private double dpr;
-    private IUIListener listener; // TODO: THIS SUCKS. FIX THIS. FIGURE OUT HOW TO DO PROPER MVVM.
+    private IUIListener listener;
     private String[] teamNumbers;
 
     public TeamAnalysisModel(IUIListener listener) {
