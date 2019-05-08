@@ -1,25 +1,17 @@
-package com.frc107.scouting2019.view;
+package com.frc107.scouting2019;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-import com.frc107.scouting2019.BuildConfig;
-import com.frc107.scouting2019.R;
-import com.frc107.scouting2019.Scouting;
+import com.frc107.scouting2019.admin.AdminActivity;
+import com.frc107.scouting2019.initials.InitialsActivity;
+import com.frc107.scouting2019.pit.PitActivity;
+import com.frc107.scouting2019.ui.BaseActivity;
 
 import android.provider.Settings;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import java.security.PrivateKey;
-import java.util.Locale;
 
 public class MainActivity extends BaseActivity {
     @Override
@@ -42,7 +34,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void showMatch(View view) {
-        startActivity(new Intent(this, ScouterInitialsActivity.class));
+        startActivity(new Intent(this, InitialsActivity.class));
     }
 
     public void showPit(View view) {

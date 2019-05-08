@@ -1,4 +1,4 @@
-package com.frc107.scouting2019.view;
+package com.frc107.scouting2019.cycle;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,10 +11,12 @@ import android.widget.RadioGroup;
 
 import com.frc107.scouting2019.R;
 import com.frc107.scouting2019.ScoutingStrings;
+import com.frc107.scouting2019.admin.AdminActivity;
 import com.frc107.scouting2019.utils.PermissionUtils;
 import com.frc107.scouting2019.utils.ViewUtils;
-import com.frc107.scouting2019.view.wrappers.RadioWrapper;
-import com.frc107.scouting2019.viewmodel.CycleViewModel;
+import com.frc107.scouting2019.endgame.EndGameActivity;
+import com.frc107.scouting2019.MainActivity;
+import com.frc107.scouting2019.ui.questionWrappers.RadioWrapper;
 
 import androidx.appcompat.app.AppCompatActivity;
 

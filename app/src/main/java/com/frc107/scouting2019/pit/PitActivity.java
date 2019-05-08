@@ -1,8 +1,7 @@
-package com.frc107.scouting2019.view;
+package com.frc107.scouting2019.pit;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,14 +14,12 @@ import com.frc107.scouting2019.BuildConfig;
 import com.frc107.scouting2019.R;
 import com.frc107.scouting2019.utils.PermissionUtils;
 import com.frc107.scouting2019.utils.ViewUtils;
-import com.frc107.scouting2019.view.wrappers.RadioWrapper;
-import com.frc107.scouting2019.view.wrappers.TextWrapper;
-import com.frc107.scouting2019.viewmodel.PitViewModel;
+import com.frc107.scouting2019.ui.BaseActivity;
+import com.frc107.scouting2019.ui.questionWrappers.RadioWrapper;
+import com.frc107.scouting2019.ui.questionWrappers.TextWrapper;
 
 import java.io.File;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 /**

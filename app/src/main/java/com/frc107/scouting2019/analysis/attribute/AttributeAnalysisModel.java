@@ -4,7 +4,7 @@ import android.os.Build;
 import android.util.SparseArray;
 
 import com.frc107.scouting2019.analysis.IAnalysisListener;
-import com.frc107.scouting2019.IUIListener;
+import com.frc107.scouting2019.ui.IUIListener;
 import com.frc107.scouting2019.analysis.LoadDataTask;
 import com.frc107.scouting2019.analysis.TeamDetails;
 

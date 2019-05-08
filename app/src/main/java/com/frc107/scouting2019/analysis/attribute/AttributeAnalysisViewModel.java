@@ -2,7 +2,7 @@ package com.frc107.scouting2019.analysis.attribute;
 
 import androidx.lifecycle.ViewModel;
 
-import com.frc107.scouting2019.IUIListener;
+import com.frc107.scouting2019.ui.IUIListener;
 
 import java.util.ArrayList;
 

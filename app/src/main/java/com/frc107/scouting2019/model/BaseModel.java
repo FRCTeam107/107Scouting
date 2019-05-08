@@ -10,11 +10,11 @@ import com.frc107.scouting2019.model.question.TextQuestion;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public abstract class ScoutModel {
+public abstract class BaseModel {
     private ArrayList<Question> questions;
     private String fileNameHeader;
 
-    public ScoutModel() {
+    public BaseModel() {
         this.questions = new ArrayList<>(Arrays.asList(getQuestions()));
     }
 

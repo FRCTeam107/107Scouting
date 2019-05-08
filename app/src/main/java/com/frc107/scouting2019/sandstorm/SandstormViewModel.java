@@ -1,9 +1,8 @@
-package com.frc107.scouting2019.viewmodel;
+package com.frc107.scouting2019.sandstorm;
 
-import com.frc107.scouting2019.model.SandstormModel;
-import com.frc107.scouting2019.model.question.Question;
+import com.frc107.scouting2019.viewmodel.BaseViewModel;
 
-public class SandstormViewModel extends ScoutViewModel {
+public class SandstormViewModel extends BaseViewModel {
     public SandstormViewModel() {
         model = new SandstormModel();
     }

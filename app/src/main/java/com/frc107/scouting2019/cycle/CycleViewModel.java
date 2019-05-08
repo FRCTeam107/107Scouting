@@ -1,9 +1,8 @@
-package com.frc107.scouting2019.viewmodel;
+package com.frc107.scouting2019.cycle;
 
-import com.frc107.scouting2019.model.CycleModel;
-import com.frc107.scouting2019.model.question.Question;
+import com.frc107.scouting2019.viewmodel.BaseViewModel;
 
-public class CycleViewModel extends ScoutViewModel {
+public class CycleViewModel extends BaseViewModel {
     public CycleViewModel(int teamNumber) {
         model = new CycleModel(teamNumber);
     }

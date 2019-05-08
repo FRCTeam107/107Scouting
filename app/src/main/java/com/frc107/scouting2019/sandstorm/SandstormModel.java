@@ -1,14 +1,14 @@
-package com.frc107.scouting2019.model;
+package com.frc107.scouting2019.sandstorm;
 
 import com.frc107.scouting2019.R;
 import com.frc107.scouting2019.Scouting;
+import com.frc107.scouting2019.model.BaseModel;
 import com.frc107.scouting2019.model.question.NumberQuestion;
 import com.frc107.scouting2019.model.question.Question;
 import com.frc107.scouting2019.model.question.RadioQuestion;
-import com.frc107.scouting2019.model.question.TextQuestion;
 import com.frc107.scouting2019.model.question.ToggleQuestion;
 
-public class SandstormModel extends ScoutModel {
+public class SandstormModel extends BaseModel {
     private boolean startedWithGamePiece;
     private boolean placedStartingGamePiece;
 

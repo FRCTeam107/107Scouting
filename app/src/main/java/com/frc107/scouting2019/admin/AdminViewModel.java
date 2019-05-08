@@ -1,10 +1,9 @@
-package com.frc107.scouting2019.viewmodel;
+package com.frc107.scouting2019.admin;
 
 import android.content.Context;
 import android.net.Uri;
 
-import com.frc107.scouting2019.IUIListener;
-import com.frc107.scouting2019.model.AdminModel;
+import com.frc107.scouting2019.ui.IUIListener;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.frc107.scouting2019.view;
+package com.frc107.scouting2019.admin;
 
 import android.Manifest;
 import android.content.Intent;
@@ -12,13 +12,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.frc107.scouting2019.IUIListener;
+import com.frc107.scouting2019.ui.BaseActivity;
+import com.frc107.scouting2019.duck.DuckActivity;
+import com.frc107.scouting2019.ui.IUIListener;
 import com.frc107.scouting2019.R;
 import com.frc107.scouting2019.Scouting;
 import com.frc107.scouting2019.analysis.attribute.AttributeAnalysisActivity;
 import com.frc107.scouting2019.analysis.team.TeamAnalysisActivity;
 import com.frc107.scouting2019.utils.PermissionUtils;
-import com.frc107.scouting2019.viewmodel.AdminViewModel;
 
 import java.util.ArrayList;
 

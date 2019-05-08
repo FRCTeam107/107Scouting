@@ -1,4 +1,4 @@
-package com.frc107.scouting2019.model;
+package com.frc107.scouting2019.initials;
 
 import com.frc107.scouting2019.Scouting;
 

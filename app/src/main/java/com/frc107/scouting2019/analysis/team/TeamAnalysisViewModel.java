@@ -1,6 +1,6 @@
 package com.frc107.scouting2019.analysis.team;
 
-import com.frc107.scouting2019.IUIListener;
+import com.frc107.scouting2019.ui.IUIListener;
 
 public class TeamAnalysisViewModel {
     private TeamAnalysisModel model;

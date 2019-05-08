@@ -1,11 +1,11 @@
-package com.frc107.scouting2019.model;
+package com.frc107.scouting2019.admin;
 
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
 import com.frc107.scouting2019.BuildConfig;
-import com.frc107.scouting2019.IUIListener;
+import com.frc107.scouting2019.ui.IUIListener;
 import com.frc107.scouting2019.Scouting;
 import com.frc107.scouting2019.ScoutingStrings;
 import com.frc107.scouting2019.analysis.IOPRListener;
@@ -20,7 +20,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.stream.Stream;
 
 import androidx.core.content.FileProvider;
 

@@ -1,18 +1,18 @@
-package com.frc107.scouting2019.view.wrappers;
+package com.frc107.scouting2019.ui.questionWrappers;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-import com.frc107.scouting2019.viewmodel.ScoutViewModel;
+import com.frc107.scouting2019.viewmodel.BaseViewModel;
 
 public class TextWrapper {
     private EditText editText;
     private TextWatcher textWatcher;
-    private ScoutViewModel viewModel;
+    private BaseViewModel viewModel;
     private int id;
 
-    public TextWrapper(EditText editText, ScoutViewModel viewModel) {
+    public TextWrapper(EditText editText, BaseViewModel viewModel) {
         this.viewModel = viewModel;
         this.editText = editText;
         this.id = editText.getId();

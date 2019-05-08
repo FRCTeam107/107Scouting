@@ -1,10 +1,11 @@
-package com.frc107.scouting2019.model;
+package com.frc107.scouting2019.pit;
 
 import android.os.Environment;
 import android.util.Log;
 
 import com.frc107.scouting2019.R;
 import com.frc107.scouting2019.Scouting;
+import com.frc107.scouting2019.model.BaseModel;
 import com.frc107.scouting2019.model.question.Question;
 import com.frc107.scouting2019.model.question.RadioQuestion;
 import com.frc107.scouting2019.model.question.TextQuestion;
@@ -12,7 +13,7 @@ import com.frc107.scouting2019.model.question.TextQuestion;
 import java.io.File;
 import java.io.IOException;
 
-public class PitModel extends ScoutModel {
+public class PitModel extends BaseModel {
     public PitModel() {
         super();
         setFileNameHeader("Pit");

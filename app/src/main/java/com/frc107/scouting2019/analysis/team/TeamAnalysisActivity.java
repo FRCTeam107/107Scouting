@@ -3,9 +3,9 @@ package com.frc107.scouting2019.analysis.team;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
+import com.frc107.scouting2019.ui.BaseActivity;
 import com.frc107.scouting2019.R;
-import com.frc107.scouting2019.IUIListener;
-import com.frc107.scouting2019.view.BaseActivity;
+import com.frc107.scouting2019.ui.IUIListener;
 
 import android.view.View;
 import android.widget.TextView;

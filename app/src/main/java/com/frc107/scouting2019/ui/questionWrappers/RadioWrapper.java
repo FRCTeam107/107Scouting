@@ -1,15 +1,15 @@
-package com.frc107.scouting2019.view.wrappers;
+package com.frc107.scouting2019.ui.questionWrappers;
 
 import android.widget.RadioGroup;
 
-import com.frc107.scouting2019.viewmodel.ScoutViewModel;
+import com.frc107.scouting2019.viewmodel.BaseViewModel;
 
 public class RadioWrapper {
     private RadioGroup radioGroup;
-    private ScoutViewModel viewModel;
+    private BaseViewModel viewModel;
     private int id;
 
-    public RadioWrapper(RadioGroup radioGroup, ScoutViewModel viewModel) {
+    public RadioWrapper(RadioGroup radioGroup, BaseViewModel viewModel) {
         this.viewModel = viewModel;
         this.radioGroup = radioGroup;
         this.id = radioGroup.getId();

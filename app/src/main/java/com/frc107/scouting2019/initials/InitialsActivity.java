@@ -1,21 +1,18 @@
-package com.frc107.scouting2019.view;
+package com.frc107.scouting2019.initials;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 
 import com.frc107.scouting2019.R;
-import com.frc107.scouting2019.viewmodel.InitialsViewModel;
+import com.frc107.scouting2019.sandstorm.SandstormActivity;
+import com.frc107.scouting2019.ui.BaseActivity;
 import com.google.android.material.textfield.TextInputEditText;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
-public class ScouterInitialsActivity extends BaseActivity {
+public class InitialsActivity extends BaseActivity {
     private InitialsViewModel viewModel;
 
     private TextInputEditText scouterInitialsEditText;

@@ -1,7 +1,6 @@
-package com.frc107.scouting2019.view;
+package com.frc107.scouting2019.endgame;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -11,11 +10,8 @@ import com.frc107.scouting2019.R;
 import com.frc107.scouting2019.ScoutingStrings;
 import com.frc107.scouting2019.utils.PermissionUtils;
 import com.frc107.scouting2019.utils.ViewUtils;
-import com.frc107.scouting2019.view.wrappers.RadioWrapper;
-import com.frc107.scouting2019.viewmodel.EndGameViewModel;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import com.frc107.scouting2019.ui.BaseActivity;
+import com.frc107.scouting2019.ui.questionWrappers.RadioWrapper;
 
 public class EndGameActivity extends BaseActivity {
     private RadioWrapper habLevelWrapper;

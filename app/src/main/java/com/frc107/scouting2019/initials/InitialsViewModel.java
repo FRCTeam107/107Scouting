@@ -1,6 +1,6 @@
-package com.frc107.scouting2019.viewmodel;
+package com.frc107.scouting2019.initials;
 
-import com.frc107.scouting2019.model.InitialsModel;
+import com.frc107.scouting2019.initials.InitialsModel;
 
 import androidx.lifecycle.ViewModel;
 
