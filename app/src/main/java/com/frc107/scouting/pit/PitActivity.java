@@ -38,18 +38,6 @@ public class PitActivity extends BaseActivity {
     private TextWrapper arcadeGameWrapper;
     private TextWrapper commentsWrapper;
 
-    private EditText teamNumberEditText;
-    private RadioGroup teleopPreferenceRadioGroup;
-    private EditText cubeNumberInSwitchEditText;
-    private EditText cubeNumberInScaleEditText;
-    private EditText cubeNumberInExchangeEditText;
-    private RadioGroup climbRadioGroup;
-    private RadioGroup climbHelpRadioGroup;
-    private RadioGroup programmingLanguageRadioGroup;
-    private EditText habitatTimeEditText;
-    private EditText bonusQuestionEditText;
-    private EditText commentsEditText;
-
     private PitViewModel viewModel;
 
     private static final int REQUEST_CODE_CAMERA = 107;
@@ -96,15 +84,19 @@ public class PitActivity extends BaseActivity {
         if (!PermissionUtils.verifyWritePermissions(this))
             return;
 
-        FormStatus status = viewModel.getFormStatus();
-        if (!status.isFinished()) {
-            focusOnView(status.getUnfinishedQuestionId());
+        if (!viewModel.isFinished()) {
+            focusOnView(viewModel.getUnfinishedQuestionId());
             return;
         }
 
-        String saveResponse = viewModel.save();
+        boolean successfullySaved = viewModel.finish();
+        String message;
+        if (successfullySaved)
+            message = "Saved data successfully.";
+        else
+            message = "Error while saving data.";
 
-        Toast.makeText(getApplicationContext(), saveResponse, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
         setResult(RESULT_OK);
 

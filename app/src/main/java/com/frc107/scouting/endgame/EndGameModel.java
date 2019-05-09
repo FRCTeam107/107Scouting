@@ -42,19 +42,7 @@ public class EndGameModel extends BaseModel {
     @Override
     public void onRadioQuestionAnswered(int questionId, int answerId) { }
 
-    @Override
-    public FormStatus getFormStatus() {
-        int unfinishedQuestionId = getFirstUnfinishedQuestionId();
-        FormStatus status = new FormStatus(unfinishedQuestionId);
-
-        if (unfinishedQuestionId == -1) {
-            status.setFinished();
-        }
-
-        return status;
-    }
-
-    public String finish() {
+    public boolean finish() {
         StringBuilder builder = new StringBuilder();
 
         String sandstormData = Scouting.getInstance().getSandstormData();

@@ -69,18 +69,6 @@ public class SandstormModel extends BaseModel {
         }
     }
 
-    @Override
-    public FormStatus getFormStatus() {
-        int unfinishedQuestionId = getFirstUnfinishedQuestionId();
-        FormStatus status = new FormStatus(unfinishedQuestionId);
-
-        if (unfinishedQuestionId == -1) {
-            status.setFinished();
-        }
-
-        return status;
-    }
-
     public int getTeamNumber() {
         Integer teamNumber = (Integer) getRawAnswerForQuestion(R.id.teamNumberEditText);
         if (teamNumber == null)
@@ -89,12 +77,14 @@ public class SandstormModel extends BaseModel {
         return teamNumber;
     }
 
-    public void finish() {
+    @Override
+    public boolean finish() {
         String sandstormData = getAnswerCSVRow();
         Scouting.getInstance().setSandstormData(sandstormData);
+        return true;
     }
 
-    public boolean shouldAllowStartingPiece() {
-        return startedWithGamePiece && !placedStartingGamePiece;
+    public boolean hasUsedStartingItem() {
+        return !startedWithGamePiece || placedStartingGamePiece;
     }
 }

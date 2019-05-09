@@ -3,20 +3,19 @@ package com.frc107.scouting.cycle;
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.model.BaseModel;
-import com.frc107.scouting.model.FormStatus;
 import com.frc107.scouting.model.question.Question;
 import com.frc107.scouting.model.question.RadioQuestion;
 import com.frc107.scouting.model.question.ToggleQuestion;
 
 public class CycleModel extends BaseModel {
     private int cycleNum;
-    private boolean isFirstCycle = true;
     private boolean hasUsedStartingItem;
     private int teamNumber;
 
-    public CycleModel(int teamNumber) {
+    public CycleModel(int teamNumber, boolean hasUsedStartingItem) {
         super();
         this.teamNumber = teamNumber;
+        this.hasUsedStartingItem = !hasUsedStartingItem;
     }
 
     @Override
@@ -62,12 +61,6 @@ public class CycleModel extends BaseModel {
         }
     }
 
-    public void finishCycle() {
-        cycleNum++;
-        saveCycle();
-        isFirstCycle = false;
-    }
-
     private void saveCycle() {
         // TODO: This would be cleaner if you:
         // 1: renamed Questions to Fields
@@ -94,23 +87,21 @@ public class CycleModel extends BaseModel {
     }
 
     @Override
-    public FormStatus getFormStatus() {
-        int unfinishedQuestionId = getFirstUnfinishedQuestionId();
-        FormStatus status = new FormStatus(unfinishedQuestionId);
+    public boolean isFinished() {
+        return super.isFinished() || areNoQuestionsAnswered();
+    }
 
-        if (unfinishedQuestionId == -1 || areNoQuestionsAnswered()) {
-            status.setFinished();
+    @Override
+    public boolean finish() {
+        if (getUnfinishedQuestionId() == -1) {
+            cycleNum++;
+            saveCycle();
         }
-
-        return status;
+        return true;
     }
 
     public boolean hasUsedStartingItem() {
         return hasUsedStartingItem;
-    }
-
-    public void disableStartingItem() {
-        hasUsedStartingItem = true;
     }
 
     public int getTeamNumber() {

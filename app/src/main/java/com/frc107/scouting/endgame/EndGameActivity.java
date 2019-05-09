@@ -60,15 +60,19 @@ public class EndGameActivity extends BaseActivity {
         if (!PermissionUtils.verifyWritePermissions(this))
             return;
 
-        FormStatus status = viewModel.getFormStatus();
-        if (!status.isFinished()) {
-            focusOnView(status.getUnfinishedQuestionId());
+        if (!viewModel.isFinished()) {
+            focusOnView(viewModel.getUnfinishedQuestionId());
             return;
         }
 
-        String saveResponse = viewModel.finish();
+        boolean successfullySaved = viewModel.finish();
+        String message;
+        if (successfullySaved)
+            message = "Saved data successfully.";
+        else
+            message = "Error while saving data.";
 
-        Toast.makeText(getApplicationContext(), saveResponse, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
         finish();
     }

@@ -3,12 +3,8 @@ package com.frc107.scouting.cycle;
 import com.frc107.scouting.viewmodel.BaseViewModel;
 
 public class CycleViewModel extends BaseViewModel {
-    public CycleViewModel(int teamNumber) {
-        model = new CycleModel(teamNumber);
-    }
-
-    public void finishCycle() {
-        ((CycleModel) model).finishCycle();
+    public CycleViewModel(int teamNumber, boolean hasUsedStartingItem) {
+        model = new CycleModel(teamNumber, hasUsedStartingItem);
     }
 
     public void setAllDefense(boolean allDefense) {
@@ -17,10 +13,6 @@ public class CycleViewModel extends BaseViewModel {
 
     public boolean hasUsedStartingItem() {
         return ((CycleModel) model).hasUsedStartingItem();
-    }
-
-    public void disableStartingItem() {
-        ((CycleModel) model).disableStartingItem();
     }
 
     public int getTeamNumber() {

@@ -3,6 +3,7 @@ package com.frc107.scouting.ui;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import com.frc107.scouting.utils.PermissionUtils;
 import com.frc107.scouting.utils.ViewUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -41,13 +43,17 @@ public class BaseActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.send_data:
-                sendFile(Scouting.FILE_UTILS.getMatchFile());
-                finish();
+                sendData();
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void sendData() {
+        File matchFile = Scouting.FILE_UTILS.getMatchFile();
+        if (matchFile != null)
+            sendFile(matchFile);
     }
 
     protected void checkForPermissions() {

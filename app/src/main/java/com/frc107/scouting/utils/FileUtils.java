@@ -8,57 +8,69 @@ import android.util.Log;
 
 import com.frc107.scouting.Scouting;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class FileUtils {
-    private FileOutputStream fileOutputStream;
-    private File directory;
+    private File scoutingDirectory;
+    private File photoDirectory;
+
+    private static final String SCOUTING_PATH = Environment.getExternalStorageDirectory() + "/Scouting";
+    private static final String PHOTO_PATH = Environment.getExternalStorageDirectory() + "/Scouting/Photos";
 
     public FileUtils() {
-        directory = new File(Environment.getExternalStorageDirectory() + "/Scouting");
+        scoutingDirectory = new File(SCOUTING_PATH);
+        photoDirectory = new File(PHOTO_PATH);
     }
 
-    public boolean directoryExists() {
-        return directory.exists();
+    public File getScoutingDirectory() {
+        if (scoutingDirectory.exists())
+            return scoutingDirectory;
+
+        boolean success = scoutingDirectory.mkdir();
+        if (success)
+            return scoutingDirectory;
+
+        return null;
     }
 
-    public boolean createDirectory() {
-        return directory.mkdirs();
+    public File getPhotoDirectory() {
+        if (photoDirectory.exists())
+            return photoDirectory;
+
+        boolean success = photoDirectory.mkdir();
+        if (success)
+            return photoDirectory;
+
+        return null;
     }
 
     public File[] getFilesInDirectory() {
-        return directory.listFiles();
+        return getScoutingDirectory().listFiles();
     }
 
     public File[] getPhotos() {
-        File directory = new File(Environment.getExternalStorageDirectory() + "/Scouting/Photos");
-        if (!directory.exists() || directory.list() == null)
-            return new File[0];
-
-        return directory.listFiles();
+        return getPhotoDirectory().listFiles();
     }
 
     public File getPhoto(String teamNumber) {
-        File photo = new File(Environment.getExternalStorageDirectory() + "/Scouting/Photos/" + teamNumber + ".jpg");
-        if (!photo.exists())
-            return null;
+        File photo = new File(getPhotoDirectory(), teamNumber + ".jpg");
+        if (photo.exists())
+            return photo;
 
-        return photo;
+        return null;
     }
 
     public File getFile(String name) {
-        File file = new File(directory, name);
-        if (!file.exists())
-            return null;
+        File file = new File(getScoutingDirectory(), name);
+        if (file.exists())
+            return file;
 
-        return file;
+        return null;
     }
 
     public File getMatchFile() {
@@ -75,6 +87,23 @@ public class FileUtils {
 
     public File getConcatPitFile() {
         return getFile("ConcatenatedPit.csv");
+    }
+
+    public File createPhotoFile(String teamNumber) {
+        File dir = Scouting.FILE_UTILS.getPhotoDirectory();
+        if (dir == null)
+            return null;
+
+        File file = new File(dir, teamNumber + ".jpg");
+
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            Log.d("Scouting", e.getMessage());
+            return null;
+        }
+
+        return file;
     }
 
     public boolean rotateAndCompressPhoto(String teamNumber) {
@@ -104,35 +133,30 @@ public class FileUtils {
         return false;
     }
 
-    public File getScoutingDirectory() {
-        return directory;
-    }
+    public boolean writeData(String fileNameHeader, String data) {
+        if (fileNameHeader == null)
+            throw new IllegalArgumentException("Header cannot be null");
 
-    public String writeData(String fileNameHeader, String data) {
+        if (StringUtils.isEmptyOrNull(data))
+            throw new IllegalArgumentException("Data cannot be null or empty");
+
         String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            if (!directory.exists())
-                directory.mkdirs();
-
-            String uniqueId = Scouting.getInstance().getUniqueId();
-            File file = new File(directory, fileNameHeader + uniqueId + ".csv");
-
-            try {
-                fileOutputStream = new FileOutputStream(file, true);
-                fileOutputStream.write(data.getBytes());
-                fileOutputStream.flush();
-            } catch (IOException e) {
-                Log.d("Scouting", e.getMessage());
-            } finally {
-                try {
-                    fileOutputStream.close();
-                    return "Saved successfully.";
-                } catch (IOException e) {
-                    Log.d("Scouting", e.getMessage());
-                    return "Failure while saving.";
-                }
-            }
+        if (!state.equals(Environment.MEDIA_MOUNTED)) {
+            Log.e("Scouting", "External storage not mounted!");
+            return false;
         }
-        return "SD card not found.";
+
+        String uniqueId = Scouting.getInstance().getUniqueId();
+        File file = new File(getScoutingDirectory(), fileNameHeader + uniqueId + ".csv");
+
+        try (FileOutputStream fileOutputStream = new FileOutputStream(file, true)) {
+            fileOutputStream.write(data.getBytes());
+            fileOutputStream.flush();
+        } catch (IOException e) {
+            Log.e("Scouting", e.getMessage());
+            return false;
+        }
+
+        return true;
     }
 }

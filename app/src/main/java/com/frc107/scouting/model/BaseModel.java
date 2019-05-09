@@ -11,7 +11,7 @@ import com.frc107.scouting.model.question.TextQuestion;
 
 public abstract class BaseModel {
     private SparseArray<Question> questions;
-    private String fileNameHeader;
+    private int unansweredQuestionId;
 
     public BaseModel() {
         this.questions = new SparseArray<>();
@@ -27,11 +27,11 @@ public abstract class BaseModel {
 
     public abstract Question[] getQuestions();
 
-    public void setFileNameHeader(String fileNameHeader) {
-        this.fileNameHeader = fileNameHeader;
+    public int getUnfinishedQuestionId() {
+        return unansweredQuestionId;
     }
 
-    public int getFirstUnfinishedQuestionId() {
+    private int findUnfinishedQuestionId() {
         for (int i = 0; i < questions.size(); i++) {
             Question question = questions.valueAt(i);
             if (!question.needsAnswer())
@@ -43,20 +43,12 @@ public abstract class BaseModel {
         return -1;
     }
 
-    public abstract FormStatus getFormStatus();
-
-    // TODO: This should probably have an implementation per-model, so we can avoid things like cycleCanBeFinished. It's bad pattern.
-    public boolean areAllQuestionsFinished() {
-        for (int i = 0; i < questions.size(); i++) {
-            Question question = questions.valueAt(i);
-            if (!question.needsAnswer())
-                continue;
-
-            if (!question.hasAnswer())
-                return false;
-        }
-        return true;
+    public boolean isFinished() {
+        unansweredQuestionId = findUnfinishedQuestionId();
+        return unansweredQuestionId == -1;
     }
+
+    public abstract boolean finish();
 
     public boolean areNoQuestionsAnswered() {
         for (int i = 0; i < questions.size(); i++) {
@@ -154,17 +146,5 @@ public abstract class BaseModel {
             }
         }
         return stringBuilder.toString();
-    }
-
-    public String save() {
-        String dataToWrite = getAnswerCSVRow() + '\n';
-        return Scouting.FILE_UTILS.writeData(fileNameHeader, dataToWrite);
-    }
-
-    public void clearAllQuestions() {
-        for (int i = 0; i < questions.size(); i++) {
-            Question question = questions.valueAt(i);
-            question.setAnswer(null);
-        }
     }
 }

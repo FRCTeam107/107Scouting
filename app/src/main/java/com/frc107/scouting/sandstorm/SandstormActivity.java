@@ -10,7 +10,6 @@ import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.cycle.CycleActivity;
-import com.frc107.scouting.model.FormStatus;
 import com.frc107.scouting.utils.ViewUtils;
 import com.frc107.scouting.ui.BaseActivity;
 import com.frc107.scouting.ui.questionWrappers.RadioWrapper;
@@ -71,25 +70,24 @@ public class SandstormActivity extends BaseActivity {
     }
 
     public void goToCycle(View view) {
-        FormStatus status = viewModel.getFormStatus();
-        if (!status.isFinished()) {
-            focusOnView(status.getUnfinishedQuestionId());
+        if (!viewModel.isFinished()) {
+            focusOnView(viewModel.getUnfinishedQuestionId());
             return;
         }
         viewModel.finish();
 
+        focusOnView(teamNumWrapper.getEditText().getId());
+
+        // We need to grab the team number and hasUsedStartingItem boolean before clearing the answers.
         int teamNumber = viewModel.getTeamNumber();
-        boolean shouldAllowStartingPiece = viewModel.shouldAllowStartingPiece();
+        boolean hasUsedStartingItem = viewModel.hasUsedStartingItem();
 
         clearAnswers();
 
-        ViewUtils.requestFocus(teamNumWrapper.getEditText(), this);
-
         Intent intent = new Intent(this, CycleActivity.class);
         intent.putExtra(ScoutingStrings.EXTRA_TEAM_NUM, teamNumber);
-        intent.putExtra(ScoutingStrings.EXTRA_SHOULD_ALLOW_STARTING_PIECE_SANDSTORM, shouldAllowStartingPiece);
+        intent.putExtra(ScoutingStrings.EXTRA_HAS_USED_STARTING_PIECE_SANDSTORM, hasUsedStartingItem);
         startActivity(intent);
-
     }
 
     private void clearAnswers() {

@@ -12,9 +12,7 @@ import android.widget.RadioGroup;
 import com.frc107.scouting.R;
 import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.admin.AdminActivity;
-import com.frc107.scouting.model.FormStatus;
 import com.frc107.scouting.ui.BaseActivity;
-import com.frc107.scouting.utils.PermissionUtils;
 import com.frc107.scouting.utils.ViewUtils;
 import com.frc107.scouting.endgame.EndGameActivity;
 import com.frc107.scouting.MainActivity;
@@ -42,7 +40,14 @@ public class CycleActivity extends BaseActivity {
         int teamNumber = getIntent().getIntExtra(ScoutingStrings.EXTRA_TEAM_NUM, -1);
         getSupportActionBar().setTitle("Team: " + teamNumber);
 
-        viewModel = new CycleViewModel(teamNumber);
+        boolean hasUsedStartingItem = getIntent().getBooleanExtra(ScoutingStrings.EXTRA_HAS_USED_STARTING_PIECE_SANDSTORM, true);
+        if (hasUsedStartingItem) {
+            enableStartedWithItem();
+        } else {
+            disableStartedWithItem();
+        }
+
+        viewModel = new CycleViewModel(teamNumber, hasUsedStartingItem);
 
         pickupLocationWrapper = new RadioWrapper(findViewById(R.id.pickupLocationRadioQuestion), viewModel);
         itemPickedUpWrapper = new RadioWrapper(findViewById(R.id.itemPickedUpRadioQuestion), viewModel);
@@ -54,13 +59,6 @@ public class CycleActivity extends BaseActivity {
 
         defenseCheckbox = findViewById(R.id.defense_chkbx);
         allDefenseCheckbox = findViewById(R.id.allDefense_chkbx);
-
-        boolean shouldAllowStartingPiece = getIntent().getBooleanExtra(ScoutingStrings.EXTRA_SHOULD_ALLOW_STARTING_PIECE_SANDSTORM, true);
-        if (shouldAllowStartingPiece) {
-            enableStartedWithItem();
-        } else {
-            disableStartedWithItem();
-        }
 
         pickupLocationRadioGroup.setOnCheckedChangeListener((group, checkedId) -> viewModel.setAnswer(R.id.pickupLocationRadioQuestion, checkedId));
         itemPickedUpRadioGroup.setOnCheckedChangeListener((group, checkedId) -> viewModel.setAnswer(R.id.itemPickedUpRadioQuestion, checkedId));
@@ -129,14 +127,12 @@ public class CycleActivity extends BaseActivity {
     }
 
     private void goToEndGame() {
-        FormStatus status = viewModel.getFormStatus();
-        if (!status.isFinished()) {
-            focusOnView(status.getUnfinishedQuestionId());
+        if (!viewModel.isFinished()) {
+            focusOnView(viewModel.getUnfinishedQuestionId());
             return;
         }
 
-        if (status.getUnfinishedQuestionId() == -1)
-            viewModel.finishCycle();
+        viewModel.finish();
 
         int teamNumber = viewModel.getTeamNumber();
 
@@ -148,18 +144,15 @@ public class CycleActivity extends BaseActivity {
     }
 
     public void goToNextCycle(View view) {
-        FormStatus status = viewModel.getFormStatus();
-        if (!status.isFinished()) {
-            focusOnView(status.getUnfinishedQuestionId());
+        if (!viewModel.isFinished()) {
+            focusOnView(viewModel.getUnfinishedQuestionId());
             return;
         }
 
-        if (status.getUnfinishedQuestionId() == -1)
-            viewModel.finishCycle();
+        viewModel.finish();
 
-        if (viewModel.hasUsedStartingItem()) {
+        if (viewModel.hasUsedStartingItem())
             disableStartedWithItem();
-        }
 
         clearAnswers();
     }
@@ -186,8 +179,6 @@ public class CycleActivity extends BaseActivity {
         RadioButton startedWithItemButton = findViewById(R.id.startedWithItem_Radiobtn);
         startedWithItemButton.setVisibility(View.GONE);
         startedWithItemButton.setEnabled(false);
-
-        viewModel.disableStartingItem();
     }
 
     private void clearAnswers() {

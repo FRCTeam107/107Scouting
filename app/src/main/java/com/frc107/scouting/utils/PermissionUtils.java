@@ -19,10 +19,10 @@ public class PermissionUtils {
 
     public static boolean verifyWritePermissions(Activity activity) {
         boolean hasWritePermissions = PermissionUtils.getPermissions(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (!hasWritePermissions) {
-            Toast.makeText(activity.getApplicationContext(), "No write permissions.", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        return true;
+        if (hasWritePermissions)
+            return true;
+
+        Toast.makeText(activity.getApplicationContext(), "No write permissions.", Toast.LENGTH_LONG).show();
+        return false;
     }
 }

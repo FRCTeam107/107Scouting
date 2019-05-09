@@ -58,10 +58,6 @@ public class AdminModel implements IOPRListener {
 
         FileUtils fileUtils = Scouting.FILE_UTILS;
 
-        if (!fileUtils.directoryExists()) {
-            fileUtils.createDirectory();
-        }
-
         File[] files = fileUtils.getFilesInDirectory();
 
         for (int i = 0; i < files.length; i++) {

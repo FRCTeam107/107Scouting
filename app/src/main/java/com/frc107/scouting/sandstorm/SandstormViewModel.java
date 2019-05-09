@@ -7,15 +7,11 @@ public class SandstormViewModel extends BaseViewModel {
         model = new SandstormModel();
     }
 
-    public void finish() {
-        ((SandstormModel) model).finish();
-    }
-
     public int getTeamNumber() {
         return ((SandstormModel) model).getTeamNumber();
     }
 
-    public boolean shouldAllowStartingPiece() {
-        return ((SandstormModel) model).shouldAllowStartingPiece();
+    public boolean hasUsedStartingItem() {
+        return ((SandstormModel) model).hasUsedStartingItem();
     }
 }

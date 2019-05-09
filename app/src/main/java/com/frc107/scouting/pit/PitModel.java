@@ -1,43 +1,23 @@
 package com.frc107.scouting.pit;
 
-import android.os.Environment;
-import android.util.Log;
-
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.model.BaseModel;
-import com.frc107.scouting.model.FormStatus;
 import com.frc107.scouting.model.question.Question;
 import com.frc107.scouting.model.question.RadioQuestion;
 import com.frc107.scouting.model.question.TextQuestion;
 
 import java.io.File;
-import java.io.IOException;
 
 public class PitModel extends BaseModel {
-    public PitModel() {
-        super();
-        setFileNameHeader("Pit");
-    }
+    private static final String FILE_NAME_HEADER = "Pit";
 
     private String getTeamNumber() {
         return getAnswerForQuestion(R.id.pit_teamNumber_editText);
     }
 
     public File createPhotoFile() {
-        File dir = new File(Environment.getExternalStorageDirectory() + "/Scouting/Photos");
-        dir.mkdirs();
-
-        File file = new File(dir, getTeamNumber() + ".jpg");
-
-        try {
-            file.createNewFile();
-        } catch (IOException e) {
-            Log.d("Scouting", e.getMessage());
-            return null;
-        }
-
-        return file;
+        return Scouting.FILE_UTILS.createPhotoFile(getTeamNumber());
     }
 
     public boolean rotateAndCompressPhoto() {
@@ -46,7 +26,7 @@ public class PitModel extends BaseModel {
 
     @Override
     public Question[] getQuestions() {
-        Question[] questions = {
+        return new Question[] {
                 new TextQuestion("pitTeamNum", R.id.pit_teamNumber_editText, true),
                 new RadioQuestion("pitSandstormOp", R.id.sandstormOperationsRadioQuestion, true,
                         new RadioQuestion.Option(R.id.visionSystemSandstorm_Radiobtn, 0),
@@ -77,7 +57,6 @@ public class PitModel extends BaseModel {
                 new TextQuestion("pitBonus", R.id.pit_bonusQuestion_editText, true),
                 new TextQuestion("pitComments", R.id.pit_comments_editText, true)
         };
-        return questions;
     }
 
     @Override
@@ -90,14 +69,8 @@ public class PitModel extends BaseModel {
     public void onRadioQuestionAnswered(int questionId, int answerId) { }
 
     @Override
-    public FormStatus getFormStatus() {
-        int unfinishedQuestionId = getFirstUnfinishedQuestionId();
-        FormStatus status = new FormStatus(unfinishedQuestionId);
-
-        if (unfinishedQuestionId == -1) {
-            status.setFinished();
-        }
-
-        return status;
+    public boolean finish() {
+        String dataToWrite = getAnswerCSVRow() + '\n';
+        return Scouting.FILE_UTILS.writeData(FILE_NAME_HEADER, dataToWrite);
     }
 }

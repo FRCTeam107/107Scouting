@@ -3,25 +3,16 @@ package com.frc107.scouting.viewmodel;
 import androidx.lifecycle.ViewModel;
 
 import com.frc107.scouting.model.BaseModel;
-import com.frc107.scouting.model.FormStatus;
 
 public abstract class BaseViewModel extends ViewModel {
     protected BaseModel model;
 
-    public FormStatus getFormStatus() {
-        return model.getFormStatus();
+    public int getUnfinishedQuestionId() {
+        return model.getUnfinishedQuestionId();
     }
 
-    public int getFirstUnfinishedQuestionId() {
-        return model.getFirstUnfinishedQuestionId();
-    }
-
-    public boolean isFormComplete() {
-        return model.areAllQuestionsFinished();
-    }
-
-    public boolean areNoQuestionsAnswered() {
-        return model.areNoQuestionsAnswered();
+    public boolean isFinished() {
+        return model.isFinished();
     }
 
     public boolean setAnswer(int questionId, String answer) {
@@ -40,11 +31,7 @@ public abstract class BaseViewModel extends ViewModel {
         return model.getAnswerForQuestion(questionId);
     }
 
-    public String save() {
-        return model.save();
-    }
-
-    public void clearAllAnswers() {
-        model.clearAllQuestions();
+    public boolean finish() {
+        return model.finish();
     }
 }
