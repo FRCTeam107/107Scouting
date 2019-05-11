@@ -6,52 +6,44 @@ import android.net.Uri;
 import com.frc107.scouting.ui.IUIListener;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 
-public class AdminViewModel {
+class AdminViewModel {
     private AdminModel model;
 
-    public AdminViewModel(IUIListener listener) {
+    AdminViewModel(IUIListener listener) {
         model = new AdminModel(listener);
     }
 
-    public boolean concatenateMatchData() {
+    boolean concatenateMatchData() {
         return model.concatenateData(AdminModel.MATCH);
     }
 
-    public boolean concatenatePitData() {
+    boolean concatenatePitData() {
         return model.concatenateData(AdminModel.PIT);
     }
 
-    public ArrayList<Uri> getPhotoUriList(Context context) {
+    List<Uri> getPhotoUriList(Context context) {
         return model.getPhotoUriList(context);
     }
 
-    public File getMatchFile(boolean concatenated) {
+    File getMatchFile(boolean concatenated) {
         return model.getMatchFile(concatenated);
     }
 
-    public File getPitFile(boolean concatenated) {
+    File getPitFile(boolean concatenated) {
         return model.getPitFile(concatenated);
     }
 
-    public void setEventKey(String eventKey) {
+    void setEventKey(String eventKey) {
         model.setEventKey(eventKey);
     }
 
-    public String getEventKey() {
+    String getEventKey() {
         return model.getEventKey();
     }
 
-    public void downloadOPRs() {
+    void downloadOPRs() {
         model.downloadOPRs();
-    }
-
-    public void toggleDuckButton() {
-        model.toggleDuckButton();
-    }
-
-    public boolean duckButtonIsPressed() {
-        return model.duckButtonIsPressed();
     }
 }

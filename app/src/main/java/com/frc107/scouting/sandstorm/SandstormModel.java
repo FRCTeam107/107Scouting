@@ -3,7 +3,6 @@ package com.frc107.scouting.sandstorm;
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.model.BaseModel;
-import com.frc107.scouting.model.FormStatus;
 import com.frc107.scouting.model.question.NumberQuestion;
 import com.frc107.scouting.model.question.Question;
 import com.frc107.scouting.model.question.RadioQuestion;
@@ -11,7 +10,7 @@ import com.frc107.scouting.model.question.ToggleQuestion;
 
 public class SandstormModel extends BaseModel {
     private boolean startedWithGamePiece;
-    private boolean placedStartingGamePiece;
+    private boolean hasPlacedStartingGamePiece;
 
     public SandstormModel() {
         super();
@@ -24,7 +23,7 @@ public class SandstormModel extends BaseModel {
         matchNumQuestion.addIllegalValue(0);
         teamNumQuestion.addIllegalValue(0);
 
-        Question[] questions = {
+        return new Question[] {
                 matchNumQuestion,
                 teamNumQuestion,
                 new RadioQuestion("sandstormStartPos", R.id.sandstormStartingPositionRadioQuestion, true,
@@ -43,7 +42,6 @@ public class SandstormModel extends BaseModel {
                         new RadioQuestion.Option(R.id.sandstormNothingPlacedItemPlaced_Radiobtn, Scouting.SANDSTORM_NOTHING_PLACED)),
                 new ToggleQuestion("sandstormBaseline", R.id.sandstormBaseline_chkbx)
         };
-        return questions;
     }
 
     @Override
@@ -64,13 +62,15 @@ public class SandstormModel extends BaseModel {
                 startedWithGamePiece = answerId != R.id.noSandstormStartingGamePiece_Radiobtn;
                 break;
             case R.id.sandstormItemPlacedRadioQuestion:
-                placedStartingGamePiece = answerId != R.id.sandstormNothingPlacedItemPlaced_Radiobtn;
+                hasPlacedStartingGamePiece = answerId != R.id.sandstormNothingPlacedItemPlaced_Radiobtn;
+                break;
+            default:
                 break;
         }
     }
 
     public int getTeamNumber() {
-        Integer teamNumber = (Integer) getRawAnswerForQuestion(R.id.teamNumberEditText);
+        Integer teamNumber = (Integer) getQuestion(R.id.teamNumberEditText).getAnswer();
         if (teamNumber == null)
             return -1;
 
@@ -85,6 +85,6 @@ public class SandstormModel extends BaseModel {
     }
 
     public boolean hasUsedStartingItem() {
-        return !startedWithGamePiece || placedStartingGamePiece;
+        return !startedWithGamePiece || hasPlacedStartingGamePiece;
     }
 }

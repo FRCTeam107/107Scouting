@@ -50,7 +50,7 @@ public class Scouting {
     }
 
     private Scouting() {
-        cycles = new ArrayList<String>();
+        cycles = new ArrayList<>();
     }
 
     private String uniqueId;

@@ -3,7 +3,6 @@ package com.frc107.scouting.ui;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -17,7 +16,6 @@ import com.frc107.scouting.utils.PermissionUtils;
 import com.frc107.scouting.utils.ViewUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;

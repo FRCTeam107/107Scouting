@@ -29,7 +29,6 @@
         <activity android:name=".admin.AdminActivity"></activity>
         <activity android:name=".analysis.team.TeamAnalysisActivity"></activity>
         <activity android:name=".analysis.attribute.AttributeAnalysisActivity"></activity>
-        <activity android:name=".duck.DuckActivity"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"

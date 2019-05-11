@@ -13,7 +13,7 @@ public class PitModel extends BaseModel {
     private static final String FILE_NAME_HEADER = "Pit";
 
     private String getTeamNumber() {
-        return getAnswerForQuestion(R.id.pit_teamNumber_editText);
+        return getAnswer(R.id.pit_teamNumber_editText);
     }
 
     public File createPhotoFile() {

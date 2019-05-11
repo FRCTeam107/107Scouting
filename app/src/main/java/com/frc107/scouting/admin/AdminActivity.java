@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.frc107.scouting.R;
 import com.frc107.scouting.ui.BaseActivity;
-import com.frc107.scouting.duck.DuckActivity;
 import com.frc107.scouting.ui.IUIListener;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.analysis.attribute.AttributeAnalysisActivity;
@@ -30,10 +29,6 @@ import java.util.ArrayList;
 public class AdminActivity extends BaseActivity implements IUIListener {
     private AdminViewModel viewModel;
     private EditText eventKeyEditText;
-    private Button sendPitDataButton;
-    private Button sendConcatPitDataButton;
-    private SharedPreferences pref;
-    private SharedPreferences.Editor prefEditor;
 
     private TextWatcher eventKeyTextWatcher;
 
@@ -44,8 +39,8 @@ public class AdminActivity extends BaseActivity implements IUIListener {
 
         viewModel = new AdminViewModel(this);
 
-        pref = getApplicationContext().getSharedPreferences(Scouting.PREFERENCES_NAME, MODE_PRIVATE);
-        prefEditor = pref.edit();
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Scouting.PREFERENCES_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = pref.edit();
 
         eventKeyEditText = findViewById(R.id.eventKeyEditText);
         eventKeyEditText.setText(viewModel.getEventKey());
@@ -60,23 +55,6 @@ public class AdminActivity extends BaseActivity implements IUIListener {
             public void afterTextChanged(Editable s) { }
         };
         eventKeyEditText.addTextChangedListener(eventKeyTextWatcher);
-
-        sendPitDataButton = findViewById(R.id.send_pit_data);
-        sendPitDataButton.setOnLongClickListener(v -> {
-            viewModel.toggleDuckButton();
-            return true;
-        });
-
-        sendConcatPitDataButton = findViewById(R.id.send_concat_pit_data);
-        sendConcatPitDataButton.setOnLongClickListener(v -> {
-            if (viewModel.duckButtonIsPressed()) {
-                Intent duckIntent = new Intent(this, DuckActivity.class);
-                startActivity(duckIntent);
-                viewModel.toggleDuckButton();
-                return true;
-            }
-            return false;
-        });
     }
 
     @Override
@@ -84,9 +62,6 @@ public class AdminActivity extends BaseActivity implements IUIListener {
         super.onDestroy();
         eventKeyEditText.removeTextChangedListener(eventKeyTextWatcher);
         eventKeyTextWatcher = null;
-
-        sendPitDataButton.setOnLongClickListener(null);
-        sendConcatPitDataButton.setOnLongClickListener(null);
     }
 
     public void concatenateMatchData(View view) {
@@ -114,7 +89,7 @@ public class AdminActivity extends BaseActivity implements IUIListener {
         intent.setType("image/jpeg");
         intent.setPackage("com.android.bluetooth");
 
-        ArrayList<Uri> uriList = viewModel.getPhotoUriList(this);
+        ArrayList<Uri> uriList = (ArrayList<Uri>) viewModel.getPhotoUriList(this);
         if (uriList.isEmpty()) {
             Toast.makeText(this, "No photos.", Toast.LENGTH_SHORT).show();
         } else {

@@ -2,8 +2,8 @@ package com.frc107.scouting.endgame;
 
 import com.frc107.scouting.viewmodel.BaseViewModel;
 
-public class EndGameViewModel extends BaseViewModel {
-    public EndGameViewModel() {
+class EndGameViewModel extends BaseViewModel {
+    EndGameViewModel() {
         model = new EndGameModel();
     }
 }

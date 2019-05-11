@@ -20,13 +20,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.core.content.FileProvider;
 
 public class AdminModel implements IOPRListener {
     public static final int MATCH = 0;
     public static final int PIT = 1;
-    private boolean duckButtonIsPressed;
 
     private IUIListener listener;
     private OPR opr;
@@ -35,8 +35,8 @@ public class AdminModel implements IOPRListener {
         this.listener = listener;
     }
 
-    public ArrayList<Uri> getPhotoUriList(Context context) {
-        ArrayList<Uri> uriList = new ArrayList<Uri>();
+    public List<Uri> getPhotoUriList(Context context) {
+        ArrayList<Uri> uriList = new ArrayList<>();
         for (File photo :  Scouting.FILE_UTILS.getPhotos()) {
             Uri uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", photo);
             uriList.add(uri);
@@ -60,8 +60,7 @@ public class AdminModel implements IOPRListener {
 
         File[] files = fileUtils.getFilesInDirectory();
 
-        for (int i = 0; i < files.length; i++) {
-            File file = files[i];
+        for (File file : files) {
             if (!file.getName().startsWith(prefix))
                 continue;
 
@@ -71,20 +70,11 @@ public class AdminModel implements IOPRListener {
                 String line = bufferedReader.readLine();
                 while (line != null) {
                     String[] columns = line.split(",");
+                    int teamNumber = Integer.parseInt(columns[1]);
 
-                    int teamNum = Integer.parseInt(columns[1]);
-                    String teamOPR = "-1";
-                    if (opr != null && opr.containsTeam(teamNum)) {
-                         teamOPR = opr.getOPR(teamNum);
-                    }
-                    String teamDPR = "-1";
-                    if (opr != null && opr.containsTeam(teamNum)) {
-                        teamDPR = opr.getDPR(teamNum);
-                    }
+                    String oprAndDpr = getOPRAndDPR(teamNumber);
 
-                    line += "," + teamOPR + "," + teamDPR;
-
-                    builder.append(line).append('\n');
+                    builder.append(line).append(oprAndDpr).append('\n');
                     line = bufferedReader.readLine();
                 }
             } catch (IOException e) {
@@ -107,6 +97,17 @@ public class AdminModel implements IOPRListener {
         }
 
         return false;
+    }
+
+    private String getOPRAndDPR(int teamNumber) {
+        String empty = "-1,-1";
+        if (opr == null)
+            return empty;
+
+        if (!opr.containsTeam(teamNumber))
+            return empty;
+
+        return opr.getOPR(teamNumber) + "," + opr.getDPR(teamNumber);
     }
 
     public File getMatchFile(boolean concatenated) {
@@ -142,13 +143,5 @@ public class AdminModel implements IOPRListener {
     public void onOPRLoaded(OPR opr) {
         this.opr = opr;
         listener.callback(opr == null);
-    }
-
-    public void toggleDuckButton() {
-        duckButtonIsPressed = !duckButtonIsPressed;
-    }
-
-    public boolean duckButtonIsPressed() {
-        return duckButtonIsPressed;
     }
 }

@@ -8,14 +8,13 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.frc107.scouting.R;
-import com.frc107.scouting.analysis.attribute.AnalysisElement;
 
 import java.util.ArrayList;
 
 public class AnalysisAdapter extends ArrayAdapter<AnalysisElement> {
     private ArrayList<AnalysisElement> elements;
 
-    public AnalysisAdapter(Context context, ArrayList<AnalysisElement> elements) {
+    AnalysisAdapter(Context context, ArrayList<AnalysisElement> elements) {
         super(context, 0, elements);
         this.elements = elements;
     }
@@ -46,7 +45,7 @@ public class AnalysisAdapter extends ArrayAdapter<AnalysisElement> {
         TextView elementTextView = convertView.findViewById(R.id.elementAttributeTextView);
 
         teamNumTextView.setText(element.getTeamNumber());
-        elementTextView.setText(element.getAttribute() + "");
+        elementTextView.setText(String.valueOf(element.getAttribute()));
 
         return convertView;
     }

@@ -13,12 +13,13 @@ public class NumberQuestion extends Question<Integer> {
 
     @Override
     public boolean hasAnswer() {
-        return answer != null && !illegalValues.contains(answer);
+        return answer != null;
     }
 
     @Override
     public void setAnswer(Integer answer) {
-        this.answer = answer;
+        if (!illegalValues.contains(answer))
+            this.answer = answer;
     }
 
     @Override

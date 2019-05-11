@@ -11,7 +11,6 @@ import com.frc107.scouting.Scouting;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -90,6 +89,9 @@ public class FileUtils {
     }
 
     public File createPhotoFile(String teamNumber) {
+        if (teamNumber == null)
+            throw new IllegalArgumentException("Team number cannot be null");
+
         File dir = Scouting.FILE_UTILS.getPhotoDirectory();
         if (dir == null)
             return null;

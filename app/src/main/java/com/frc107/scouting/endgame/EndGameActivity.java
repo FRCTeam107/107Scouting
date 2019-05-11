@@ -1,6 +1,5 @@
 package com.frc107.scouting.endgame;
 
-import android.Manifest;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -8,7 +7,6 @@ import android.widget.Toast;
 
 import com.frc107.scouting.R;
 import com.frc107.scouting.ScoutingStrings;
-import com.frc107.scouting.model.FormStatus;
 import com.frc107.scouting.utils.PermissionUtils;
 import com.frc107.scouting.ui.BaseActivity;
 import com.frc107.scouting.ui.questionWrappers.RadioWrapper;

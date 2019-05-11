@@ -13,6 +13,8 @@ public abstract class BaseModel {
     private SparseArray<Question> questions;
     private int unansweredQuestionId;
 
+    private static final String INVALID_QUESTION_ID = "Invalid question id";
+
     public BaseModel() {
         this.questions = new SparseArray<>();
         initializeQuestions();
@@ -53,10 +55,7 @@ public abstract class BaseModel {
     public boolean areNoQuestionsAnswered() {
         for (int i = 0; i < questions.size(); i++) {
             Question question = questions.valueAt(i);
-            if (!question.needsAnswer())
-                continue;
-
-            if (question instanceof ToggleQuestion)
+            if (!question.needsAnswer() || question instanceof ToggleQuestion)
                 continue;
 
             if (question.hasAnswer())
@@ -71,7 +70,7 @@ public abstract class BaseModel {
 
     public boolean setAnswer(int questionId, String answer) {
         if (questions.indexOfKey(questionId) == -1)
-            throw new IllegalArgumentException("Invalid question id");
+            throw new IllegalArgumentException(INVALID_QUESTION_ID);
 
         Question question = getQuestion(questionId);
         if (question instanceof NumberQuestion) {
@@ -89,7 +88,7 @@ public abstract class BaseModel {
 
     public boolean setAnswer(int questionId, int answer) {
         if (questions.indexOfKey(questionId) == -1)
-            throw new IllegalArgumentException("Invalid question id");
+            throw new IllegalArgumentException(INVALID_QUESTION_ID);
 
         Question question = getQuestion(questionId);
         if (question instanceof RadioQuestion) {
@@ -103,11 +102,11 @@ public abstract class BaseModel {
 
     public boolean setAnswer(int questionId, boolean answer) {
         if (questions.indexOfKey(questionId) == -1)
-            throw new IllegalArgumentException("Invalid question id");
+            throw new IllegalArgumentException(INVALID_QUESTION_ID);
 
         Question question = getQuestion(questionId);
         if (question instanceof ToggleQuestion) {
-            ((ToggleQuestion) question).setAnswer(answer);
+            question.setAnswer(answer);
             return true;
         }
 
@@ -116,34 +115,30 @@ public abstract class BaseModel {
 
     public Question getQuestion(int questionId) {
         if (questions.indexOfKey(questionId) == -1)
-            throw new IllegalArgumentException("Invalid question id");
+            throw new IllegalArgumentException(INVALID_QUESTION_ID);
 
         return questions.get(questionId);
     }
 
-    public String getAnswerForQuestion(int id) {
-        Question question = getQuestion(id);
+    public String getAnswer(int questionId) {
+        Question question = getQuestion(questionId);
         return question.getAnswerAsString();
-    }
-
-    public Object getRawAnswerForQuestion(int id) {
-        Question question = getQuestion(id);
-        return question.getAnswer();
     }
 
     public String getAnswerCSVRow() {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < questions.size(); i++) {
             Question question = questions.valueAt(i);
-            if (!question.answerCanBeIgnored()) {
-                if (i > 0)
-                    stringBuilder.append(',');
+            if (question.answerCanBeIgnored())
+                continue;
 
-                if (Scouting.SAVE_QUESTION_NAMES_AS_ANSWERS)
-                    stringBuilder.append(question.getName());
-                else
-                    stringBuilder.append(question.getAnswerAsString());
-            }
+            if (i > 0)
+                stringBuilder.append(',');
+
+            if (Scouting.SAVE_QUESTION_NAMES_AS_ANSWERS)
+                stringBuilder.append(question.getName()); // Instead of the answer, save the question name so that one can make sure that the data is saving correctly.
+            else
+                stringBuilder.append(question.getAnswerAsString());
         }
         return stringBuilder.toString();
     }

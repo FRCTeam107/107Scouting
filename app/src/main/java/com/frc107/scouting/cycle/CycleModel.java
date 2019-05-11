@@ -23,7 +23,7 @@ public class CycleModel extends BaseModel {
         ToggleQuestion allDefenseQuestion = new ToggleQuestion("cycleAllDefense", R.id.allDefense_chkbx);
         allDefenseQuestion.setIgnoreAnswer(true);
 
-        Question[] questions = {
+        return new Question[] {
                 new RadioQuestion("cyclePickupLoc", R.id.pickupLocationRadioQuestion, true,
                         new RadioQuestion.Option(R.id.portPickupLocation_Radiobtn, Scouting.CYCLE_PORT_PICKUP),
                         new RadioQuestion.Option(R.id.floorPickupLocation_Radiobtn, Scouting.CYCLE_FLOOR_PICKUP),
@@ -41,7 +41,6 @@ public class CycleModel extends BaseModel {
                 new ToggleQuestion("cycleDefense", R.id.defense_chkbx),
                 allDefenseQuestion
         };
-        return questions;
     }
 
     @Override
@@ -53,11 +52,7 @@ public class CycleModel extends BaseModel {
     @Override
     public void onRadioQuestionAnswered(int questionId, int answerId) {
         if (questionId == R.id.pickupLocationRadioQuestion) {
-            if (answerId == R.id.startedWithItem_Radiobtn) {
-                hasUsedStartingItem = true;
-            } else {
-                hasUsedStartingItem = false;
-            }
+            hasUsedStartingItem = answerId == R.id.startedWithItem_Radiobtn;
         }
     }
 

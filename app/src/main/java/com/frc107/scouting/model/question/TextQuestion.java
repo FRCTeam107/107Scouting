@@ -15,6 +15,9 @@ public class TextQuestion extends Question<String> {
 
     @Override
     public void setAnswer(String answer) {
+        if (answer == null)
+            throw new IllegalArgumentException("Answer cannot be null");
+
         this.answer = answer;
     }
 

@@ -1,6 +1,7 @@
 package com.frc107.scouting.analysis;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import android.util.SparseArray;
 
 import com.frc107.scouting.Scouting;
@@ -28,7 +29,7 @@ public class LoadDataTask extends AsyncTask<Void, Void, SparseArray<TeamDetails>
 
     public LoadDataTask(IAnalysisListener listener) {
         this.listener = listener;
-        teamDetailsSparseArray = new SparseArray<TeamDetails>();
+        teamDetailsSparseArray = new SparseArray<>();
     }
 
     @Override
@@ -54,12 +55,9 @@ public class LoadDataTask extends AsyncTask<Void, Void, SparseArray<TeamDetails>
 
                 line = bufferedReader.readLine();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            teamDetailsSparseArray = null;
         } catch (IOException e) {
-            e.printStackTrace();
-            teamDetailsSparseArray = null;
+            Log.d("Scouting", e.getMessage());
+            return;
         }
 
         for(int i = 0; i < teamDetailsSparseArray.size(); i ++) {

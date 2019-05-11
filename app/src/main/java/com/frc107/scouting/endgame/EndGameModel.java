@@ -3,7 +3,6 @@ package com.frc107.scouting.endgame;
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.model.BaseModel;
-import com.frc107.scouting.model.FormStatus;
 import com.frc107.scouting.model.question.Question;
 import com.frc107.scouting.model.question.RadioQuestion;
 import com.frc107.scouting.model.question.ToggleQuestion;
@@ -15,8 +14,7 @@ public class EndGameModel extends BaseModel {
 
     @Override
     public Question[] getQuestions() {
-        Question[] questions = {
-
+        return new Question[] {
                 new RadioQuestion("endgameHabitatLevel", R.id.endGameHabitatLevelRadioQuestion, true,
                         new RadioQuestion.Option(R.id.habOneEndGame_Radiobtn, Scouting.ENDGAME_HAB_ONE),
                         new RadioQuestion.Option(R.id.habTwoEndGame_Radiobtn, Scouting.ENDGAME_HAB_TWO),
@@ -28,9 +26,7 @@ public class EndGameModel extends BaseModel {
                         new RadioQuestion.Option(R.id.endGameDefenseIneffective_Radiobtn, Scouting.ENDGAME_DEFENSE_INEFFECTIVE),
                         new RadioQuestion.Option(R.id.endGameDefenseNone_Radiobtn, Scouting.ENDGAME_DEFENSE_NONE)),
                 new ToggleQuestion("endgameFouls", R.id.endGameFouls_chkbx)
-
         };
-        return questions;
     }
 
     @Override
@@ -47,7 +43,7 @@ public class EndGameModel extends BaseModel {
 
         String sandstormData = Scouting.getInstance().getSandstormData();
         ArrayList<String> cycles = Scouting.getInstance().getCycles();
-        if (cycles.size() == 0) {
+        if (cycles.isEmpty()) {
             String cycle = "-1,-1,-1,-1,-1";
             String maxCycles = cycles.size() + "";
             if (Scouting.SAVE_QUESTION_NAMES_AS_ANSWERS)

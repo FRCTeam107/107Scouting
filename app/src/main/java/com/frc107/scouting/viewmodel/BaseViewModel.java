@@ -27,8 +27,8 @@ public abstract class BaseViewModel extends ViewModel {
         return model.setAnswer(questionId, answer);
     }
 
-    public String getAnswerForQuestion(int questionId) {
-        return model.getAnswerForQuestion(questionId);
+    public String getAnswer(int questionId) {
+        return model.getAnswer(questionId);
     }
 
     public boolean finish() {

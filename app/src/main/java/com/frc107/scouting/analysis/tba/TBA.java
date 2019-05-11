@@ -10,7 +10,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
-import java.util.Set;
 
 public class TBA {
     private static final String BASE_ADDRESS = "https://www.thebluealliance.com/api/v3/";
@@ -23,6 +22,33 @@ public class TBA {
     }
 
     public OPR getOPRs(String eventKey) throws IOException {
+        String oprJsonData = downloadOPRData(eventKey);
+
+        JsonObject jsonObject = jsonParser.parse(oprJsonData).getAsJsonObject();
+        JsonObject oprs = (JsonObject) jsonObject.get("oprs");
+        JsonObject dprs = (JsonObject) jsonObject.get("dprs");
+
+        OPR values = new OPR();
+
+        Object[] oprArray = oprs.entrySet().toArray();
+        Object[] dprArray = dprs.entrySet().toArray();
+        if (oprArray == null)
+            return values;
+
+        for (int i = 0; i < oprArray.length; i++) {
+            Map.Entry<String, JsonElement> oprEntry = ((Map.Entry<String, JsonElement>) oprArray[i]);
+            Map.Entry<String, JsonElement> dprEntry = ((Map.Entry<String, JsonElement>) dprArray[i]);
+            String opr = oprEntry.getValue().getAsString();
+            String dpr = dprEntry.getValue().getAsString();
+            int teamNum = Integer.parseInt(oprEntry.getKey().substring(3));
+            values.setOPR(teamNum, opr);
+            values.setDPR(teamNum, dpr);
+        }
+
+        return values;
+    }
+
+    private String downloadOPRData(String eventKey) throws IOException {
         StringBuilder result = new StringBuilder();
         String address = BASE_ADDRESS + "event/" + eventKey + "/oprs";
 
@@ -37,22 +63,6 @@ public class TBA {
         }
         reader.close();
 
-        JsonObject jsonObject = jsonParser.parse(result.toString()).getAsJsonObject();
-        JsonObject oprs = (JsonObject) jsonObject.get("oprs");
-        JsonObject dprs = (JsonObject) jsonObject.get("dprs");
-
-        OPR values = new OPR();
-
-        Object[] oprArray = oprs.entrySet().toArray();
-        Object[] dprArray = dprs.entrySet().toArray();
-        for (int i = 0; i < oprArray.length; i++) {
-            String opr = ((Map.Entry<String, JsonElement>) oprArray[i]).getValue().getAsString();
-            String dpr = ((Map.Entry<String, JsonElement>) dprArray[i]).getValue().getAsString();
-            int teamNum = Integer.parseInt((((Map.Entry<String, JsonElement>) oprArray[i])).getKey().substring(3));
-            values.setOPR(teamNum, opr);
-            values.setDPR(teamNum, dpr);
-        }
-
-        return values;
+        return reader.toString();
     }
 }

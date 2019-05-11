@@ -10,7 +10,6 @@ import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.cycle.CycleActivity;
-import com.frc107.scouting.utils.ViewUtils;
 import com.frc107.scouting.ui.BaseActivity;
 import com.frc107.scouting.ui.questionWrappers.RadioWrapper;
 import com.frc107.scouting.ui.questionWrappers.TextWrapper;

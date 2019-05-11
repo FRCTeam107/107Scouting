@@ -5,6 +5,9 @@ public class AnalysisElement {
     private double attribute;
 
     public AnalysisElement(String teamNumber, double attribute) {
+        if (teamNumber == null)
+            throw new IllegalArgumentException("Team number cannot be null");
+
         this.teamNumber = teamNumber;
         this.attribute = attribute;
     }

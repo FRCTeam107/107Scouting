@@ -6,13 +6,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.frc107.scouting.BuildConfig;
 import com.frc107.scouting.R;
-import com.frc107.scouting.model.FormStatus;
 import com.frc107.scouting.utils.PermissionUtils;
 import com.frc107.scouting.utils.ViewUtils;
 import com.frc107.scouting.ui.BaseActivity;
@@ -104,7 +101,7 @@ public class PitActivity extends BaseActivity {
     }
 
     public void openCamera(View view) {
-        String teamNumber = viewModel.getAnswerForQuestion(R.id.pit_teamNumber_editText);
+        String teamNumber = viewModel.getAnswer(R.id.pit_teamNumber_editText);
         if (teamNumber == null) {
             ViewUtils.requestFocus(findViewById(R.id.pit_teamNumber_editText), this);
             return;
