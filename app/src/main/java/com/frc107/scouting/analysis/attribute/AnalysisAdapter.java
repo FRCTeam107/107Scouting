@@ -7,26 +7,34 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.frc107.scouting.R;
 
 import java.util.ArrayList;
 
 public class AnalysisAdapter extends ArrayAdapter<AnalysisElement> {
-    private ArrayList<AnalysisElement> elements;
+    private MutableLiveData<ArrayList<AnalysisElement>> elements;
 
-    AnalysisAdapter(Context context, ArrayList<AnalysisElement> elements) {
-        super(context, 0, elements);
+    AnalysisAdapter(Context context, MutableLiveData<ArrayList<AnalysisElement>> elements) {
+        super(context, 0, elements.getValue());
         this.elements = elements;
     }
 
     @Override
     public int getCount() {
-        return elements.size();
+        if (elements.getValue() == null)
+            return 0;
+
+        return elements.getValue().size();
     }
 
     @Override
     public AnalysisElement getItem(int position) {
-        return elements.get(position);
+        if (elements.getValue() == null)
+            return null;
+
+        return elements.getValue().get(position);
     }
 
     @Override
@@ -37,6 +45,9 @@ public class AnalysisAdapter extends ArrayAdapter<AnalysisElement> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         AnalysisElement element = getItem(position);
+        if (element == null)
+            return convertView;
+
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_analysis_element, parent, false);
         }

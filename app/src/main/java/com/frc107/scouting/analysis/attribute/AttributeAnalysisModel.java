@@ -3,6 +3,8 @@ package com.frc107.scouting.analysis.attribute;
 import android.os.Build;
 import android.util.SparseArray;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.frc107.scouting.analysis.IAnalysisListener;
 import com.frc107.scouting.ui.IUIListener;
 import com.frc107.scouting.analysis.LoadDataTask;
@@ -11,8 +13,8 @@ import com.frc107.scouting.analysis.TeamDetails;
 import java.util.ArrayList;
 
 public class AttributeAnalysisModel implements IAnalysisListener {
-    private IUIListener listener;
     private ArrayList<AnalysisElement> elements;
+    private MutableLiveData<ArrayList<AnalysisElement>> elementsLiveData;
     private SparseArray<TeamDetails> detailsArray;
 
     private static final String[] ATTRIBUTE_TYPES = new String[]{
@@ -43,9 +45,9 @@ public class AttributeAnalysisModel implements IAnalysisListener {
 
     private int currentAttributeType;
 
-    public AttributeAnalysisModel(IUIListener listener) {
-        this.listener = listener;
+    public AttributeAnalysisModel() {
         elements = new ArrayList<>();
+        elementsLiveData = new MutableLiveData<>();
     }
 
     public void loadData() {
@@ -57,8 +59,6 @@ public class AttributeAnalysisModel implements IAnalysisListener {
         this.detailsArray = detailsArray;
         if (!error)
             loadTeamNumsAndAttributes();
-
-        listener.callback(error);
     }
 
     private void loadTeamNumsAndAttributes() {
@@ -67,6 +67,7 @@ public class AttributeAnalysisModel implements IAnalysisListener {
             double attribute = 0.0;
             elements.add(new AnalysisElement(teamNumber, attribute));
         }
+        elementsLiveData.setValue(elements);
     }
 
     public void setAttribute(int attributeNum) {
@@ -116,6 +117,7 @@ public class AttributeAnalysisModel implements IAnalysisListener {
             elements.add(new AnalysisElement(teamNumber, attribute));
         }
         sortElements();
+        elementsLiveData.setValue(elements);
     }
 
     private void sortElements() {
@@ -124,8 +126,8 @@ public class AttributeAnalysisModel implements IAnalysisListener {
         }
     }
 
-    public ArrayList<AnalysisElement> getElements() {
-        return elements;
+    public MutableLiveData<ArrayList<AnalysisElement>> getElementsLiveData() {
+        return elementsLiveData;
     }
 
     public String[] getAttributeTypes() {

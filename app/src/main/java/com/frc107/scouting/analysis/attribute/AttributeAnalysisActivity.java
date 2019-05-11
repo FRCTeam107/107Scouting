@@ -12,14 +12,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.frc107.scouting.R;
 
-public class AttributeAnalysisActivity extends BaseActivity implements IUIListener {
+import java.util.ArrayList;
+
+public class AttributeAnalysisActivity extends BaseActivity {
     private AnalysisAdapter adapter;
     private ListView elementListView;
     private TextView attributeTypeTextView;
     private AttributeAnalysisViewModel viewModel;
-    private int currentAttributeType;
+    private int currentAttributeType = -1;
 
     private static final String CURRENT_ATTRIBUTE = "currentAttribute";
 
@@ -27,11 +33,22 @@ public class AttributeAnalysisActivity extends BaseActivity implements IUIListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attribute_analysis);
-        viewModel = new AttributeAnalysisViewModel(this);
+
+        viewModel = ViewModelProviders.of(this).get(AttributeAnalysisViewModel.class);
+        viewModel.getElementsLiveData().observe(this, analysisElements -> {
+            adapter.notifyDataSetChanged();
+            elementListView.setSelectionAfterHeaderView();
+
+            if (currentAttributeType == -1)
+                setAttributeType(0);
+
+            findViewById(R.id.analysisProgressBar).setVisibility(View.GONE);
+            elementListView.setVisibility(View.VISIBLE);
+        });
 
         elementListView = findViewById(R.id.elementListView);
 
-        adapter = new AnalysisAdapter(this, viewModel.getElements());
+        adapter = new AnalysisAdapter(this, viewModel.getElementsLiveData());
         elementListView.setAdapter(adapter);
 
         attributeTypeTextView = findViewById(R.id.attributeTypeTextView);
@@ -51,24 +68,10 @@ public class AttributeAnalysisActivity extends BaseActivity implements IUIListen
         currentAttributeType = savedInstanceState.getInt(CURRENT_ATTRIBUTE);
     }
 
-    @Override
-    public void callback(boolean error) {
-        if (error) {
-            Toast.makeText(getApplicationContext(), "Error while loading data.", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        findViewById(R.id.analysisProgressBar).setVisibility(View.GONE);
-        elementListView.setVisibility(View.VISIBLE);
-        setAttributeType(currentAttributeType);
-    }
-
     private void setAttributeType(int type) {
         currentAttributeType = type;
         viewModel.setAttribute(type);
         attributeTypeTextView.setText(viewModel.getCurrentAttributeTypeName());
-        adapter.notifyDataSetChanged();
-        elementListView.setSelectionAfterHeaderView();
     }
 
     public void attributeButtonPressed(View view) {
