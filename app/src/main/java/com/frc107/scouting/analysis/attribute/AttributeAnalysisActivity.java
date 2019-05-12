@@ -5,15 +5,11 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.frc107.scouting.ui.BaseActivity;
-import com.frc107.scouting.ui.IUIListener;
 
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.frc107.scouting.R;
@@ -25,9 +21,24 @@ public class AttributeAnalysisActivity extends BaseActivity {
     private ListView elementListView;
     private TextView attributeTypeTextView;
     private AttributeAnalysisViewModel viewModel;
-    private int currentAttributeType = -1;
 
-    private static final String CURRENT_ATTRIBUTE = "currentAttribute";
+    private static final String[] ATTRIBUTE_TYPES = new String[]{
+            "Average Cargo",
+            "Average Hatch Panel",
+            "Average Cargo Ship",
+            "Average Rocket Level 1",
+            "Average Rocket Level 2",
+            "Average Rocket Level 3",
+            "Hab 2 Climb Amount",
+            "Hab 3 Climb Amount",
+            "Successful Defense Amount",
+            "OPR",
+            "DPR"
+    };
+
+    private static final String CURRENT_ATTRIBUTE_KEY = "CURRENT_ATTRIBUTE_KEY";
+
+    private int currentAttributeType = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,55 +46,62 @@ public class AttributeAnalysisActivity extends BaseActivity {
         setContentView(R.layout.activity_attribute_analysis);
 
         viewModel = ViewModelProviders.of(this).get(AttributeAnalysisViewModel.class);
-        viewModel.getElementsLiveData().observe(this, analysisElements -> {
-            adapter.notifyDataSetChanged();
-            elementListView.setSelectionAfterHeaderView();
 
-            if (currentAttributeType == -1)
-                setAttributeType(0);
-
-            findViewById(R.id.analysisProgressBar).setVisibility(View.GONE);
-            elementListView.setVisibility(View.VISIBLE);
-        });
-
+        adapter = new AnalysisAdapter(this, viewModel.getElements());
         elementListView = findViewById(R.id.elementListView);
-
-        adapter = new AnalysisAdapter(this, viewModel.getElementsLiveData());
         elementListView.setAdapter(adapter);
 
         attributeTypeTextView = findViewById(R.id.attributeTypeTextView);
 
-        viewModel.loadData();
+        // These don't run when onCreate is called.
+        viewModel.getElementsLiveData().observe(this, this::onAnalysisElementsUpdated);
+        viewModel.getDataLoadedLiveData().observe(this, this::onDataLoaded);
+
+        if (viewModel.isDataLoaded())
+            setAttributeType(viewModel.getCurrentAttributeType());
+        else
+            viewModel.loadData();
+    }
+
+    private void onAnalysisElementsUpdated(ArrayList<AnalysisElement> elements) {
+        adapter.notifyDataSetChanged();
+        findViewById(R.id.analysisProgressBar).setVisibility(View.GONE);
+
+        elementListView.setSelectionAfterHeaderView();
+        elementListView.setVisibility(View.VISIBLE);
+    }
+
+    private void onDataLoaded(boolean dataLoaded) {
+        if (!dataLoaded && currentAttributeType != -1)
+            return;
+
+        if (currentAttributeType == -1)
+            currentAttributeType = 0;
+
+        setAttributeType(currentAttributeType);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(CURRENT_ATTRIBUTE, viewModel.getCurrentAttributeType());
+        //outState.putInt(CURRENT_ATTRIBUTE_KEY, viewModel.getCurrentAttributeType());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        currentAttributeType = savedInstanceState.getInt(CURRENT_ATTRIBUTE);
+        //setAttributeType(savedInstanceState.getInt(CURRENT_ATTRIBUTE_KEY));
     }
 
     private void setAttributeType(int type) {
-        currentAttributeType = type;
         viewModel.setAttribute(type);
-        attributeTypeTextView.setText(viewModel.getCurrentAttributeTypeName());
+        attributeTypeTextView.setText(ATTRIBUTE_TYPES[type]);
     }
 
     public void attributeButtonPressed(View view) {
-        String[] attributeTypes = viewModel.getAttributeTypes();
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setTitle("Pick an attribute");
-        dialogBuilder.setItems(attributeTypes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                setAttributeType(which);
-            }
-        });
+        dialogBuilder.setItems(ATTRIBUTE_TYPES, (dialog, which) -> setAttributeType(which));
         dialogBuilder.show();
     }
 }

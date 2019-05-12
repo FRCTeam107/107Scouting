@@ -15,39 +15,29 @@ import java.util.ArrayList;
 public class AttributeAnalysisModel implements IAnalysisListener {
     private ArrayList<AnalysisElement> elements;
     private MutableLiveData<ArrayList<AnalysisElement>> elementsLiveData;
+    private MutableLiveData<Boolean> dataLoadedLiveData;
     private SparseArray<TeamDetails> detailsArray;
 
-    private static final String[] ATTRIBUTE_TYPES = new String[]{
-            "Average Cargo",
-            "Average Hatch Panel",
-            "Average Cargo Ship",
-            "Average Rocket Level 1",
-            "Average Rocket Level 2",
-            "Average Rocket Level 3",
-            "Hab 2 Climb Amount",
-            "Hab 3 Climb Amount",
-            "Successful Defense Amount",
-            "OPR",
-            "DPR"
-    };
+    private boolean dataLoaded;
 
-    private static final int AVG_CARGO = 0,
-                             AVG_HATCH_PANEL = 1,
-                             AVG_CARGO_SHIP = 2,
-                             AVG_ROCKET_1 = 3,
-                             AVG_ROCKET_2 = 4,
-                             AVG_ROCKET_3 = 5,
-                             HAB_2_AMOUNT = 6,
-                             HAB_3_AMOUNT = 7,
-                             SUCCESSFUL_DEFENSE_AMOUNT = 8,
-                             OPR = 9,
-                             DPR = 10;
+    private static final int AVG_CARGO = 0;
+    private static final int AVG_HATCH_PANEL = 1;
+    private static final int AVG_CARGO_SHIP = 2;
+    private static final int AVG_ROCKET_1 = 3;
+    private static final int AVG_ROCKET_2 = 4;
+    private static final int AVG_ROCKET_3 = 5;
+    private static final int HAB_2_AMOUNT = 6;
+    private static final int HAB_3_AMOUNT = 7;
+    private static final int SUCCESSFUL_DEFENSE_AMOUNT = 8;
+    private static final int OPR = 9;
+    private static final int DPR = 10;
 
-    private int currentAttributeType;
+    private int currentAttributeType = -1;
 
     public AttributeAnalysisModel() {
         elements = new ArrayList<>();
         elementsLiveData = new MutableLiveData<>();
+        dataLoadedLiveData = new MutableLiveData<>();
     }
 
     public void loadData() {
@@ -57,17 +47,14 @@ public class AttributeAnalysisModel implements IAnalysisListener {
     @Override
     public void onDataLoaded(SparseArray<TeamDetails> detailsArray, boolean error) {
         this.detailsArray = detailsArray;
-        if (!error)
-            loadTeamNumsAndAttributes();
+
+        boolean success = !error;
+        dataLoadedLiveData.setValue(success);
+        dataLoaded = success;
     }
 
-    private void loadTeamNumsAndAttributes() {
-        for (int i = 0; i < detailsArray.size(); i++) {
-            String teamNumber = detailsArray.keyAt(i) + "";
-            double attribute = 0.0;
-            elements.add(new AnalysisElement(teamNumber, attribute));
-        }
-        elementsLiveData.setValue(elements);
+    public boolean isDataLoaded() {
+        return dataLoaded;
     }
 
     public void setAttribute(int attributeNum) {
@@ -126,16 +113,16 @@ public class AttributeAnalysisModel implements IAnalysisListener {
         }
     }
 
+    public ArrayList<AnalysisElement> getElements() {
+        return elements;
+    }
+
     public MutableLiveData<ArrayList<AnalysisElement>> getElementsLiveData() {
         return elementsLiveData;
     }
 
-    public String[] getAttributeTypes() {
-        return ATTRIBUTE_TYPES;
-    }
-
-    public String getCurrentAttributeTypeName() {
-        return ATTRIBUTE_TYPES[currentAttributeType];
+    public MutableLiveData<Boolean> getDataLoadedLiveData() {
+        return dataLoadedLiveData;
     }
 
     public int getCurrentAttributeType() {

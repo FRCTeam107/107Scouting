@@ -14,27 +14,27 @@ import com.frc107.scouting.R;
 import java.util.ArrayList;
 
 public class AnalysisAdapter extends ArrayAdapter<AnalysisElement> {
-    private MutableLiveData<ArrayList<AnalysisElement>> elements;
+    private ArrayList<AnalysisElement> elements;
 
-    AnalysisAdapter(Context context, MutableLiveData<ArrayList<AnalysisElement>> elements) {
-        super(context, 0, elements.getValue());
+    AnalysisAdapter(Context context, ArrayList<AnalysisElement> elements) {
+        super(context, 0, elements);
         this.elements = elements;
     }
 
     @Override
     public int getCount() {
-        if (elements.getValue() == null)
+        if (elements == null)
             return 0;
 
-        return elements.getValue().size();
+        return elements.size();
     }
 
     @Override
     public AnalysisElement getItem(int position) {
-        if (elements.getValue() == null)
+        if (elements == null)
             return null;
 
-        return elements.getValue().get(position);
+        return elements.get(position);
     }
 
     @Override

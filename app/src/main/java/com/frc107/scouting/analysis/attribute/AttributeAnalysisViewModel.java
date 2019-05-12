@@ -23,20 +23,24 @@ public class AttributeAnalysisViewModel extends AndroidViewModel {
         model.loadData();
     }
 
+    public ArrayList<AnalysisElement> getElements() {
+        return model.getElements();
+    }
+
     public MutableLiveData<ArrayList<AnalysisElement>> getElementsLiveData() {
         return model.getElementsLiveData();
     }
 
-    public String[] getAttributeTypes() {
-        return model.getAttributeTypes();
+    public boolean isDataLoaded() {
+        return model.isDataLoaded();
+    }
+
+    public MutableLiveData<Boolean> getDataLoadedLiveData() {
+        return model.getDataLoadedLiveData();
     }
 
     public void setAttribute(int attribute) {
         model.setAttribute(attribute);
-    }
-
-    public String getCurrentAttributeTypeName() {
-        return model.getCurrentAttributeTypeName();
     }
 
     public int getCurrentAttributeType() {
