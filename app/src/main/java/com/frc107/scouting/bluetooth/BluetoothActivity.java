@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.frc107.scouting.R;
-import com.frc107.scouting.ui.BaseActivity;
+import com.frc107.scouting.form.FormActivity;
 
-public class BluetoothActivity extends BaseActivity {
+public class BluetoothActivity extends FormActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

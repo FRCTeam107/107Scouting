@@ -2,7 +2,7 @@ package com.frc107.scouting.ui.questionWrappers;
 
 import android.widget.RadioGroup;
 
-import com.frc107.scouting.viewmodel.BaseViewModel;
+import com.frc107.scouting.form.BaseViewModel;
 
 public class RadioWrapper {
     private RadioGroup radioGroup;

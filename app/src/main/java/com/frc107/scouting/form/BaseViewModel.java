@@ -1,11 +1,9 @@
-package com.frc107.scouting.viewmodel;
+package com.frc107.scouting.form;
 
 import androidx.lifecycle.ViewModel;
 
-import com.frc107.scouting.model.BaseModel;
-
 public abstract class BaseViewModel extends ViewModel {
-    protected BaseModel model;
+    protected FormModel model;
 
     public int getUnfinishedQuestionId() {
         return model.getUnfinishedQuestionId();

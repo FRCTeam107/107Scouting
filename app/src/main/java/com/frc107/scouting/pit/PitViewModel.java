@@ -1,6 +1,6 @@
 package com.frc107.scouting.pit;
 
-import com.frc107.scouting.viewmodel.BaseViewModel;
+import com.frc107.scouting.form.BaseViewModel;
 
 import java.io.File;
 

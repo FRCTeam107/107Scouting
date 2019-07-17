@@ -5,15 +5,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.frc107.scouting.admin.AdminActivity;
-import com.frc107.scouting.initials.InitialsActivity;
 import com.frc107.scouting.pit.PitActivity;
-import com.frc107.scouting.ui.BaseActivity;
+import com.frc107.scouting.form.FormActivity;
 
 import android.provider.Settings;
 import android.view.View;
 import android.widget.TextView;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends FormActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,10 +30,6 @@ public class MainActivity extends BaseActivity {
         SharedPreferences pref = getSharedPreferences(Scouting.PREFERENCES_NAME, MODE_PRIVATE);
         String eventKey = pref.getString(Scouting.EVENT_KEY_PREFERENCE, "");
         Scouting.getInstance().setEventKey(eventKey);
-    }
-
-    public void showMatch(View view) {
-        startActivity(new Intent(this, InitialsActivity.class));
     }
 
     public void showPit(View view) {

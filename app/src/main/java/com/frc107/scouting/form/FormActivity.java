@@ -1,4 +1,4 @@
-package com.frc107.scouting.ui;
+package com.frc107.scouting.form;
 
 import android.Manifest;
 import android.content.Intent;
@@ -22,7 +22,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class FormActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);

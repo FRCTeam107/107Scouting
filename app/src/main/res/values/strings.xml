@@ -10,91 +10,17 @@
 
     <string name="mainAuthor">Developed by FRC Team 107</string>
 
-    <!--Sandstorm Strings-->
-    <string name="teamNumberHeading">Team Number</string>
-    <string name="matchNumberHeading">Match Number</string>
-
-    <string name="startingPositionHeading">Starting Location</string>
-    <string name="habOneSandstorm">Hab One</string>
-    <string name="habTwoSandstorm">Hab Two</string>
-
-    <string name="sandstormStartingGamePiece">Starting Game Piece</string>
-    <string name="cargoSandstormStartingGamePiece">Cargo</string>
-    <string name="panelSandstormStartingGamePiece">Hatch Panel</string>
-    <string name="noSandstormStartingGamePiece">None</string>
-
-    <string name="sandstormItemPlacedHeading">Item Placed</string>
-    <string name="sandstormTopRocketItemPlaced">Top Rocket</string>
-    <string name="sandstormMiddleRocketItemPlaced">Middle Rocket</string>
-    <string name="sandstormBottomRocketItemPlaced">Bottom Rocket</string>
-    <string name="sandstormCargoshipItemPlaced">Cargo Ship</string>
-    <string name="sandstormFloorItemPlaced">Floor</string>
-    <string name="nothingPlacedItemPlaced">Not Placed</string>
-    <string name="sandstormBaseline_chkbxText">Crossed Baseline</string>
-
-
-    <string name="saveButton">Save</string>
-
-    <string name="enterTeleopCycle">Enter Teleop Cycle</string>
-
-
     <!--Auton Error Strings-->
 
     <string name="teamNumberError">Enter in team number</string>
     <string name="matchNumberError">Enter in match number</string>
     <string name="startingLocationError">Enter starting location</string>
 
-    <!--Teleop Strings-->
-    <string name="pickupLocation">Pickup Location</string>
-    <string name="portPickupLocation">Port</string>
-    <string name="floorPickupLocation">Floor</string>
-    <string name="startedWithItem">Started With Item</string>
-
-    <string name="itemPickedUpLocationText">Item Picked Up</string>
-    <string name="cargoPickedUp">Cargo</string>
-    <string name="hatchPickedUp">Hatch Panel</string>
-
-    <string name="itemPlacedLocationText">Location Placed</string>
-    <string name="topRocketItemPlaced">Top Rocket</string>
-    <string name="middleRocketItemPlaced">Middle Rocket</string>
-    <string name="bottomRocketItemPlaced">Bottom Rocket</string>
-    <string name="cargoshipItemPlaced">Cargo Ship</string>
-    <string name="floorItemPlaced">Dropped</string>
-
-    <string name="defenseChkbxText">Defense</string>
-
-    <string name="allDefenseChkbxText">Only Defense</string>
-
-    <string name="goToCycleButton">Start Cycles</string>
-
-    <string name="nextCycleButton">Next Cycle</string>
-    <string name="clearCycleButton">Clear Cycle</string>
-
-    <string name="scouterInitials">Scouter Initials</string>
-
-
-    <!--Teleop Error Strings-->
-
-    <!--End Game Strings-->
-    <string name="endGameHabitatLevelHeading">Habitat Level</string>
-    <string name="habOneEndGame">Level One</string>
-    <string name="habTwoEndGame">Level Two</string>
-    <string name="habThreeEndGame">Level Three</string>
-    <string name="habNoneEndGame">No Level</string>
-
-
-    <string name="endGameDefenseHeading">Defense</string>
-    <string name="endGameDefenseAllMatch_chkbxText">Defense All Match</string>
-    <string name="endGameDefenseAllMatch">All Match</string>
-    <string name="endGameDefenseEffective">Effective</string>
-    <string name="endGameDefenseIneffective">Ineffective</string>
-    <string name="endGameDefenseNone">None</string>
-    <string name="endGameFoulsChkbxText">Fouls</string>
-    <string name="endGameButton">Endgame</string>
-
     <!--Menu Strings-->
     <string name="matchScouting">Match</string>
     <string name="pitScouting">Pit</string>
+
+    <string name="teamNumberHeading">Team Number</string>
 
     <!--Pit Scouting Strings-->
     <string name="pitTeamNumber">Team Number</string>
@@ -140,9 +66,6 @@
 
     <string name="title_activity_duck">DuckActivity</string>
 
-    <!--Pit Error Strings-->
-
-
     <!--Send Data Strings-->
     <string name="concatenateMatchData">Concatenate Match Data</string>
     <string name="concatenatePitData">Concatenate Pit Data</string>
@@ -177,8 +100,7 @@
     <string name="analysisDPR">DPR:</string>
     <string name="bluetooth">Bluetooth</string>
     <string name="chooseChildDevicesButton">Choose Child Devices</string>
-    <string name="title_activity_bluetooth_set_master_device">BluetoothSetMasterDeviceActivity
-    </string>
+    <string name="title_activity_bluetooth_set_master_device">BluetoothSetMasterDeviceActivity</string>
     <string name="chooseMasterDeviceButton">Choose Master Device</string>
 
 </resources>

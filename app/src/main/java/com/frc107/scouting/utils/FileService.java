@@ -14,14 +14,14 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class FileUtils {
+public class FileService {
     private File scoutingDirectory;
     private File photoDirectory;
 
     private static final String SCOUTING_PATH = Environment.getExternalStorageDirectory() + "/Scouting";
     private static final String PHOTO_PATH = Environment.getExternalStorageDirectory() + "/Scouting/Photos";
 
-    public FileUtils() {
+    public FileService() {
         scoutingDirectory = new File(SCOUTING_PATH);
         photoDirectory = new File(PHOTO_PATH);
     }

@@ -2,7 +2,7 @@ package com.frc107.scouting.bluetooth;
 
 import android.os.Bundle;
 
-import com.frc107.scouting.ui.BaseActivity;
+import com.frc107.scouting.form.FormActivity;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 import com.frc107.scouting.R;
 
-public class BluetoothSetMasterDeviceActivity extends BaseActivity {
+public class BluetoothSetMasterDeviceActivity extends FormActivity {
     private BluetoothSetMasterDeviceViewModel viewModel;
 
     @Override

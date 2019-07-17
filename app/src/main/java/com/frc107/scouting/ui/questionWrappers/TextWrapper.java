@@ -4,7 +4,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-import com.frc107.scouting.viewmodel.BaseViewModel;
+import com.frc107.scouting.form.BaseViewModel;
 
 public class TextWrapper {
     private EditText editText;

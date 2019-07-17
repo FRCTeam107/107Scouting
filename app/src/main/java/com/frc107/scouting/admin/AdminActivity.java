@@ -8,13 +8,12 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.frc107.scouting.R;
 import com.frc107.scouting.bluetooth.BluetoothActivity;
-import com.frc107.scouting.ui.BaseActivity;
+import com.frc107.scouting.form.FormActivity;
 import com.frc107.scouting.ui.IUIListener;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.analysis.attribute.AttributeAnalysisActivity;
@@ -27,7 +26,7 @@ import java.util.ArrayList;
  * Created by Matt on 10/9/2017.
  */
 
-public class AdminActivity extends BaseActivity implements IUIListener {
+public class AdminActivity extends FormActivity implements IUIListener {
     private AdminViewModel viewModel;
     private EditText eventKeyEditText;
 

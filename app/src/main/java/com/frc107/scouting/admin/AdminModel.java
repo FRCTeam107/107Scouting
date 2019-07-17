@@ -11,7 +11,7 @@ import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.analysis.IOPRListener;
 import com.frc107.scouting.analysis.OPRTask;
 import com.frc107.scouting.analysis.tba.OPR;
-import com.frc107.scouting.utils.FileUtils;
+import com.frc107.scouting.utils.FileService;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -56,9 +56,9 @@ public class AdminModel implements IOPRListener {
         builder.append(header);
         builder.append("\n");
 
-        FileUtils fileUtils = Scouting.FILE_UTILS;
+        FileService fileService = Scouting.FILE_UTILS;
 
-        File[] files = fileUtils.getFilesInDirectory();
+        File[] files = fileService.getFilesInDirectory();
 
         for (File file : files) {
             if (!file.getName().startsWith(prefix))
@@ -83,7 +83,7 @@ public class AdminModel implements IOPRListener {
         }
 
         String fileName = "Concatenated" + prefix + ".csv";
-        File newFile = new File(fileUtils.getScoutingDirectory(), fileName);
+        File newFile = new File(fileService.getScoutingDirectory(), fileName);
         try (FileOutputStream fileOutputStream = new FileOutputStream(newFile, false);
              FileWriter fileWriter = new FileWriter(fileOutputStream.getFD())) {
             if (newFile.exists()) {

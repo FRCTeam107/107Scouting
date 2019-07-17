@@ -1,7 +1,7 @@
 package com.frc107.scouting;
 
 import com.frc107.scouting.bluetooth.BluetoothManager;
-import com.frc107.scouting.utils.FileUtils;
+import com.frc107.scouting.utils.FileService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class Scouting {
 
     public static final boolean SAVE_QUESTION_NAMES_AS_ANSWERS = false;
 
-    public static final FileUtils FILE_UTILS = getInstance().getFileUtils();
+    public static final FileService FILE_UTILS = getInstance().getFileService();
 
     private static Scouting scouting;
     public static Scouting getInstance() {
@@ -56,11 +56,11 @@ public class Scouting {
         cycles = new ArrayList<>();
     }
 
-    private FileUtils fileUtils;
-    public FileUtils getFileUtils() {
-        if (fileUtils == null)
-            fileUtils = new FileUtils();
-        return fileUtils;
+    private FileService fileService;
+    public FileService getFileService() {
+        if (fileService == null)
+            fileService = new FileService();
+        return fileService;
     }
 
     private String uniqueId;

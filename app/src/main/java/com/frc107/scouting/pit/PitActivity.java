@@ -12,7 +12,7 @@ import com.frc107.scouting.BuildConfig;
 import com.frc107.scouting.R;
 import com.frc107.scouting.utils.PermissionUtils;
 import com.frc107.scouting.utils.ViewUtils;
-import com.frc107.scouting.ui.BaseActivity;
+import com.frc107.scouting.form.FormActivity;
 import com.frc107.scouting.ui.questionWrappers.RadioWrapper;
 import com.frc107.scouting.ui.questionWrappers.TextWrapper;
 
@@ -24,7 +24,7 @@ import androidx.core.content.FileProvider;
  * Created by Matt on 9/30/2017.
  */
 
-public class PitActivity extends BaseActivity {
+public class PitActivity extends FormActivity {
     private RadioWrapper sandstormOpWrapper;
     private RadioWrapper sandstormPrefWrapper;
     private RadioWrapper highestRocketLevelWrapper;
