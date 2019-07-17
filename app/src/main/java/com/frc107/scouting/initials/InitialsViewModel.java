@@ -15,7 +15,7 @@ public class InitialsViewModel extends ViewModel {
         model.setInitials(initials);
     }
 
-    public String getInitials() {
-        return model.getInitials();
+    public boolean areInitialsValid() {
+        return model.areInitialsValid();
     }
 }

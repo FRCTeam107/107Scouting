@@ -1,12 +1,12 @@
 package com.frc107.scouting.analysis.team;
 
-import com.frc107.scouting.ui.IUIListener;
+import com.frc107.scouting.utils.ISimpleCallback;
 
 public class TeamAnalysisViewModel {
     private TeamAnalysisModel model;
 
-    public TeamAnalysisViewModel(IUIListener listener) {
-        model = new TeamAnalysisModel(listener);
+    public TeamAnalysisViewModel(ISimpleCallback callback) {
+        model = new TeamAnalysisModel(callback);
     }
 
     public void loadData() {

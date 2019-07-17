@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.frc107.scouting.R;
+import com.frc107.scouting.bluetooth.BluetoothActivity;
 import com.frc107.scouting.ui.BaseActivity;
 import com.frc107.scouting.ui.IUIListener;
 import com.frc107.scouting.Scouting;
@@ -133,5 +134,11 @@ public class AdminActivity extends BaseActivity implements IUIListener {
             message = "Error while downloading OPRs. Double-check your event key.";
 
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    public void goToBluetoothScreen(View view) {
+        Intent intent = new Intent(getApplicationContext(), BluetoothActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

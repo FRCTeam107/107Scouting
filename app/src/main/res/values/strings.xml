@@ -175,5 +175,10 @@
     <string name="downloadOPRs">Download OPRs</string>
     <string name="analysisOpr">OPR:</string>
     <string name="analysisDPR">DPR:</string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="chooseChildDevicesButton">Choose Child Devices</string>
+    <string name="title_activity_bluetooth_set_master_device">BluetoothSetMasterDeviceActivity
+    </string>
+    <string name="chooseMasterDeviceButton">Choose Master Device</string>
 
 </resources>

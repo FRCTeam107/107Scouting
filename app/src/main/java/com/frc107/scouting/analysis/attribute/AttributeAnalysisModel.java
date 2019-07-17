@@ -9,13 +9,12 @@ import com.frc107.scouting.analysis.IAnalysisListener;
 import com.frc107.scouting.ui.IUIListener;
 import com.frc107.scouting.analysis.LoadDataTask;
 import com.frc107.scouting.analysis.TeamDetails;
+import com.frc107.scouting.utils.ISimpleCallback;
 
 import java.util.ArrayList;
 
 public class AttributeAnalysisModel implements IAnalysisListener {
     private ArrayList<AnalysisElement> elements;
-    private MutableLiveData<ArrayList<AnalysisElement>> elementsLiveData;
-    private MutableLiveData<Boolean> dataLoadedLiveData;
     private SparseArray<TeamDetails> detailsArray;
 
     private boolean dataLoaded;
@@ -34,10 +33,11 @@ public class AttributeAnalysisModel implements IAnalysisListener {
 
     private int currentAttributeType = -1;
 
-    public AttributeAnalysisModel() {
+    private ISimpleCallback onDataLoaded;
+
+    public AttributeAnalysisModel(ISimpleCallback onDataLoaded) {
         elements = new ArrayList<>();
-        elementsLiveData = new MutableLiveData<>();
-        dataLoadedLiveData = new MutableLiveData<>();
+        this.onDataLoaded = onDataLoaded;
     }
 
     public void loadData() {
@@ -47,17 +47,15 @@ public class AttributeAnalysisModel implements IAnalysisListener {
     @Override
     public void onDataLoaded(SparseArray<TeamDetails> detailsArray, boolean error) {
         this.detailsArray = detailsArray;
-
-        boolean success = !error;
-        dataLoadedLiveData.setValue(success);
-        dataLoaded = success;
+        dataLoaded = !error;
+        onDataLoaded.callback(dataLoaded);
     }
 
     public boolean isDataLoaded() {
         return dataLoaded;
     }
 
-    public void setAttribute(int attributeNum) {
+    public void setAttributeAndUpdateElements(int attributeNum) {
         currentAttributeType = attributeNum;
         elements.clear();
         for (int i = 0; i < detailsArray.size(); i++) {
@@ -104,7 +102,6 @@ public class AttributeAnalysisModel implements IAnalysisListener {
             elements.add(new AnalysisElement(teamNumber, attribute));
         }
         sortElements();
-        elementsLiveData.setValue(elements);
     }
 
     private void sortElements() {
@@ -117,15 +114,28 @@ public class AttributeAnalysisModel implements IAnalysisListener {
         return elements;
     }
 
-    public MutableLiveData<ArrayList<AnalysisElement>> getElementsLiveData() {
-        return elementsLiveData;
-    }
-
-    public MutableLiveData<Boolean> getDataLoadedLiveData() {
-        return dataLoadedLiveData;
-    }
-
     public int getCurrentAttributeType() {
         return currentAttributeType;
+    }
+
+    public class AnalysisElement {
+        private String teamNumber;
+        private double attribute;
+
+        public AnalysisElement(String teamNumber, double attribute) {
+            if (teamNumber == null)
+                throw new IllegalArgumentException("Team number cannot be null");
+
+            this.teamNumber = teamNumber;
+            this.attribute = attribute;
+        }
+
+        public String getTeamNumber() {
+            return teamNumber;
+        }
+
+        public double getAttribute() {
+            return attribute;
+        }
     }
 }

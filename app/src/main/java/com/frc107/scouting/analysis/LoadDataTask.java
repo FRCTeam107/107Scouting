@@ -46,6 +46,11 @@ public class LoadDataTask extends AsyncTask<Void, Void, SparseArray<TeamDetails>
 
     public void loadData() {
         File file = Scouting.FILE_UTILS.getConcatMatchFile();
+        if (file == null) {
+            Log.d("Scouting", "No concatenated match data.");
+            return;
+        }
+
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file.getPath()))) {
             String line = bufferedReader.readLine();
             line = bufferedReader.readLine(); // Skip first line, which is the header

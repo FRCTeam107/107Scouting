@@ -1,7 +1,6 @@
 package com.frc107.scouting.analysis.attribute;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.frc107.scouting.ui.BaseActivity;
@@ -38,7 +37,7 @@ public class AttributeAnalysisActivity extends BaseActivity {
 
     private static final String CURRENT_ATTRIBUTE_KEY = "CURRENT_ATTRIBUTE_KEY";
 
-    private int currentAttributeType = -1;
+    private int currentAttributeType = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +53,8 @@ public class AttributeAnalysisActivity extends BaseActivity {
         attributeTypeTextView = findViewById(R.id.attributeTypeTextView);
 
         // These don't run when onCreate is called.
-        viewModel.getElementsLiveData().observe(this, this::onAnalysisElementsUpdated);
         viewModel.getDataLoadedLiveData().observe(this, this::onDataLoaded);
+        viewModel.getAttributeLiveData().observe(this, this::onAnalysisElementsUpdated);
 
         if (viewModel.isDataLoaded())
             setAttributeType(viewModel.getCurrentAttributeType());
@@ -63,38 +62,25 @@ public class AttributeAnalysisActivity extends BaseActivity {
             viewModel.loadData();
     }
 
-    private void onAnalysisElementsUpdated(ArrayList<AnalysisElement> elements) {
+    private void onAnalysisElementsUpdated(int attribute) {
         adapter.notifyDataSetChanged();
         findViewById(R.id.analysisProgressBar).setVisibility(View.GONE);
 
         elementListView.setSelectionAfterHeaderView();
         elementListView.setVisibility(View.VISIBLE);
+
+        currentAttributeType = attribute;
     }
 
     private void onDataLoaded(boolean dataLoaded) {
-        if (!dataLoaded && currentAttributeType != -1)
+        if (!dataLoaded)
             return;
-
-        if (currentAttributeType == -1)
-            currentAttributeType = 0;
 
         setAttributeType(currentAttributeType);
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        //outState.putInt(CURRENT_ATTRIBUTE_KEY, viewModel.getCurrentAttributeType());
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        //setAttributeType(savedInstanceState.getInt(CURRENT_ATTRIBUTE_KEY));
-    }
-
     private void setAttributeType(int type) {
-        viewModel.setAttribute(type);
+        viewModel.setAttributeAndUpdateElements(type);
         attributeTypeTextView.setText(ATTRIBUTE_TYPES[type]);
     }
 

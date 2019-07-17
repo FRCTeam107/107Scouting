@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import androidx.lifecycle.MutableLiveData;
+import com.frc107.scouting.analysis.attribute.AttributeAnalysisModel.AnalysisElement;
 
 import com.frc107.scouting.R;
 

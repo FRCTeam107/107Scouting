@@ -6,12 +6,13 @@ import android.os.Bundle;
 import com.frc107.scouting.ui.BaseActivity;
 import com.frc107.scouting.R;
 import com.frc107.scouting.ui.IUIListener;
+import com.frc107.scouting.utils.ISimpleCallback;
 
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class TeamAnalysisActivity extends BaseActivity implements IUIListener {
+public class TeamAnalysisActivity extends BaseActivity implements ISimpleCallback {
     private TeamAnalysisViewModel viewModel;
     private TextView teamNumberTextView;
     private TextView averageCargoTextView;
@@ -79,8 +80,8 @@ public class TeamAnalysisActivity extends BaseActivity implements IUIListener {
     }
 
     @Override
-    public void callback(boolean error) {
-        if (error) {
+    public void callback(boolean success) {
+        if (!success) {
             Toast.makeText(getApplicationContext(), "Error while loading data.", Toast.LENGTH_LONG).show();
             return;
         }

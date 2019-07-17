@@ -6,6 +6,7 @@ import com.frc107.scouting.analysis.IAnalysisListener;
 import com.frc107.scouting.ui.IUIListener;
 import com.frc107.scouting.analysis.LoadDataTask;
 import com.frc107.scouting.analysis.TeamDetails;
+import com.frc107.scouting.utils.ISimpleCallback;
 
 public class TeamAnalysisModel implements IAnalysisListener {
     private SparseArray<TeamDetails> teamDetailsSparseArray;
@@ -18,11 +19,11 @@ public class TeamAnalysisModel implements IAnalysisListener {
     private boolean hab1, hab2, hab3;
     private double opr;
     private double dpr;
-    private IUIListener listener;
+    private ISimpleCallback callback;
     private String[] teamNumbers;
 
-    public TeamAnalysisModel(IUIListener listener) {
-        this.listener = listener;
+    public TeamAnalysisModel(ISimpleCallback callback) {
+        this.callback = callback;
         teamDetailsSparseArray = new SparseArray<>();
     }
 
@@ -118,7 +119,7 @@ public class TeamAnalysisModel implements IAnalysisListener {
     @Override
     public void onDataLoaded(SparseArray<TeamDetails> detailsArray, boolean error) {
         teamDetailsSparseArray = detailsArray;
-        listener.callback(error);
+        callback.callback(!error);
         loadTeamNumbers();
     }
 

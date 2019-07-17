@@ -32,8 +32,7 @@ public class InitialsActivity extends BaseActivity {
     }
 
     public void submitInitials(View view) {
-        String initials = viewModel.getInitials();
-        if (initials.length() == 0)
+        if (!viewModel.areInitialsValid())
             return;
 
         startActivity(new Intent(this, SandstormActivity.class));

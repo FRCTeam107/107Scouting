@@ -8,6 +8,7 @@ import com.frc107.scouting.model.question.RadioQuestion;
 import com.frc107.scouting.model.question.ToggleQuestion;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EndGameModel extends BaseModel {
     private static final String FILE_NAME_HEADER = "Match";
@@ -42,7 +43,7 @@ public class EndGameModel extends BaseModel {
         StringBuilder builder = new StringBuilder();
 
         String sandstormData = Scouting.getInstance().getSandstormData();
-        ArrayList<String> cycles = Scouting.getInstance().getCycles();
+        List<String> cycles = Scouting.getInstance().getCycles();
         if (cycles.isEmpty()) {
             String cycle = "-1,-1,-1,-1,-1";
             String maxCycles = cycles.size() + "";

@@ -1,8 +1,10 @@
 package com.frc107.scouting;
 
+import com.frc107.scouting.bluetooth.BluetoothManager;
 import com.frc107.scouting.utils.FileUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Scouting {
     public static final String VERSION_DATE = "4/21/2019 - 1:25";
@@ -39,8 +41,9 @@ public class Scouting {
                             ENDGAME_DEFENSE_INEFFECTIVE = 2,
                             ENDGAME_DEFENSE_NONE = 0;
 
-    public static final FileUtils FILE_UTILS = new FileUtils();
     public static final boolean SAVE_QUESTION_NAMES_AS_ANSWERS = false;
+
+    public static final FileUtils FILE_UTILS = getInstance().getFileUtils();
 
     private static Scouting scouting;
     public static Scouting getInstance() {
@@ -51,6 +54,13 @@ public class Scouting {
 
     private Scouting() {
         cycles = new ArrayList<>();
+    }
+
+    private FileUtils fileUtils;
+    public FileUtils getFileUtils() {
+        if (fileUtils == null)
+            fileUtils = new FileUtils();
+        return fileUtils;
     }
 
     private String uniqueId;
@@ -89,7 +99,7 @@ public class Scouting {
     public void addCycle(String cycle) {
         cycles.add(cycle);
     }
-    public ArrayList<String> getCycles() {
+    public List<String> getCycles() {
         return cycles;
     }
     public void clearCycles() {
@@ -108,5 +118,13 @@ public class Scouting {
     }
     public String getEventKey() {
         return eventKey;
+    }
+
+    private BluetoothManager bluetoothManager;
+    public BluetoothManager getBluetoothManager() {
+        if (bluetoothManager == null)
+            bluetoothManager = new BluetoothManager();
+
+        return bluetoothManager;
     }
 }

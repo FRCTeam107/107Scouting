@@ -14,7 +14,7 @@ public class InitialsModel {
         Scouting.getInstance().setInitials(initials);
     }
 
-    public String getInitials() {
-        return initials;
+    public boolean areInitialsValid() {
+        return initials != null && initials.length() > 0;
     }
 }

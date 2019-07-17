@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.frc107.scouting">
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -14,6 +15,9 @@
         android:roundIcon="@mipmap/icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".bluetooth.BluetoothSetMasterDeviceActivity" />
+        <activity android:name=".bluetooth.BluetoothChildDevicesActivity" />
+        <activity android:name=".bluetooth.BluetoothActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,14 +25,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".initials.InitialsActivity"></activity>
-        <activity android:name=".sandstorm.SandstormActivity"></activity>
-        <activity android:name=".cycle.CycleActivity"></activity>
-        <activity android:name=".pit.PitActivity"></activity>
-        <activity android:name=".endgame.EndGameActivity"></activity>
-        <activity android:name=".admin.AdminActivity"></activity>
-        <activity android:name=".analysis.team.TeamAnalysisActivity"></activity>
-        <activity android:name=".analysis.attribute.AttributeAnalysisActivity"></activity>
+        <activity android:name=".initials.InitialsActivity" />
+        <activity android:name=".sandstorm.SandstormActivity" />
+        <activity android:name=".cycle.CycleActivity" />
+        <activity android:name=".pit.PitActivity" />
+        <activity android:name=".endgame.EndGameActivity" />
+        <activity android:name=".admin.AdminActivity" />
+        <activity android:name=".analysis.team.TeamAnalysisActivity" />
+        <activity android:name=".analysis.attribute.AttributeAnalysisActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
