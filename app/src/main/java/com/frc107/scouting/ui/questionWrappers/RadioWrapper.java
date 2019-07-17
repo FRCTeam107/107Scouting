@@ -2,22 +2,21 @@ package com.frc107.scouting.ui.questionWrappers;
 
 import android.widget.RadioGroup;
 
-import com.frc107.scouting.form.BaseViewModel;
+import com.frc107.scouting.form.IFieldSetter;
+import com.frc107.scouting.form.IFormViewModel;
 
 public class RadioWrapper {
     private RadioGroup radioGroup;
-    private BaseViewModel viewModel;
-    private int id;
+    private IFormViewModel viewModel;
 
-    public RadioWrapper(RadioGroup radioGroup, BaseViewModel viewModel) {
+    public RadioWrapper(RadioGroup radioGroup, IFormViewModel viewModel) {
         this.viewModel = viewModel;
         this.radioGroup = radioGroup;
-        this.id = radioGroup.getId();
         this.radioGroup.setOnCheckedChangeListener(createChangeListener());
     }
 
     private RadioGroup.OnCheckedChangeListener createChangeListener() {
-        return (group, checkedId) -> viewModel.setAnswer(id, checkedId);
+        return (group, checkedId) -> viewModel.setAnswer(group.getId(), checkedId);
     }
 
     public RadioGroup getRadioGroup() {

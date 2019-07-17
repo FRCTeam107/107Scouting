@@ -1,4 +1,4 @@
-package com.frc107.scouting.bluetooth;
+package com.frc107.scouting.utils;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -6,7 +6,7 @@ import android.bluetooth.BluetoothDevice;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class BluetoothManager {
+public class BluetoothService {
     private BluetoothDevice masterDevice;
     public BluetoothDevice getMasterDevice() {
         return masterDevice;
@@ -41,7 +41,7 @@ public class BluetoothManager {
 
     private BluetoothAdapter adapter;
 
-    public BluetoothManager() {
+    public BluetoothService() {
         adapter = BluetoothAdapter.getDefaultAdapter();
     }
 }

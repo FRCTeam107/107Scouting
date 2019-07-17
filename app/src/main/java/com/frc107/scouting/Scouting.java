@@ -1,10 +1,7 @@
 package com.frc107.scouting;
 
-import com.frc107.scouting.bluetooth.BluetoothManager;
+import com.frc107.scouting.utils.BluetoothService;
 import com.frc107.scouting.utils.FileService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Scouting {
     public static final String VERSION_DATE = "4/21/2019 - 1:25";
@@ -52,15 +49,22 @@ public class Scouting {
         return scouting;
     }
 
-    private Scouting() {
-        cycles = new ArrayList<>();
-    }
+    private Scouting() { }
 
     private FileService fileService;
     public FileService getFileService() {
         if (fileService == null)
             fileService = new FileService();
         return fileService;
+    }
+
+    private Integer teamNumber;
+    public void setTeamNumber(Integer teamNumber) {
+        this.teamNumber = teamNumber;
+    }
+
+    public Integer getTeamNumber() {
+        return teamNumber;
     }
 
     private String uniqueId;
@@ -71,47 +75,6 @@ public class Scouting {
         return uniqueId;
     }
 
-    private int teamNumber = -1;
-    public void setTeamNumber(int newTeamNumber) {
-        teamNumber = newTeamNumber;
-    }
-    public int getTeamNumber() {
-        return teamNumber;
-    }
-
-    private int matchNumber = -1;
-    public void setMatchNumber(int newMatchNumber) {
-        matchNumber = newMatchNumber;
-    }
-    public int getMatchNumber() {
-        return matchNumber;
-    }
-
-    private String sandstormData;
-    public void setSandstormData(String newSandstormData) {
-        sandstormData = newSandstormData;
-    }
-    public String getSandstormData() {
-        return sandstormData;
-    }
-
-    private ArrayList<String> cycles;
-    public void addCycle(String cycle) {
-        cycles.add(cycle);
-    }
-    public List<String> getCycles() {
-        return cycles;
-    }
-    public void clearCycles() {
-        cycles.clear();
-    }
-
-    private String initials;
-    public void setInitials(String initials) {
-        this.initials = initials;
-    }
-    public String getInitials() { return initials; }
-
     private String eventKey;
     public void setEventKey(String eventKey) {
         this.eventKey = eventKey;
@@ -120,11 +83,11 @@ public class Scouting {
         return eventKey;
     }
 
-    private BluetoothManager bluetoothManager;
-    public BluetoothManager getBluetoothManager() {
-        if (bluetoothManager == null)
-            bluetoothManager = new BluetoothManager();
+    private BluetoothService bluetoothService;
+    public BluetoothService getBluetoothService() {
+        if (bluetoothService == null)
+            bluetoothService = new BluetoothService();
 
-        return bluetoothManager;
+        return bluetoothService;
     }
 }

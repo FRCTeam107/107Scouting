@@ -3,19 +3,20 @@ package com.frc107.scouting.bluetooth;
 import android.bluetooth.BluetoothDevice;
 
 import com.frc107.scouting.Scouting;
+import com.frc107.scouting.utils.BluetoothService;
 
 import java.util.ArrayList;
 
 public class BluetoothChildDevicesModel {
-    private BluetoothManager bluetoothManager;
+    private BluetoothService bluetoothService;
     private String[] deviceNameArray;
     private BluetoothDevice[] deviceArray;
     private boolean[] selectedArray;
 
     public BluetoothChildDevicesModel() {
-        bluetoothManager = Scouting.getInstance().getBluetoothManager();
+        bluetoothService = Scouting.getInstance().getBluetoothService();
 
-        deviceArray = bluetoothManager.getPairedDevices();
+        deviceArray = bluetoothService.getPairedDevices();
         selectedArray = new boolean[deviceArray.length];
         deviceNameArray = new String[deviceArray.length];
         for (int i = 0; i < deviceArray.length; i++) {
@@ -52,6 +53,6 @@ public class BluetoothChildDevicesModel {
 
     public void saveChildDevices() {
         ArrayList<BluetoothDevice> childDevices = getSelectedDevices();
-        Scouting.getInstance().getBluetoothManager().setChildDevices(childDevices);
+        Scouting.getInstance().getBluetoothService().setChildDevices(childDevices);
     }
 }

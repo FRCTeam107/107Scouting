@@ -3,21 +3,22 @@ package com.frc107.scouting.bluetooth;
 import android.bluetooth.BluetoothDevice;
 
 import com.frc107.scouting.Scouting;
+import com.frc107.scouting.utils.BluetoothService;
 
 public class BluetoothSetMasterDeviceModel {
-    private BluetoothManager bluetoothManager;
+    private BluetoothService bluetoothService;
     private String[] deviceNameArray;
     private BluetoothDevice[] deviceArray;
 
     public BluetoothSetMasterDeviceModel() {
-        bluetoothManager = Scouting.getInstance().getBluetoothManager();
-        deviceNameArray = new String[bluetoothManager.getPairedDevices().length];
+        bluetoothService = Scouting.getInstance().getBluetoothService();
+        deviceNameArray = new String[bluetoothService.getPairedDevices().length];
         deviceArray = new BluetoothDevice[deviceNameArray.length];
         populateDeviceNames();
     }
 
     private void populateDeviceNames() {
-        BluetoothDevice[] devices = bluetoothManager.getPairedDevices();
+        BluetoothDevice[] devices = bluetoothService.getPairedDevices();
         for (int i = 0; i < devices.length; i++) {
             deviceNameArray[i] = devices[i].getName();
             deviceArray[i] = devices[i];
@@ -26,7 +27,7 @@ public class BluetoothSetMasterDeviceModel {
 
     public void setMasterDevice(int index) {
         BluetoothDevice device = deviceArray[index];
-        Scouting.getInstance().getBluetoothManager().setMasterDevice(device);
+        Scouting.getInstance().getBluetoothService().setMasterDevice(device);
     }
 
     public String[] getDeviceNames() {

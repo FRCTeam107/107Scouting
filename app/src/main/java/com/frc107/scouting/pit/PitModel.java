@@ -28,7 +28,9 @@ public class PitModel extends FormModel {
     @Override
     public Field[] getFields() {
         return new Field[] {
-                new NumberField("pitTeamNum", R.id.pit_teamNumber_editText, true),
+                new NumberField("pitTeamNum", R.id.pit_teamNumber_editText, true,
+                        teamNum -> Scouting.getInstance().setTeamNumber(teamNum),
+                        () -> Scouting.getInstance().getTeamNumber()),
                 new RadioField("pitSandstormOp", R.id.sandstormOperationsRadioQuestion, true,
                         new RadioField.Option(R.id.visionSystemSandstorm_Radiobtn, 0),
                         new RadioField.Option(R.id.cameraDrivingSandstorm_Radiobtn, 1),

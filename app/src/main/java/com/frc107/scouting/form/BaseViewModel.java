@@ -2,7 +2,7 @@ package com.frc107.scouting.form;
 
 import androidx.lifecycle.ViewModel;
 
-public abstract class BaseViewModel extends ViewModel {
+public abstract class BaseViewModel extends ViewModel implements IFormViewModel {
     protected FormModel model;
 
     public int getUnfinishedQuestionId() {
@@ -13,15 +13,7 @@ public abstract class BaseViewModel extends ViewModel {
         return model.isFinished();
     }
 
-    public boolean setAnswer(int questionId, String answer) {
-        return model.setAnswer(questionId, answer);
-    }
-
-    public boolean setAnswer(int questionId, int answer) {
-        return model.setAnswer(questionId, answer);
-    }
-
-    public boolean setAnswer(int questionId, boolean answer) {
+    public boolean setAnswer(int questionId, Object answer) {
         return model.setAnswer(questionId, answer);
     }
 
