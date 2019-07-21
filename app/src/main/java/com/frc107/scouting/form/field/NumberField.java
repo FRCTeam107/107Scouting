@@ -1,4 +1,4 @@
-package com.frc107.scouting.form.question;
+package com.frc107.scouting.form.field;
 
 import com.frc107.scouting.form.IFieldGetter;
 import com.frc107.scouting.form.IFieldSetter;
@@ -9,19 +9,19 @@ public class NumberField extends Field<Integer> {
     private ArrayList<Integer> illegalValues;
 
     public NumberField(String name, int id, boolean needsAnswer) {
-        super(name, id, needsAnswer);
+        super(Integer.class, name, id, needsAnswer);
     }
 
     public NumberField(String name, int id, boolean needsAnswer, IFieldSetter<Integer> customSetter) {
-        super(name, id, needsAnswer, customSetter);
+        super(Integer.class, name, id, needsAnswer, customSetter);
     }
 
     public NumberField(String name, int id, boolean needsAnswer, IFieldGetter<Integer> customGetter) {
-        super(name, id, needsAnswer, customGetter);
+        super(Integer.class, name, id, needsAnswer, customGetter);
     }
 
     public NumberField(String name, int id, boolean needsAnswer, IFieldSetter<Integer> customSetter, IFieldGetter<Integer> customGetter) {
-        super(name, id, needsAnswer, customSetter, customGetter);
+        super(Integer.class, name, id, needsAnswer, customSetter, customGetter);
     }
 
     @Override
@@ -37,5 +37,14 @@ public class NumberField extends Field<Integer> {
             illegalValues = new ArrayList<>();
 
         illegalValues.add(value);
+    }
+
+    @Override
+    public String toString() {
+        Integer answer = getAnswer();
+        if (answer == null)
+            return "";
+
+        return answer.toString();
     }
 }

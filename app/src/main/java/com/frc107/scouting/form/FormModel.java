@@ -3,8 +3,8 @@ package com.frc107.scouting.form;
 import android.util.SparseArray;
 
 import com.frc107.scouting.Scouting;
-import com.frc107.scouting.form.question.Field;
-import com.frc107.scouting.form.question.ToggleField;
+import com.frc107.scouting.form.field.Field;
+import com.frc107.scouting.form.field.ToggleField;
 
 public abstract class FormModel {
     private SparseArray<Field> fields;
@@ -101,7 +101,7 @@ public abstract class FormModel {
             if (Scouting.SAVE_QUESTION_NAMES_AS_ANSWERS)
                 stringBuilder.append(field.getName()); // Instead of the answer, save the field name so that one can make sure that the data is saving correctly.
             else
-                stringBuilder.append(field.getAnswer().toString());
+                stringBuilder.append(field.toString());
         }
         return stringBuilder.toString();
     }

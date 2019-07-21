@@ -1,9 +1,7 @@
-package com.frc107.scouting.form.question;
+package com.frc107.scouting.form.field;
 
 import com.frc107.scouting.form.IFieldGetter;
 import com.frc107.scouting.form.IFieldSetter;
-
-import java.lang.reflect.Type;
 
 /**
  * @param <T> The type of the answer.
@@ -21,24 +19,28 @@ public abstract class Field<T> {
     private IFieldSetter<T> customSetter;
     private IFieldGetter<T> customGetter;
 
-    public Field(String name, int id, boolean needsAnswer) {
+    // Used for type checking
+    private Class<T> clazz;
+
+    public Field(Class<T> clazz, String name, int id, boolean needsAnswer) {
+        this.clazz = clazz;
         this.name = name;
         this.id = id;
         this.needsAnswer = needsAnswer;
     }
 
-    public Field(String name, int id, boolean needsAnswer, IFieldSetter<T> customSetter) {
-        this(name, id, needsAnswer);
+    public Field(Class<T> clazz, String name, int id, boolean needsAnswer, IFieldSetter<T> customSetter) {
+        this(clazz, name, id, needsAnswer);
         this.customSetter = customSetter;
     }
 
-    public Field(String name, int id, boolean needsAnswer, IFieldGetter<T> customGetter) {
-        this(name, id, needsAnswer);
+    public Field(Class<T> clazz, String name, int id, boolean needsAnswer, IFieldGetter<T> customGetter) {
+        this(clazz, name, id, needsAnswer);
         this.customGetter = customGetter;
     }
 
-    public Field(String name, int id, boolean needsAnswer, IFieldSetter<T> customSetter, IFieldGetter<T> customGetter) {
-        this(name, id, needsAnswer);
+    public Field(Class<T> clazz, String name, int id, boolean needsAnswer, IFieldSetter<T> customSetter, IFieldGetter<T> customGetter) {
+        this(clazz, name, id, needsAnswer);
         this.customSetter = customSetter;
         this.customGetter = customGetter;
     }
@@ -86,6 +88,6 @@ public abstract class Field<T> {
     }
 
     public boolean isObjectSameType(Object object) {
-        return object.getClass().equals(answer.getClass());
+        return object.getClass().equals(clazz);
     }
 }

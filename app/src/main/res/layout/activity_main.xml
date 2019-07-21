@@ -14,7 +14,10 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/edge_margin"
+            android:layout_marginLeft="@dimen/edge_margin"
+            android:layout_marginRight="@dimen/edge_margin">
 
             <Button
                 android:id="@+id/pit_button"
@@ -22,7 +25,8 @@
                 android:layout_height="wrap_content"
                 android:onClick="showPit"
                 android:text="@string/pitScouting"
-                app:layout_constraintBottom_toBottomOf="parent"
+                style="@style/buttonTheme"
+                app:layout_constraintBottom_toTopOf="@id/admin_button"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -31,16 +35,16 @@
 
             <Button
                 android:id="@+id/admin_button"
+                style="@style/buttonTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/between_margin"
                 android:onClick="showAdmin"
                 android:text="@string/goToAdmin"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/pit_button"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@id/pit_button" />
 
             <TextView
                 android:id="@+id/versionNum_textView"

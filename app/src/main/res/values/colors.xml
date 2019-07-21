@@ -4,6 +4,6 @@
     <color name="colorPrimaryDark">#490001</color>
     <color name="colorAccent">#4a44ff</color>
     <color name="colorToggleOff">#D5D5D5</color>
-    <color name="colorToggleOn">#686868</color>
+    <color name="colorToggleOn">#3F3F3F</color>
     <color name="black">#494949</color>
 </resources>

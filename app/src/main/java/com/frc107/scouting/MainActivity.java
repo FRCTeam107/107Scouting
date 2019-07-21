@@ -30,6 +30,8 @@ public class MainActivity extends FormActivity {
         SharedPreferences pref = getSharedPreferences(Scouting.PREFERENCES_NAME, MODE_PRIVATE);
         String eventKey = pref.getString(Scouting.EVENT_KEY_PREFERENCE, "");
         Scouting.getInstance().setEventKey(eventKey);
+
+
     }
 
     public void showPit(View view) {

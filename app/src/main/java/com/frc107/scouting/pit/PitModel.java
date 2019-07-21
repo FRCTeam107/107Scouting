@@ -1,12 +1,15 @@
 package com.frc107.scouting.pit;
 
+import android.util.Log;
+
+import com.frc107.scouting.MainActivity;
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.form.FormModel;
-import com.frc107.scouting.form.question.Field;
-import com.frc107.scouting.form.question.NumberField;
-import com.frc107.scouting.form.question.RadioField;
-import com.frc107.scouting.form.question.TextField;
+import com.frc107.scouting.form.field.Field;
+import com.frc107.scouting.form.field.NumberField;
+import com.frc107.scouting.form.field.RadioField;
+import com.frc107.scouting.form.field.TextField;
 
 import java.io.File;
 
@@ -28,9 +31,16 @@ public class PitModel extends FormModel {
     @Override
     public Field[] getFields() {
         return new Field[] {
-                new NumberField("pitTeamNum", R.id.pit_teamNumber_editText, true,
-                        teamNum -> Scouting.getInstance().setTeamNumber(teamNum),
-                        () -> Scouting.getInstance().getTeamNumber()),
+                new TextField("pitTeamNum", R.id.pit_teamNumber_editText, true,
+                        teamNum -> {
+                            try {
+                                int num = Integer.parseInt(teamNum);
+                                Scouting.getInstance().setTeamNumber(num);
+                            } catch (NumberFormatException e) {
+                                Log.d("Scouting", e.getLocalizedMessage());
+                            }
+                        },
+                        () -> Scouting.getInstance().getTeamNumber() + ""),
                 new RadioField("pitSandstormOp", R.id.sandstormOperationsRadioQuestion, true,
                         new RadioField.Option(R.id.visionSystemSandstorm_Radiobtn, 0),
                         new RadioField.Option(R.id.cameraDrivingSandstorm_Radiobtn, 1),

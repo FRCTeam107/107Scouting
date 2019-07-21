@@ -1,37 +1,30 @@
-package com.frc107.scouting.form.question;
+package com.frc107.scouting.form.field;
 
 import android.util.SparseArray;
 
-import androidx.annotation.NonNull;
-
-import com.frc107.scouting.form.IFieldGetter;
-import com.frc107.scouting.form.IFieldSetter;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
-public class RadioField extends Field<RadioField.Option> {
+public class RadioField extends Field<Integer> {
     private SparseArray<Option> options;
+    private Option selectedOption;
 
     public RadioField(String name, int id, boolean needsAnswer, Option... options) {
-        super(name, id, needsAnswer);
+        super(Integer.class, name, id, needsAnswer);
         init(options);
     }
 
-    public RadioField(String name, int id, boolean needsAnswer, IFieldSetter<Option> customSetter, Option... options) {
-        super(name, id, needsAnswer, customSetter);
+    /*public RadioField(String name, int id, boolean needsAnswer, IFieldSetter<Option> customSetter, Option... options) {
+        super(Integer.class, name, id, needsAnswer, customSetter);
         init(options);
     }
 
     public RadioField(String name, int id, boolean needsAnswer, IFieldGetter<Option> customGetter, Option... options) {
-        super(name, id, needsAnswer, customGetter);
+        super(Integer.class, name, id, needsAnswer, customGetter);
         init(options);
     }
 
     public RadioField(String name, int id, boolean needsAnswer, IFieldSetter<Option> customSetter, IFieldGetter<Option> customGetter, Option... options) {
-        super(name, id, needsAnswer, customSetter, customGetter);
+        super(Integer.class, name, id, needsAnswer, customSetter, customGetter);
         init(options);
-    }
+    }*/
 
     private void init(Option... options) {
         this.options = new SparseArray<>();
@@ -41,19 +34,19 @@ public class RadioField extends Field<RadioField.Option> {
     }
 
     @Override
-    public void setAnswer(Option option) {
-        if (option == null || option.getId() == -1) {
+    public void setAnswer(Integer value) {
+        if (value == null || value == -1) {
             super.setAnswer(null);
             return;
         }
 
-        super.setAnswer(option);
+        selectedOption = options.get(value);
+        super.setAnswer(value);
+    }
 
-        /*for (Option option : options) {
-            if (option.getId() == option) {
-                selectedOption = option;
-            }
-        }*/
+    @Override
+    public String toString() {
+        return selectedOption.getId() + "";
     }
 
     public static class Option {
