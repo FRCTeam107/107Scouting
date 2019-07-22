@@ -9,8 +9,8 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/edge_margin"
         android:layout_marginLeft="@dimen/edge_margin"
+        android:layout_marginTop="@dimen/edge_margin"
         android:layout_marginRight="@dimen/edge_margin"
         android:orientation="vertical">
 
@@ -21,6 +21,8 @@
             android:hint="@string/pitTeamNumber"
             android:inputType="number"
             android:maxLength="5"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -29,53 +31,53 @@
             android:id="@+id/pitSandstormOperationText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/pitSandstormOperation"
-            android:textSize="@dimen/label_text_size"
-            android:textAlignment="center"
             android:layout_marginTop="@dimen/between_margin"
-            app:layout_constraintTop_toBottomOf="@id/pit_teamNumber_editText"
+            android:text="@string/pitSandstormOperation"
+            android:textAlignment="center"
+            android:textSize="@dimen/label_text_size"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pit_teamNumber_editText" />
 
         <RadioGroup
             android:id="@+id/sandstormOperationsRadioQuestion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="@dimen/between_margin"
-            app:layout_constraintTop_toBottomOf="@id/pitSandstormOperationText"
+            android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pitSandstormOperationText">
 
             <RadioButton
                 android:id="@+id/visionSystemSandstorm_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
                 android:text="@string/visionSystemSandstorm" />
 
             <RadioButton
                 android:id="@+id/cameraDrivingSandstorm_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
                 android:text="@string/cameraDrivingSandstorm" />
 
             <RadioButton
                 android:id="@+id/blindDrivingSandstorm_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
                 android:text="@string/blindDrivingSandstorm" />
 
             <RadioButton
                 android:id="@+id/noDrivingSandstorm_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
                 android:text="@string/noDrivingSandstorm" />
         </RadioGroup>
@@ -84,45 +86,45 @@
             android:id="@+id/pitSandstormPreferenceText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/pitSandstormPreference"
-            android:textSize="@dimen/label_text_size"
-            android:textAlignment="center"
             android:layout_marginTop="@dimen/between_margin"
-            app:layout_constraintTop_toBottomOf="@id/sandstormOperationsRadioQuestion"
+            android:text="@string/pitSandstormPreference"
+            android:textAlignment="center"
+            android:textSize="@dimen/label_text_size"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sandstormOperationsRadioQuestion" />
 
         <RadioGroup
             android:id="@+id/sandstormPreferenceRadioQuestion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="@dimen/between_margin"
+            android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/pitSandstormPreferenceText">
 
             <RadioButton
                 android:id="@+id/rocketshipPreferenceSandstorm_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
                 android:text="@string/rocketshipPreferenceSandstorm" />
 
             <RadioButton
                 android:id="@+id/cargoshipPreferenceSandstorm_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
                 android:text="@string/cargoshipPreferenceSandstorm" />
 
             <RadioButton
                 android:id="@+id/noPreferenceSandstorm_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
                 android:text="@string/noPreferenceSandstorm" />
 
@@ -132,53 +134,53 @@
             android:id="@+id/pitRocketLevelSandstormText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/pitRocketLevelSandstorm"
-            android:textSize="@dimen/label_text_size"
-            android:textAlignment="center"
             android:layout_marginTop="@dimen/between_margin"
-            app:layout_constraintTop_toBottomOf="@id/sandstormPreferenceRadioQuestion"
+            android:text="@string/pitRocketLevelSandstorm"
+            android:textAlignment="center"
+            android:textSize="@dimen/label_text_size"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sandstormPreferenceRadioQuestion" />
 
         <RadioGroup
             android:id="@+id/highestRocketLevelSandstormRadioQuestion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="@dimen/between_margin"
-            app:layout_constraintTop_toBottomOf="@id/pitRocketLevelSandstormText"
+            android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pitRocketLevelSandstormText">
 
             <RadioButton
                 android:id="@+id/topRocketLevelSandstorm_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
                 android:text="@string/topRocketLevelSandstorm" />
 
             <RadioButton
                 android:id="@+id/middleRocketLevelSandstorm_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
                 android:text="@string/middleRocketLevelSandstorm" />
 
             <RadioButton
                 android:id="@+id/bottomRocketLevelSandstorm_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
                 android:text="@string/bottomRocketLevelSandstorm" />
 
             <RadioButton
                 android:id="@+id/noRocketLevelSandstorm_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
                 android:text="@string/noRocketLevelSandstorm" />
         </RadioGroup>
@@ -187,53 +189,53 @@
             android:id="@+id/pitHabitatLevelText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/pitHabitatLevel"
-            android:textSize="@dimen/label_text_size"
-            android:textAlignment="center"
             android:layout_marginTop="@dimen/between_margin"
-            app:layout_constraintTop_toBottomOf="@id/highestRocketLevelSandstormRadioQuestion"
+            android:text="@string/pitHabitatLevel"
+            android:textAlignment="center"
+            android:textSize="@dimen/label_text_size"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/highestRocketLevelSandstormRadioQuestion" />
 
         <RadioGroup
             android:id="@+id/highestHabitatLevelRadioQuestion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="@dimen/between_margin"
-            app:layout_constraintTop_toBottomOf="@id/pitHabitatLevelText"
+            android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pitHabitatLevelText">
 
             <RadioButton
                 android:id="@+id/topHabitatLevel_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
                 android:text="@string/topHabitatLevel" />
 
             <RadioButton
                 android:id="@+id/middleHabitatLevel_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
                 android:text="@string/middleHabitatLevel" />
 
             <RadioButton
                 android:id="@+id/bottomHabitatLevel_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
                 android:text="@string/bottomHabitatLevel" />
 
             <RadioButton
                 android:id="@+id/noHabitatLevel_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
                 android:text="@string/noHabitatLevel" />
         </RadioGroup>
@@ -242,89 +244,95 @@
             android:id="@+id/pit_habitatTime_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/between_margin"
             android:hint="@string/pitHabitatLevelTime"
             android:inputType="text"
-            android:layout_marginTop="@dimen/between_margin"
-            app:layout_constraintTop_toBottomOf="@id/highestHabitatLevelRadioQuestion"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/highestHabitatLevelRadioQuestion" />
 
         <TextView
             android:id="@+id/pitProgrammingLanguageText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/pitprogrammingLanguage"
-            android:textSize="@dimen/label_text_size"
-            android:textAlignment="center"
             android:layout_marginTop="@dimen/between_margin"
-            app:layout_constraintTop_toBottomOf="@id/pit_habitatTime_editText"
+            android:text="@string/pitprogrammingLanguage"
+            android:textAlignment="center"
+            android:textSize="@dimen/label_text_size"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pit_habitatTime_editText" />
 
         <RadioGroup
             android:id="@+id/programmingLanguageRadioQuestion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="@dimen/between_margin"
-            app:layout_constraintTop_toBottomOf="@id/pitProgrammingLanguageText"
+            android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pitProgrammingLanguageText">
 
             <RadioButton
                 android:id="@+id/javaProgrammingLanguage_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
-                android:text="@string/javaProgrammingLanguage"/>
+                android:text="@string/javaProgrammingLanguage" />
 
             <RadioButton
                 android:id="@+id/cppProgrammingLanguage_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
-                android:text="@string/cppProgrammingLanguage"/>
+                android:text="@string/cppProgrammingLanguage" />
 
             <RadioButton
                 android:id="@+id/labviewProgrammingLanguage_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
-                android:text="@string/labviewProgrammingLanguage"/>
+                android:text="@string/labviewProgrammingLanguage" />
 
             <RadioButton
                 android:id="@+id/otherProgrammingLanguage_Radiobtn"
-                style="@style/buttonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/radiobutton_margin"
                 android:layout_weight="1"
-                android:text="@string/otherProgrammingLanguage"/>
+                android:text="@string/otherProgrammingLanguage" />
         </RadioGroup>
 
         <EditText
             android:id="@+id/pit_bonusQuestion_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/between_margin"
             android:hint="@string/pitBonusQuestion"
             android:inputType="text"
-            android:layout_marginTop="@dimen/between_margin"
-            app:layout_constraintTop_toBottomOf="@id/programmingLanguageRadioQuestion"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/programmingLanguageRadioQuestion" />
 
         <EditText
             android:id="@+id/pit_comments_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/between_margin"
             android:hint="@string/pit_comments_Text"
             android:inputType="text"
-            android:layout_marginTop="@dimen/between_margin"
-            app:layout_constraintTop_toBottomOf="@id/pit_bonusQuestion_editText"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pit_bonusQuestion_editText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -333,7 +341,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_baseline_check_24px"
+        android:focusable="true"
+        app:srcCompat="@drawable/ic_baseline_check_24px"
+        android:clickable="true"
         android:onClick="savePitData" />
 
 </FrameLayout>

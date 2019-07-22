@@ -2,12 +2,10 @@ package com.frc107.scouting.pit;
 
 import android.util.Log;
 
-import com.frc107.scouting.MainActivity;
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.form.FormModel;
 import com.frc107.scouting.form.field.Field;
-import com.frc107.scouting.form.field.NumberField;
 import com.frc107.scouting.form.field.RadioField;
 import com.frc107.scouting.form.field.TextField;
 

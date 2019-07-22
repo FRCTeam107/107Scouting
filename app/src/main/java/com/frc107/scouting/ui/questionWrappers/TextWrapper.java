@@ -4,15 +4,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-import com.frc107.scouting.form.IFieldSetter;
-import com.frc107.scouting.form.IFormViewModel;
+import com.frc107.scouting.form.IQuestionAnswerer;
 
 public class TextWrapper {
     private EditText editText;
     private TextWatcher textWatcher;
-    private IFormViewModel viewModel;
+    private IQuestionAnswerer viewModel;
 
-    public TextWrapper(EditText editText, IFormViewModel viewModel) {
+    public TextWrapper(EditText editText, IQuestionAnswerer viewModel) {
         this.editText = editText;
         this.viewModel = viewModel;
 

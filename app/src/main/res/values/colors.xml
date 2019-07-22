@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="darkBackground">#3D3D3D</color>
     <color name="colorPrimary">#6b0002</color>
     <color name="colorPrimaryDark">#490001</color>
     <color name="colorAccent">#4a44ff</color>
-    <color name="colorToggleOff">#D5D5D5</color>
-    <color name="colorToggleOn">#3F3F3F</color>
+    <color name="colorToggleOff">#6B6B6B</color>
+    <color name="colorToggleOn">#222222</color>
     <color name="black">#494949</color>
+    <color name="hintColor">#999999</color>
+    <color name="textColor">#FFFFFF</color>
 </resources>

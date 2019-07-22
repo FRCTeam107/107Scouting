@@ -1,10 +1,10 @@
 package com.frc107.scouting.pit;
 
-import com.frc107.scouting.form.BaseViewModel;
+import com.frc107.scouting.form.FormViewModel;
 
 import java.io.File;
 
-public class PitViewModel extends BaseViewModel {
+public class PitViewModel extends FormViewModel {
     public PitViewModel() {
         model = new PitModel();
     }

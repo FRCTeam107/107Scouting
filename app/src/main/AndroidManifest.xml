@@ -15,21 +15,21 @@
         android:roundIcon="@mipmap/icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".bluetooth.BluetoothSetMasterDeviceActivity" />
-        <activity android:name=".bluetooth.BluetoothChildDevicesActivity" />
-        <activity android:name=".bluetooth.BluetoothActivity" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".initials.InitialsActivity" />
-        <activity android:name=".sandstorm.SandstormActivity" />
-        <activity android:name=".cycle.CycleActivity" />
+        <activity android:name=".bluetooth.BluetoothSetMasterDeviceActivity" />
+        <activity android:name=".bluetooth.BluetoothChildDevicesActivity" />
+        <activity android:name=".bluetooth.BluetoothActivity" />
+        <activity android:name=".OldMainActivity" />
         <activity android:name=".pit.PitActivity" />
-        <activity android:name=".endgame.EndGameActivity" />
         <activity android:name=".admin.AdminActivity" />
         <activity android:name=".analysis.team.TeamAnalysisActivity" />
         <activity android:name=".analysis.attribute.AttributeAnalysisActivity" />

@@ -6,16 +6,33 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="radioButtonStyle">@style/radioButtonStyle</item>
+        <item name="android:radioButtonStyle">@style/radioButtonStyle</item>
+        <item name="android:buttonStyle">@style/buttonStyle</item>
+        <!--<item name="android:editTextColor">@color/textColor</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColorHint">@color/hintColor</item>
+        <item name="android:windowBackground">@color/darkBackground</item>-->
     </style>
 
-    <style name="buttonTheme">
-        <item name="android:layout_marginRight">@dimen/radiobutton_margin</item>
-        <item name="android:layout_marginLeft">@dimen/radiobutton_margin</item>
+    <style name="buttonStyle" parent="Widget.AppCompat.Button">
         <item name="android:textAlignment">center</item>
         <item name="android:autoSizeMinTextSize">@dimen/min_text_size</item>
         <item name="android:autoSizeMaxTextSize">@dimen/max_text_size</item>
         <item name="android:autoSizeTextType">uniform</item>
         <item name="android:autoSizeStepGranularity">@dimen/text_size_step</item>
+        <item name="android:textAllCaps">false</item>
+        <!--<item name="android:textColor">@color/textColor</item>-->
+        <item name="android:background">@drawable/toggle_drawable</item>
+    </style>
+
+    <style name="radioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:textAlignment">center</item>
+        <item name="android:autoSizeMinTextSize">@dimen/min_text_size</item>
+        <item name="android:autoSizeMaxTextSize">@dimen/max_text_size</item>
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:autoSizeStepGranularity">@dimen/text_size_step</item>
+        <!--<item name="android:textColor">@color/textColor</item>-->
         <item name="android:background">@drawable/toggle_drawable</item>
         <item name="android:button">@null</item>
     </style>
@@ -23,10 +40,13 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+
+    </style>
 
 </resources>

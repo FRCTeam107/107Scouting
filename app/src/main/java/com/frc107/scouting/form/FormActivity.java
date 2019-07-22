@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.frc107.scouting.BuildConfig;
-import com.frc107.scouting.MainActivity;
+import com.frc107.scouting.OldMainActivity;
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.admin.AdminActivity;
@@ -33,7 +33,7 @@ public abstract class FormActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.main_activity:
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, OldMainActivity.class));
                 finish();
                 return true;
             case R.id.admin_activity:
