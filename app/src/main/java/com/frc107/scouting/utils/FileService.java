@@ -1,11 +1,16 @@
 package com.frc107.scouting.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+import androidx.core.content.FileProvider;
+
+import com.frc107.scouting.BuildConfig;
 import com.frc107.scouting.Scouting;
 
 import java.io.ByteArrayOutputStream;
@@ -13,6 +18,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileService {
     private File scoutingDirectory;
@@ -56,6 +63,16 @@ public class FileService {
         return getPhotoDirectory().listFiles();
     }
 
+    public List<Uri> getPhotoUriList(Context context) {
+        ArrayList<Uri> uriList = new ArrayList<>();
+        for (File photo : getPhotos()) {
+            // TODO: This seems weird, look here: https://stackoverflow.com/questions/3004713/get-content-uri-from-file-path-in-android
+            Uri uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", photo);
+            uriList.add(uri);
+        }
+        return uriList;
+    }
+
     public File getPhoto(String teamNumber) {
         File photo = new File(getPhotoDirectory(), teamNumber + ".jpg");
         if (photo.exists())
@@ -80,6 +97,22 @@ public class FileService {
         return getFile("Pit" + Scouting.getInstance().getUniqueId() + ".csv");
     }
 
+    public File getMatchFile(boolean concatenated) {
+        if (concatenated) {
+            return getConcatMatchFile();
+        } else {
+            return getMatchFile();
+        }
+    }
+
+    public File getPitFile(boolean concatenated) {
+        if (concatenated) {
+            return getConcatPitFile();
+        } else {
+            return getPitFile();
+        }
+    }
+
     public File getConcatMatchFile() {
         return getFile("ConcatenatedMatch.csv");
     }
@@ -92,7 +125,7 @@ public class FileService {
         if (teamNumber == null)
             throw new IllegalArgumentException("Team number cannot be null");
 
-        File dir = Scouting.FILE_UTILS.getPhotoDirectory();
+        File dir = Scouting.FILE_SERVICE.getPhotoDirectory();
         if (dir == null)
             return null;
 

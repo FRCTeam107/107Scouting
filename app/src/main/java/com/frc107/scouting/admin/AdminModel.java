@@ -37,7 +37,7 @@ public class AdminModel implements IOPRListener {
 
     public List<Uri> getPhotoUriList(Context context) {
         ArrayList<Uri> uriList = new ArrayList<>();
-        for (File photo :  Scouting.FILE_UTILS.getPhotos()) {
+        for (File photo :  Scouting.FILE_SERVICE.getPhotos()) {
             Uri uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", photo);
             uriList.add(uri);
         }
@@ -56,7 +56,7 @@ public class AdminModel implements IOPRListener {
         builder.append(header);
         builder.append("\n");
 
-        FileService fileService = Scouting.FILE_UTILS;
+        FileService fileService = Scouting.FILE_SERVICE;
 
         File[] files = fileService.getFilesInDirectory();
 
@@ -112,17 +112,17 @@ public class AdminModel implements IOPRListener {
 
     public File getMatchFile(boolean concatenated) {
         if (concatenated) {
-            return Scouting.FILE_UTILS.getConcatMatchFile();
+            return Scouting.FILE_SERVICE.getConcatMatchFile();
         } else {
-            return Scouting.FILE_UTILS.getMatchFile();
+            return Scouting.FILE_SERVICE.getMatchFile();
         }
     }
 
     public File getPitFile(boolean concatenated) {
         if (concatenated) {
-            return Scouting.FILE_UTILS.getConcatPitFile();
+            return Scouting.FILE_SERVICE.getConcatPitFile();
         } else {
-            return Scouting.FILE_UTILS.getPitFile();
+            return Scouting.FILE_SERVICE.getPitFile();
         }
     }
 

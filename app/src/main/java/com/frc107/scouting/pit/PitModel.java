@@ -19,11 +19,11 @@ public class PitModel extends FormModel {
     }
 
     public File createPhotoFile() {
-        return Scouting.FILE_UTILS.createPhotoFile(getTeamNumber());
+        return Scouting.FILE_SERVICE.createPhotoFile(getTeamNumber());
     }
 
     public boolean rotateAndCompressPhoto() {
-        return Scouting.FILE_UTILS.rotateAndCompressPhoto(getTeamNumber());
+        return Scouting.FILE_SERVICE.rotateAndCompressPhoto(getTeamNumber());
     }
 
     @Override
@@ -76,6 +76,6 @@ public class PitModel extends FormModel {
     @Override
     public boolean finish() {
         String dataToWrite = getAnswerCSVRow() + '\n';
-        return Scouting.FILE_UTILS.writeData(FILE_NAME_HEADER, dataToWrite);
+        return Scouting.FILE_SERVICE.writeData(FILE_NAME_HEADER, dataToWrite);
     }
 }

@@ -81,7 +81,7 @@ public class AdminActivity extends FormActivity implements IUIListener {
     }
 
     public void sendRobotPhotos(View view) {
-        if (!PermissionUtils.getPermissions(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        if (!PermissionUtils.checkForPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             return;
         }
 

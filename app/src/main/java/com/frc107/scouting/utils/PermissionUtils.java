@@ -9,7 +9,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 public class PermissionUtils {
-    public static boolean getPermissions(Activity activity, String type) {
+    public static boolean checkForPermission(Activity activity, String type) {
         int permission = ContextCompat.checkSelfPermission(activity, type);
         if (permission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{type}, 1);
@@ -18,7 +18,7 @@ public class PermissionUtils {
     }
 
     public static boolean verifyWritePermissions(Activity activity) {
-        boolean hasWritePermissions = PermissionUtils.getPermissions(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        boolean hasWritePermissions = PermissionUtils.checkForPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (hasWritePermissions)
             return true;
 

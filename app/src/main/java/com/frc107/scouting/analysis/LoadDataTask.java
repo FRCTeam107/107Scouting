@@ -8,7 +8,6 @@ import com.frc107.scouting.Scouting;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -45,7 +44,7 @@ public class LoadDataTask extends AsyncTask<Void, Void, SparseArray<TeamDetails>
     }
 
     public void loadData() {
-        File file = Scouting.FILE_UTILS.getConcatMatchFile();
+        File file = Scouting.FILE_SERVICE.getConcatMatchFile();
         if (file == null) {
             Log.d("Scouting", "No concatenated match data.");
             return;

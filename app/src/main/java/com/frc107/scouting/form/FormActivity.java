@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.frc107.scouting.BuildConfig;
-import com.frc107.scouting.OldMainActivity;
+import com.frc107.scouting.MainActivity;
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.admin.AdminActivity;
@@ -33,8 +33,7 @@ public abstract class FormActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.main_activity:
-                startActivity(new Intent(this, OldMainActivity.class));
-                finish();
+                startActivity(new Intent(this, MainActivity.class));
                 return true;
             case R.id.admin_activity:
                 startActivity(new Intent(this, AdminActivity.class));
@@ -49,7 +48,7 @@ public abstract class FormActivity extends AppCompatActivity {
     }
 
     private void sendData() {
-        File matchFile = Scouting.FILE_UTILS.getMatchFile();
+        File matchFile = Scouting.FILE_SERVICE.getMatchFile();
         if (matchFile != null)
             sendFile(matchFile);
     }
@@ -78,7 +77,7 @@ public abstract class FormActivity extends AppCompatActivity {
             return;
         }
 
-        if(PermissionUtils.getPermissions(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        if(PermissionUtils.checkForPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
             intent.setPackage("com.android.bluetooth");

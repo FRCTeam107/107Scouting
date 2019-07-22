@@ -40,8 +40,6 @@ public class Scouting {
 
     public static final boolean SAVE_QUESTION_NAMES_AS_ANSWERS = false;
 
-    public static final FileService FILE_UTILS = getInstance().getFileService();
-
     private static Scouting scouting;
     public static Scouting getInstance() {
         if (scouting == null)
@@ -51,7 +49,10 @@ public class Scouting {
 
     private Scouting() { }
 
+    public static final FileService FILE_SERVICE = getInstance().getFileService();
+
     private FileService fileService;
+
     public FileService getFileService() {
         if (fileService == null)
             fileService = new FileService();
@@ -83,7 +84,10 @@ public class Scouting {
         return eventKey;
     }
 
+    public static final BluetoothService BLUETOOTH_SERVICE = getInstance().getBluetoothService();
+
     private BluetoothService bluetoothService;
+
     public BluetoothService getBluetoothService() {
         if (bluetoothService == null)
             bluetoothService = new BluetoothService();

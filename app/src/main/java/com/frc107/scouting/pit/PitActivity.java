@@ -107,21 +107,21 @@ public class PitActivity extends FormActivity {
             return;
         }
 
-        boolean hasCameraPermissions = PermissionUtils.getPermissions(this, Manifest.permission.CAMERA);
+        boolean hasCameraPermissions = PermissionUtils.checkForPermission(this, Manifest.permission.CAMERA);
         if (!hasCameraPermissions) {
             Toast.makeText(getApplicationContext(), "No camera permissions.", Toast.LENGTH_LONG).show();
             checkForPermissions();
             return;
         }
 
-        boolean hasWritePermissions = PermissionUtils.getPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        boolean hasWritePermissions = PermissionUtils.checkForPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (!hasWritePermissions) {
             Toast.makeText(getApplicationContext(), "No write permissions.", Toast.LENGTH_LONG).show();
             checkForPermissions();
             return;
         }
 
-        boolean hasReadPermissions = PermissionUtils.getPermissions(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        boolean hasReadPermissions = PermissionUtils.checkForPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
         if (!hasReadPermissions) {
             Toast.makeText(getApplicationContext(), "No read permissions.", Toast.LENGTH_LONG).show();
             checkForPermissions();
