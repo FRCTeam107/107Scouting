@@ -4,14 +4,14 @@ import android.util.Log;
 
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
-import com.frc107.scouting.form.FormModel;
+import com.frc107.scouting.form.Form;
 import com.frc107.scouting.form.field.Field;
 import com.frc107.scouting.form.field.RadioField;
 import com.frc107.scouting.form.field.TextField;
 
 import java.io.File;
 
-public class PitModel extends FormModel {
+public class PitModel extends Form {
     private static final String FILE_NAME_HEADER = "Pit";
 
     private String getTeamNumber() {

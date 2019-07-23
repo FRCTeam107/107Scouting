@@ -3,7 +3,7 @@ package com.frc107.scouting.form;
 import androidx.lifecycle.ViewModel;
 
 public abstract class FormViewModel extends ViewModel implements IQuestionAnswerer {
-    protected FormModel model;
+    protected Form model;
 
     public int getUnfinishedQuestionId() {
         return model.getUnfinishedQuestionId();

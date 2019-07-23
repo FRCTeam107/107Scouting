@@ -6,13 +6,15 @@ import com.frc107.scouting.Scouting;
 import com.frc107.scouting.form.field.Field;
 import com.frc107.scouting.form.field.ToggleField;
 
-public abstract class FormModel {
+import java.util.ArrayList;
+
+public abstract class Form {
     private SparseArray<Field> fields;
     private int unansweredQuestionId;
 
     private static final String INVALID_QUESTION_ID = "Invalid question id";
 
-    public FormModel() {
+    public Form() {
         this.fields = new SparseArray<>();
         initializeQuestions();
     }
