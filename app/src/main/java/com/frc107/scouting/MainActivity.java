@@ -1,7 +1,11 @@
 package com.frc107.scouting;
 
 import android.Manifest;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -52,6 +56,22 @@ public class MainActivity extends FormActivity implements NavigationView.OnNavig
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        BroadcastReceiver mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+
+                if (action == BluetoothDevice.ACTION_ACL_DISCONNECTED) {
+                    //now file transmitting has finished, can do something to the file
+                    //if you know the file name, better to check if the file is actually there
+                    // - make sure this disconnection not initiated by any other reason.
+                    String fileName = "Session-8-Ben-Kyle-21.jpg";
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        registerReceiver(mReceiver, filter);
     }
 
     private void initializeSettings() {
@@ -110,10 +130,6 @@ public class MainActivity extends FormActivity implements NavigationView.OnNavig
                 break;
         }
         return true;
-    }
-
-    private void closeDrawer() {
-        drawerLayout.closeDrawer(GravityCompat.START);
     }
 
     private void sendMatchData() {

@@ -3,6 +3,8 @@
     package="com.frc107.scouting">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -32,6 +34,16 @@
         <activity android:name=".OldMainActivity" />
         <activity android:name=".pit.PitActivity" />
         <activity android:name=".admin.AdminActivity" />
+        <activity
+            android:name=".admin.OpenCsvFileActivity"
+            android:label="@string/title_open_csv_file"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/pdf" />
+            </intent-filter>
+        </activity>
         <activity android:name=".analysis.team.TeamAnalysisActivity" />
         <activity android:name=".analysis.attribute.AttributeAnalysisActivity" />
 

@@ -129,5 +129,6 @@
     <string name="settings">Settings</string>
     <string name="pit">Pit</string>
     <string name="advanced">Advanced</string>
+    <string name="title_open_csv_file">Open CSV File</string>
 
 </resources>
