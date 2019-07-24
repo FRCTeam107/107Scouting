@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.frc107.scouting.BuildConfig;
 import com.frc107.scouting.R;
+import com.frc107.scouting.analysis.attribute.AttributeAnalysisViewModel;
 import com.frc107.scouting.utils.PermissionUtils;
 import com.frc107.scouting.utils.ViewUtils;
 import com.frc107.scouting.form.FormActivity;
@@ -19,6 +20,7 @@ import com.frc107.scouting.ui.questionWrappers.TextWrapper;
 import java.io.File;
 
 import androidx.core.content.FileProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 /**
  * Created by Matt on 9/30/2017.
@@ -44,7 +46,7 @@ public class PitActivity extends FormActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pit);
 
-        viewModel = new PitViewModel();
+        viewModel = ViewModelProviders.of(this).get(PitViewModel.class);
 
         sandstormOpWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_op), viewModel);
         sandstormPrefWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_preference), viewModel);

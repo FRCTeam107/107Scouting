@@ -27,17 +27,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".bluetooth.BluetoothSetMasterDeviceActivity" />
-        <activity android:name=".bluetooth.BluetoothChildDevicesActivity" />
-        <activity android:name=".bluetooth.BluetoothActivity" />
-        <activity android:name=".OldMainActivity" />
-        <activity android:name=".pit.PitActivity" />
-        <activity android:name=".admin.AdminActivity" />
-        <activity
-            android:name=".admin.OpenCsvFileActivity"
-            android:label="@string/title_open_csv_file"
-            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter
                 android:label="import">
                 <action android:name="android.intent.action.VIEW" />
@@ -49,6 +38,17 @@
                 <data android:mimeType="text/csv" />
                 <data android:mimeType="text/comma-separated-values" />
             </intent-filter>
+        </activity>
+        <activity android:name=".bluetooth.BluetoothSetMasterDeviceActivity" />
+        <activity android:name=".bluetooth.BluetoothChildDevicesActivity" />
+        <activity android:name=".bluetooth.BluetoothActivity" />
+        <activity android:name=".OldMainActivity" />
+        <activity android:name=".pit.PitActivity" />
+        <activity android:name=".admin.AdminActivity" />
+        <activity
+            android:name=".admin.ImportCsvActivity"
+            android:label="@string/title_open_csv_file"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity android:name=".analysis.team.TeamAnalysisActivity" />
         <activity android:name=".analysis.attribute.AttributeAnalysisActivity" />

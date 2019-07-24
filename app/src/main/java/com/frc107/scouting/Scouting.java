@@ -5,6 +5,9 @@ import com.frc107.scouting.form.Table;
 import com.frc107.scouting.utils.BluetoothService;
 import com.frc107.scouting.utils.FileService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Scouting {
     public static final String VERSION_DATE = "4/21/2019 - 1:25";
     public static final String PREFERENCES_NAME = "ScoutingPreferences";
@@ -49,6 +52,7 @@ public class Scouting {
         return scouting;
     }
 
+    private List<Table> tables = new ArrayList<>();
     private Table pitTable;
 
     private Scouting() {
@@ -62,6 +66,12 @@ public class Scouting {
         pitTable.addColumn(R.id.pit_programming_language,           new Column<>("pit_programming_language", String.class));
         pitTable.addColumn(R.id.pit_bonus,                          new Column<>("pit_bonus", String.class));
         pitTable.addColumn(R.id.pit_comments,                       new Column<>("pit_comments", String.class));
+
+        tables.add(pitTable);
+    }
+
+    public List<Table> getTables() {
+        return tables;
     }
 
     public static final FileService FILE_SERVICE = getInstance().getFileService();
