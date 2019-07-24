@@ -8,14 +8,14 @@ public class Table {
     private SparseArray<Column<Object>> columns = new SparseArray<>();
 
     public void addColumn(int id, Column column) {
-        if (columns.indexOfKey(id) != -1)
+        if (columns.indexOfKey(id) >= 0)
             throw new IllegalArgumentException("Column with id " + id + " already exists");
 
         columns.put(id, column);
     }
 
     public void enterValue(int id, Object value) {
-        if (columns.indexOfKey(id) == -1)
+        if (columns.indexOfKey(id) < 0)
             throw new IllegalArgumentException("No column with id " + id);
 
         Column<Object> col = columns.get(id);
@@ -26,7 +26,7 @@ public class Table {
     }
 
     public List getValuesOfColumn(int id) {
-        if (columns.indexOfKey(id) == -1)
+        if (columns.indexOfKey(id) < 0)
             throw new IllegalArgumentException("No column with id " + id);
 
         Column column = columns.get(id);
