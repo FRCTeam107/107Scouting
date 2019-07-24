@@ -1,5 +1,7 @@
 package com.frc107.scouting;
 
+import com.frc107.scouting.form.Column;
+import com.frc107.scouting.form.Table;
 import com.frc107.scouting.utils.BluetoothService;
 import com.frc107.scouting.utils.FileService;
 
@@ -47,7 +49,20 @@ public class Scouting {
         return scouting;
     }
 
-    private Scouting() { }
+    private Table pitTable;
+
+    private Scouting() {
+        pitTable = new Table();
+        pitTable.addColumn(R.id.pit_team_number,                    new Column<>("pit_team_number", Integer.class));
+        pitTable.addColumn(R.id.pit_sandstorm_op,                   new Column<>("pit_sandstorm_op", Integer.class));
+        pitTable.addColumn(R.id.pit_sandstorm_preference,           new Column<>("pit_sandstorm_preference", Integer.class));
+        pitTable.addColumn(R.id.pit_sandstorm_highest_rocket_level, new Column<>("pit_sandstorm_highest_rocket_level", Integer.class));
+        pitTable.addColumn(R.id.pit_highest_habitat,                new Column<>("pit_highest_habitat", Integer.class));
+        pitTable.addColumn(R.id.pit_habitat_time,                   new Column<>("pit_habitat_time", String.class));
+        pitTable.addColumn(R.id.pit_programming_language,           new Column<>("pit_programming_language", String.class));
+        pitTable.addColumn(R.id.pit_bonus,                          new Column<>("pit_bonus", String.class));
+        pitTable.addColumn(R.id.pit_comments,                       new Column<>("pit_comments", String.class));
+    }
 
     public static final FileService FILE_SERVICE = getInstance().getFileService();
 

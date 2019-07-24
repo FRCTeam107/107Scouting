@@ -46,16 +46,16 @@ public class PitActivity extends FormActivity {
 
         viewModel = new PitViewModel();
 
-        sandstormOpWrapper = new RadioWrapper(findViewById(R.id.sandstormOperationsRadioQuestion), viewModel);
-        sandstormPrefWrapper = new RadioWrapper(findViewById(R.id.sandstormPreferenceRadioQuestion), viewModel);
-        highestRocketLevelWrapper = new RadioWrapper(findViewById(R.id.highestRocketLevelSandstormRadioQuestion), viewModel);
-        highestHabLevelWrapper = new RadioWrapper(findViewById(R.id.highestHabitatLevelRadioQuestion), viewModel);
-        programmingLangWrapper = new RadioWrapper(findViewById(R.id.programmingLanguageRadioQuestion), viewModel);
+        sandstormOpWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_op), viewModel);
+        sandstormPrefWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_preference), viewModel);
+        highestRocketLevelWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_highest_rocket_level), viewModel);
+        highestHabLevelWrapper = new RadioWrapper(findViewById(R.id.pit_highest_habitat), viewModel);
+        programmingLangWrapper = new RadioWrapper(findViewById(R.id.pit_programming_language), viewModel);
 
-        teamNumWrapper = new TextWrapper(findViewById(R.id.pit_teamNumber_editText), viewModel);
-        habTimeWrapper = new TextWrapper(findViewById(R.id.pit_habitatTime_editText), viewModel);
-        arcadeGameWrapper = new TextWrapper(findViewById(R.id.pit_bonusQuestion_editText), viewModel);
-        commentsWrapper = new TextWrapper(findViewById(R.id.pit_comments_editText), viewModel);
+        teamNumWrapper = new TextWrapper(findViewById(R.id.pit_team_number), viewModel);
+        habTimeWrapper = new TextWrapper(findViewById(R.id.pit_habitat_time), viewModel);
+        arcadeGameWrapper = new TextWrapper(findViewById(R.id.pit_bonus), viewModel);
+        commentsWrapper = new TextWrapper(findViewById(R.id.pit_comments), viewModel);
 
         checkForPermissions();
     }
@@ -101,9 +101,9 @@ public class PitActivity extends FormActivity {
     }
 
     public void openCamera(View view) {
-        String teamNumber = viewModel.getAnswer(R.id.pit_teamNumber_editText);
+        String teamNumber = viewModel.getAnswer(R.id.pit_team_number);
         if (teamNumber == null) {
-            ViewUtils.requestFocus(findViewById(R.id.pit_teamNumber_editText), this);
+            ViewUtils.requestFocus(findViewById(R.id.pit_team_number), this);
             return;
         }
 

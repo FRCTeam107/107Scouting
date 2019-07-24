@@ -2,12 +2,17 @@ package com.frc107.scouting.form;
 
 import android.util.SparseArray;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Table {
     private SparseArray<Column<Object>> columns = new SparseArray<>();
 
-    public Table() {}
+    public void addColumn(int id, Column column) {
+        if (columns.indexOfKey(id) != -1)
+            throw new IllegalArgumentException("Column with id " + id + " already exists");
+
+        columns.put(id, column);
+    }
 
     public void enterValue(int id, Object value) {
         if (columns.indexOfKey(id) == -1)
@@ -20,36 +25,11 @@ public class Table {
         col.enterValue(value);
     }
 
-    public class Column<T> {
-        private int id;
-        private String name;
-        private ArrayList<T> values = new ArrayList<>();
-        private Class<T> typeClass; // Used for typechecking
+    public List getValuesOfColumn(int id) {
+        if (columns.indexOfKey(id) == -1)
+            throw new IllegalArgumentException("No column with id " + id);
 
-        public Column(int id, String name, Class<T> typeClass) {
-            this.id = id;
-            this.name = name;
-            this.typeClass = typeClass;
-        }
-
-        public void enterValue(T value) {
-            values.add(value);
-        }
-
-        public T getValueAtRow(int row) {
-            return values.get(row);
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public Class<T> getTypeClass() {
-            return typeClass;
-        }
+        Column column = columns.get(id);
+        return column.getValues();
     }
 }

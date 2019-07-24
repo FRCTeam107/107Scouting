@@ -15,7 +15,7 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/pit_teamNumber_editText"
+            android:id="@+id/pit_team_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/pitTeamNumber"
@@ -37,10 +37,10 @@
             android:textSize="@dimen/label_text_size"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pit_teamNumber_editText" />
+            app:layout_constraintTop_toBottomOf="@id/pit_team_number" />
 
         <RadioGroup
-            android:id="@+id/sandstormOperationsRadioQuestion"
+            android:id="@+id/pit_sandstorm_op"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/between_margin"
@@ -92,10 +92,10 @@
             android:textSize="@dimen/label_text_size"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sandstormOperationsRadioQuestion" />
+            app:layout_constraintTop_toBottomOf="@id/pit_sandstorm_op" />
 
         <RadioGroup
-            android:id="@+id/sandstormPreferenceRadioQuestion"
+            android:id="@+id/pit_sandstorm_preference"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/between_margin"
@@ -140,10 +140,10 @@
             android:textSize="@dimen/label_text_size"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sandstormPreferenceRadioQuestion" />
+            app:layout_constraintTop_toBottomOf="@id/pit_sandstorm_preference" />
 
         <RadioGroup
-            android:id="@+id/highestRocketLevelSandstormRadioQuestion"
+            android:id="@+id/pit_sandstorm_highest_rocket_level"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/between_margin"
@@ -195,10 +195,10 @@
             android:textSize="@dimen/label_text_size"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/highestRocketLevelSandstormRadioQuestion" />
+            app:layout_constraintTop_toBottomOf="@id/pit_sandstorm_highest_rocket_level" />
 
         <RadioGroup
-            android:id="@+id/highestHabitatLevelRadioQuestion"
+            android:id="@+id/pit_highest_habitat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/between_margin"
@@ -241,7 +241,7 @@
         </RadioGroup>
 
         <EditText
-            android:id="@+id/pit_habitatTime_editText"
+            android:id="@+id/pit_habitat_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/between_margin"
@@ -251,7 +251,7 @@
             android:imeOptions="actionDone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/highestHabitatLevelRadioQuestion" />
+            app:layout_constraintTop_toBottomOf="@id/pit_highest_habitat" />
 
         <TextView
             android:id="@+id/pitProgrammingLanguageText"
@@ -263,10 +263,10 @@
             android:textSize="@dimen/label_text_size"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pit_habitatTime_editText" />
+            app:layout_constraintTop_toBottomOf="@id/pit_habitat_time" />
 
         <RadioGroup
-            android:id="@+id/programmingLanguageRadioQuestion"
+            android:id="@+id/pit_programming_language"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/between_margin"
@@ -309,7 +309,7 @@
         </RadioGroup>
 
         <EditText
-            android:id="@+id/pit_bonusQuestion_editText"
+            android:id="@+id/pit_bonus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/between_margin"
@@ -319,10 +319,10 @@
             android:imeOptions="actionDone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/programmingLanguageRadioQuestion" />
+            app:layout_constraintTop_toBottomOf="@id/pit_programming_language" />
 
         <EditText
-            android:id="@+id/pit_comments_editText"
+            android:id="@+id/pit_comments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/between_margin"
@@ -332,7 +332,7 @@
             android:imeOptions="actionDone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pit_bonusQuestion_editText" />
+            app:layout_constraintTop_toBottomOf="@id/pit_bonus" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
