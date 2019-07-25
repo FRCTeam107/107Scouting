@@ -5,6 +5,15 @@ import android.util.SparseArray;
 import java.util.List;
 
 public class Table {
+    private String name;
+    public Table(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     private SparseArray<Column<Object>> columns = new SparseArray<>();
 
     public void addColumn(int id, Column column) {

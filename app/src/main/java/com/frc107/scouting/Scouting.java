@@ -55,8 +55,21 @@ public class Scouting {
     private List<Table> tables = new ArrayList<>();
     private Table pitTable;
 
+    public enum eTable {
+        PIT
+    }
+
+    public Table getTable(eTable table) {
+        switch (table) {
+            case PIT:
+                return pitTable;
+            default:
+                return null;
+        }
+    }
+
     private Scouting() {
-        pitTable = new Table();
+        pitTable = new Table("Pit");
         pitTable.addColumn(R.id.pit_team_number,                    new Column<>("pit_team_number", Integer.class));
         pitTable.addColumn(R.id.pit_sandstorm_op,                   new Column<>("pit_sandstorm_op", Integer.class));
         pitTable.addColumn(R.id.pit_sandstorm_preference,           new Column<>("pit_sandstorm_preference", Integer.class));
