@@ -4,16 +4,16 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-import com.frc107.scouting.form.IQuestionAnswerer;
+import com.frc107.scouting.form.ISetter;
 
 public class TextWrapper {
     private EditText editText;
     private TextWatcher textWatcher;
-    private IQuestionAnswerer viewModel;
+    private ISetter<String> setter;
 
-    public TextWrapper(EditText editText, IQuestionAnswerer viewModel) {
+    public TextWrapper(EditText editText, ISetter<String> setter) {
         this.editText = editText;
-        this.viewModel = viewModel;
+        this.setter = setter;
 
         textWatcher = createTextWatcher();
         this.editText.addTextChangedListener(textWatcher);
@@ -22,11 +22,15 @@ public class TextWrapper {
     private TextWatcher createTextWatcher() {
         return new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                viewModel.setAnswer(editText.getId(), s.toString());
+                setter.set(s.toString());
             }
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             public void afterTextChanged(Editable s) { }
         };
+    }
+
+    public String getValue() {
+        return editText.getText().toString();
     }
 
     public EditText getEditText() {

@@ -25,6 +25,10 @@ public class FileService {
     private File scoutingDirectory;
     private File photoDirectory;
 
+    public enum eFile {
+        PIT
+    }
+
     private static final String SCOUTING_PATH = Environment.getExternalStorageDirectory() + "/Scouting";
     private static final String PHOTO_PATH = Environment.getExternalStorageDirectory() + "/Scouting/Photos";
 
@@ -81,6 +85,13 @@ public class FileService {
         return null;
     }
 
+    public File getFile(eFile file) {
+        switch (file) {
+            case PIT: return getPitFile(false);
+            default: return null;
+        }
+    }
+
     public File getFile(String name) {
         File file = new File(getScoutingDirectory(), name);
         if (file.exists())
@@ -89,36 +100,20 @@ public class FileService {
         return null;
     }
 
-    public File getMatchFile() {
-        return getFile("Match" + Scouting.getInstance().getUniqueId() + ".csv");
-    }
-
-    public File getPitFile() {
-        return getFile("Pit" + Scouting.getInstance().getUniqueId() + ".csv");
-    }
-
     public File getMatchFile(boolean concatenated) {
         if (concatenated) {
-            return getConcatMatchFile();
+            return getFile("ConcatenatedMatch.csv");
         } else {
-            return getMatchFile();
+            return getFile("Match" + Scouting.getInstance().getUniqueId() + ".csv");
         }
     }
 
     public File getPitFile(boolean concatenated) {
         if (concatenated) {
-            return getConcatPitFile();
+            return getFile("ConcatenatedMatch.csv");
         } else {
-            return getPitFile();
+            return getFile("Pit" + Scouting.getInstance().getUniqueId() + ".csv");
         }
-    }
-
-    public File getConcatMatchFile() {
-        return getFile("ConcatenatedMatch.csv");
-    }
-
-    public File getConcatPitFile() {
-        return getFile("ConcatenatedPit.csv");
     }
 
     public File createPhotoFile(String teamNumber) {
@@ -166,6 +161,31 @@ public class FileService {
             Log.d("Scouting", e.getMessage());
         }
         return false;
+    }
+
+    public boolean writeToEndOfFile(eFile fileType, String data) {
+        File file = getFile(fileType);
+        if (file == null)
+            throw new IllegalArgumentException("Invalid eFile");
+
+        if (StringUtils.isEmptyOrNull(data)) {
+            return true;
+        }
+
+        String state = Environment.getExternalStorageState();
+        if (!state.equals(Environment.MEDIA_MOUNTED)) {
+            Log.e("Scouting", "External storage not mounted!");
+            return false;
+        }
+
+        try (FileOutputStream fileOutputStream = new FileOutputStream(file, true)) {
+            fileOutputStream.write(data.getBytes());
+            fileOutputStream.flush();
+            return true;
+        } catch (IOException e) {
+            Log.e("Scouting", e.getMessage());
+            return false;
+        }
     }
 
     public boolean writeData(String fileNameHeader, String data) {

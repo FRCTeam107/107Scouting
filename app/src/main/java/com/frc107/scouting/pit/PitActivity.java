@@ -6,12 +6,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.frc107.scouting.BuildConfig;
 import com.frc107.scouting.R;
 import com.frc107.scouting.analysis.attribute.AttributeAnalysisViewModel;
 import com.frc107.scouting.utils.PermissionUtils;
+import com.frc107.scouting.utils.StringUtils;
 import com.frc107.scouting.utils.ViewUtils;
 import com.frc107.scouting.form.FormActivity;
 import com.frc107.scouting.ui.questionWrappers.RadioWrapper;
@@ -31,7 +33,7 @@ public class PitActivity extends FormActivity {
     private RadioWrapper sandstormPrefWrapper;
     private RadioWrapper highestRocketLevelWrapper;
     private RadioWrapper highestHabLevelWrapper;
-    private RadioWrapper programmingLangWrapper;
+    private TextWrapper programmingLangWrapper;
     private TextWrapper teamNumWrapper;
     private TextWrapper habTimeWrapper;
     private TextWrapper arcadeGameWrapper;
@@ -48,16 +50,16 @@ public class PitActivity extends FormActivity {
 
         viewModel = ViewModelProviders.of(this).get(PitViewModel.class);
 
-        sandstormOpWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_op), viewModel);
-        sandstormPrefWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_preference), viewModel);
-        highestRocketLevelWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_highest_rocket_level), viewModel);
-        highestHabLevelWrapper = new RadioWrapper(findViewById(R.id.pit_highest_habitat), viewModel);
-        programmingLangWrapper = new RadioWrapper(findViewById(R.id.pit_programming_language), viewModel);
+        sandstormOpWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_op),                          viewModel::setSandstormOperation);
+        sandstormPrefWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_preference),                viewModel::setSandstormPreference);
+        highestRocketLevelWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_highest_rocket_level), viewModel::setSandstormHighestRocketLevel);
+        highestHabLevelWrapper = new RadioWrapper(findViewById(R.id.pit_highest_habitat),                   viewModel::setHighestHabitat);
 
-        teamNumWrapper = new TextWrapper(findViewById(R.id.pit_team_number), viewModel);
-        habTimeWrapper = new TextWrapper(findViewById(R.id.pit_habitat_time), viewModel);
-        arcadeGameWrapper = new TextWrapper(findViewById(R.id.pit_bonus), viewModel);
-        commentsWrapper = new TextWrapper(findViewById(R.id.pit_comments), viewModel);
+        programmingLangWrapper = new TextWrapper(findViewById(R.id.pit_programming_language),   viewModel::setProgrammingLanguage);
+        teamNumWrapper = new TextWrapper(findViewById(R.id.pit_team_number),                    viewModel::setTeamNumber);
+        habTimeWrapper = new TextWrapper(findViewById(R.id.pit_habitat_time),                   viewModel::setHabitatTime);
+        arcadeGameWrapper = new TextWrapper(findViewById(R.id.pit_bonus),                       viewModel::setBonus);
+        commentsWrapper = new TextWrapper(findViewById(R.id.pit_comments),                      viewModel::setComments);
 
         checkForPermissions();
     }
@@ -84,11 +86,11 @@ public class PitActivity extends FormActivity {
             return;
 
         if (!viewModel.isFinished()) {
-            focusOnView(viewModel.getUnfinishedQuestionId());
+            // todo: replace this focusOnView(viewModel.getUnfinishedQuestionId());
             return;
         }
 
-        boolean successfullySaved = viewModel.finish();
+        boolean successfullySaved = viewModel.save();
         String message;
         if (successfullySaved)
             message = "Saved data successfully.";
@@ -103,8 +105,8 @@ public class PitActivity extends FormActivity {
     }
 
     public void openCamera(View view) {
-        String teamNumber = viewModel.getAnswer(R.id.pit_team_number);
-        if (teamNumber == null) {
+        String teamNumber = teamNumWrapper.getValue();
+        if (StringUtils.isEmptyOrNull(teamNumber)) {
             ViewUtils.requestFocus(findViewById(R.id.pit_team_number), this);
             return;
         }
