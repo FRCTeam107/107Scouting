@@ -12,7 +12,7 @@ import android.os.Bundle;
 
 import com.frc107.scouting.analysis.attribute.AttributeAnalysisActivity;
 import com.frc107.scouting.analysis.team.TeamAnalysisActivity;
-import com.frc107.scouting.form.FormActivity;
+import com.frc107.scouting.form.BaseActivity;
 import com.frc107.scouting.pit.PitActivity;
 import com.frc107.scouting.utils.PermissionUtils;
 
@@ -35,13 +35,15 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 
-public class MainActivity extends FormActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // TODO: load records of local scouting files
 
         checkForPermissions();
 
@@ -56,25 +58,10 @@ public class MainActivity extends FormActivity implements NavigationView.OnNavig
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-
-        BroadcastReceiver mReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-
-                if (action == BluetoothDevice.ACTION_ACL_DISCONNECTED) {
-                    //now file transmitting has finished, can do something to the file
-                    //if you know the file name, better to check if the file is actually there
-                    // - make sure this disconnection not initiated by any other reason.
-                    String fileName = "Session-8-Ben-Kyle-21.jpg";
-                }
-            }
-        };
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-        registerReceiver(mReceiver, filter);
     }
 
     private void initializeSettings() {
+        // todo: dont' think we need this anyumore, just use initial sand time stanp for filenames
         String uniqueId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         Scouting.getInstance().setUniqueId(uniqueId);
@@ -94,7 +81,6 @@ public class MainActivity extends FormActivity implements NavigationView.OnNavig
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -161,7 +147,7 @@ public class MainActivity extends FormActivity implements NavigationView.OnNavig
         intent.setType("image/jpeg");
         intent.setPackage("com.android.bluetooth");
 
-        ArrayList<Uri> uriList = (ArrayList<Uri>) Scouting.FILE_SERVICE.getPhotoUriList(this);
+        ArrayList<Uri> uriList = (ArrayList<Uri>) Scouting.FILE_SERVICE.getPhotoUriList();
         if (uriList.isEmpty()) {
             Toast.makeText(this, "No photos to send.", Toast.LENGTH_SHORT).show();
         } else {

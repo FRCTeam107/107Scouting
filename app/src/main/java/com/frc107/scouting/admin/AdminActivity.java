@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.frc107.scouting.R;
 import com.frc107.scouting.bluetooth.BluetoothActivity;
-import com.frc107.scouting.form.FormActivity;
+import com.frc107.scouting.form.BaseActivity;
 import com.frc107.scouting.ui.IUIListener;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.analysis.attribute.AttributeAnalysisActivity;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * Created by Matt on 10/9/2017.
  */
 
-public class AdminActivity extends FormActivity implements IUIListener {
+public class AdminActivity extends BaseActivity implements IUIListener {
     private AdminViewModel viewModel;
     private EditText eventKeyEditText;
 
@@ -89,7 +89,7 @@ public class AdminActivity extends FormActivity implements IUIListener {
         intent.setType("image/jpeg");
         intent.setPackage("com.android.bluetooth");
 
-        ArrayList<Uri> uriList = (ArrayList<Uri>) viewModel.getPhotoUriList(this);
+        ArrayList<Uri> uriList = (ArrayList<Uri>) Scouting.FILE_SERVICE.getPhotoUriList();
         if (uriList.isEmpty()) {
             Toast.makeText(this, "No photos.", Toast.LENGTH_SHORT).show();
         } else {
@@ -99,15 +99,15 @@ public class AdminActivity extends FormActivity implements IUIListener {
     }
 
     public void sendPitData(View view) {
-        sendFile(viewModel.getPitFile(false));
+        sendFile(Scouting.FILE_SERVICE.getPitFile(false));
     }
 
     public void sendConcatMatchData(View view) {
-        sendFile(viewModel.getMatchFile(true));
+        sendFile(Scouting.FILE_SERVICE.getMatchFile(true));
     }
 
     public void sendConcatPitData(View view) {
-        sendFile(viewModel.getPitFile(true));
+        sendFile(Scouting.FILE_SERVICE.getPitFile(true));
     }
 
     public void goToTeamAnalysis(View view) {

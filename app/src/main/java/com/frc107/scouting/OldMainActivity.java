@@ -6,13 +6,13 @@ import android.os.Bundle;
 
 import com.frc107.scouting.admin.AdminActivity;
 import com.frc107.scouting.pit.PitActivity;
-import com.frc107.scouting.form.FormActivity;
+import com.frc107.scouting.form.BaseActivity;
 
 import android.provider.Settings;
 import android.view.View;
 import android.widget.TextView;
 
-public class OldMainActivity extends FormActivity {
+public class OldMainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

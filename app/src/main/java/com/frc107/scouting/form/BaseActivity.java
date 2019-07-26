@@ -22,7 +22,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
-public abstract class FormActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -48,7 +48,7 @@ public abstract class FormActivity extends AppCompatActivity {
     }
 
     private void sendData() {
-        File matchFile = Scouting.FILE_SERVICE.getMatchFile();
+        File matchFile = Scouting.FILE_SERVICE.getMatchFile(false);
         if (matchFile != null)
             sendFile(matchFile);
     }

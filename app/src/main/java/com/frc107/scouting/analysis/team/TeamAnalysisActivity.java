@@ -3,7 +3,7 @@ package com.frc107.scouting.analysis.team;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
-import com.frc107.scouting.form.FormActivity;
+import com.frc107.scouting.form.BaseActivity;
 import com.frc107.scouting.R;
 import com.frc107.scouting.utils.ISimpleCallback;
 
@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class TeamAnalysisActivity extends FormActivity implements ISimpleCallback {
+public class TeamAnalysisActivity extends BaseActivity implements ISimpleCallback {
     private TeamAnalysisViewModel viewModel;
     private TextView teamNumberTextView;
     private TextView averageCargoTextView;

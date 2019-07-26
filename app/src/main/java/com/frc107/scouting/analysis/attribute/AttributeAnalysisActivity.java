@@ -3,7 +3,7 @@ package com.frc107.scouting.analysis.attribute;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
-import com.frc107.scouting.form.FormActivity;
+import com.frc107.scouting.form.BaseActivity;
 
 import android.view.View;
 import android.widget.ListView;
@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.frc107.scouting.R;
 
-public class AttributeAnalysisActivity extends FormActivity {
+public class AttributeAnalysisActivity extends BaseActivity {
     private AnalysisAdapter adapter;
     private ListView elementListView;
     private TextView attributeTypeTextView;

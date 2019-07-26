@@ -35,15 +35,6 @@ public class AdminModel implements IOPRListener {
         this.listener = listener;
     }
 
-    public List<Uri> getPhotoUriList(Context context) {
-        ArrayList<Uri> uriList = new ArrayList<>();
-        for (File photo :  Scouting.FILE_SERVICE.getPhotos()) {
-            Uri uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", photo);
-            uriList.add(uri);
-        }
-        return uriList;
-    }
-
     public boolean concatenateData(int type) {
         String prefix = "Match";
         String header = ScoutingStrings.MATCH_HEADER;
@@ -78,7 +69,7 @@ public class AdminModel implements IOPRListener {
                     line = bufferedReader.readLine();
                 }
             } catch (IOException e) {
-                Log.d("Scouting", e.getMessage());
+                Log.d(Scouting.SCOUTING_TAG, e.getMessage());
             }
         }
 
@@ -93,7 +84,7 @@ public class AdminModel implements IOPRListener {
             fileWriter.write(builder.toString());
             return true;
         } catch (IOException e) {
-            Log.d("Scouting", e.getMessage());
+            Log.d(Scouting.SCOUTING_TAG, e.getMessage());
         }
 
         return false;
@@ -108,22 +99,6 @@ public class AdminModel implements IOPRListener {
             return empty;
 
         return opr.getOPR(teamNumber) + "," + opr.getDPR(teamNumber);
-    }
-
-    public File getMatchFile(boolean concatenated) {
-        if (concatenated) {
-            return Scouting.FILE_SERVICE.getConcatMatchFile();
-        } else {
-            return Scouting.FILE_SERVICE.getMatchFile();
-        }
-    }
-
-    public File getPitFile(boolean concatenated) {
-        if (concatenated) {
-            return Scouting.FILE_SERVICE.getConcatPitFile();
-        } else {
-            return Scouting.FILE_SERVICE.getPitFile();
-        }
     }
 
     public void setEventKey(String eventKey) {

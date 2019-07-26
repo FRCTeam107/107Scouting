@@ -25,6 +25,10 @@ public class Column<T> {
         return values.get(row);
     }
 
+    public T getValueAtLastRow() {
+        return values.get(values.size() - 1);
+    }
+
     public List<T> getValues() {
         return values;
     }

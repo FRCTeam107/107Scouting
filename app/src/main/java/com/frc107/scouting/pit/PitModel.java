@@ -1,21 +1,15 @@
 package com.frc107.scouting.pit;
 
-import android.util.Log;
-
-import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
-import com.frc107.scouting.form.Form;
 import com.frc107.scouting.form.Table;
-import com.frc107.scouting.form.field.Field;
-import com.frc107.scouting.form.field.RadioField;
-import com.frc107.scouting.form.field.TextField;
 import com.frc107.scouting.utils.FileService;
 import com.frc107.scouting.utils.StringUtils;
 
 import java.io.File;
 
-public class PitModel extends Form {
-    private static final String FILE_NAME_HEADER = "Pit";
+public class PitModel {
+    private static final Scouting.eTable TABLE = Scouting.eTable.PIT;
+    private static final FileService.eFile FILE = FileService.eFile.PIT;
 
     private Integer teamNumber;
     private Integer sandstormOperation;
@@ -80,8 +74,8 @@ public class PitModel extends Form {
     }
 
     public boolean save() {
-        Table table = Scouting.getInstance().getTable(Scouting.eTable.PIT);
-        table.enterValues(
+        Table table = Scouting.getInstance().getTable(TABLE);
+        String entry = table.enterNewRow(
                 teamNumber,
                 sandstormOperation,
                 sandstormPreference,
@@ -92,73 +86,34 @@ public class PitModel extends Form {
                 bonus,
                 comments);
 
-        String entry = table.getLastRowAsString();
-        Scouting.getInstance().getFileService().writeToEndOfFile(FileService.eFile.PIT, entry);
-        return true;
+        FileService fileService = Scouting.getInstance().getFileService();
+        boolean success;
+        if (fileService.fileExists(FILE))
+            success = fileService.writeToEndOfFile(FILE, entry);
+        else
+            success = fileService.writeDataToNewFile(FILE, entry);
+        return success;
     }
 
-    private String getTeamNumber() {
-        return getAnswer(R.id.pit_team_number);
-    }
-
+    private String photoFileName;
+    private boolean hasCreatedPhotoFile;
     public File createPhotoFile() {
-        return Scouting.FILE_SERVICE.createPhotoFile(getTeamNumber());
+        if (teamNumber == null)
+            throw new IllegalStateException("Team number must not be null or empty");
+
+        File file = Scouting.FILE_SERVICE.createPhotoFile(teamNumber.toString());
+        if (file != null && file.exists()) {
+            hasCreatedPhotoFile = true;
+            photoFileName = file.getName();
+        }
+
+        return file;
     }
 
     public boolean rotateAndCompressPhoto() {
-        return Scouting.FILE_SERVICE.rotateAndCompressPhoto(getTeamNumber());
-    }
+        if (!hasCreatedPhotoFile)
+            throw new IllegalStateException("Photo file has not been created yet!");
 
-    @Override
-    public Field[] getFields() {
-        return new Field[] {
-                new TextField("pitTeamNum", R.id.pit_team_number, true,
-                        teamNum -> {
-                            try {
-                                int num = Integer.parseInt(teamNum);
-                                Scouting.getInstance().setTeamNumber(num);
-                            } catch (NumberFormatException e) {
-                                Log.d("Scouting", e.getLocalizedMessage());
-                            }
-                        },
-                        () -> Scouting.getInstance().getTeamNumber() + ""),
-                new RadioField("pitSandstormOp", R.id.pit_sandstorm_op, true,
-                        new RadioField.Option(R.id.visionSystemSandstorm_Radiobtn, 0),
-                        new RadioField.Option(R.id.cameraDrivingSandstorm_Radiobtn, 1),
-                        new RadioField.Option(R.id.blindDrivingSandstorm_Radiobtn, 2),
-                        new RadioField.Option(R.id.noDrivingSandstorm_Radiobtn, 3)),
-                new RadioField("pitSandstormPref", R.id.pit_sandstorm_preference, true,
-                        new RadioField.Option(R.id.cargoshipPreferenceSandstorm_Radiobtn, 0),
-                        new RadioField.Option(R.id.rocketshipPreferenceSandstorm_Radiobtn, 1),
-                        new RadioField.Option(R.id.noPreferenceSandstorm_Radiobtn, 2)),
-                new RadioField("pitHighestRocketLevel", R.id.pit_sandstorm_highest_rocket_level, true,
-                        new RadioField.Option(R.id.topRocketLevelSandstorm_Radiobtn, 0),
-                        new RadioField.Option(R.id.middleRocketLevelSandstorm_Radiobtn, 1),
-                        new RadioField.Option(R.id.bottomRocketLevelSandstorm_Radiobtn, 2),
-                        new RadioField.Option(R.id.noRocketLevelSandstorm_Radiobtn, 3)),
-                new RadioField("pitHighestHabLevel", R.id.pit_highest_habitat, true,
-                        new RadioField.Option(R.id.topHabitatLevel_Radiobtn, 0),
-                        new RadioField.Option(R.id.middleHabitatLevel_Radiobtn, 1),
-                        new RadioField.Option(R.id.bottomHabitatLevel_Radiobtn, 2),
-                        new RadioField.Option(R.id.noHabitatLevel_Radiobtn, 3)),
-                new TextField("pitHabTime", R.id.pit_habitat_time, true),
-                new RadioField("pitLanguage", R.id.pit_programming_language, true,
-                        new RadioField.Option(R.id.javaProgrammingLanguage_Radiobtn, 0),
-                        new RadioField.Option(R.id.cppProgrammingLanguage_Radiobtn, 1),
-                        new RadioField.Option(R.id.labviewProgrammingLanguage_Radiobtn, 2),
-                        new RadioField.Option(R.id.otherProgrammingLanguage_Radiobtn, 3)),
-
-                new TextField("pitBonus", R.id.pit_bonus, true),
-                new TextField("pitComments", R.id.pit_comments, true)
-        };
-    }
-
-    @Override
-    public void onQuestionAnswered(int questionId, Object answer) { }
-
-    @Override
-    public boolean finish() {
-        String dataToWrite = getAnswerCSVRow() + '\n';
-        return Scouting.FILE_SERVICE.writeData(FILE_NAME_HEADER, dataToWrite);
+        return Scouting.FILE_SERVICE.rotateAndCompressPhoto(photoFileName);
     }
 }

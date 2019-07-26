@@ -253,60 +253,18 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/pit_highest_habitat" />
 
-        <TextView
-            android:id="@+id/pitProgrammingLanguageText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/between_margin"
-            android:text="@string/pitprogrammingLanguage"
-            android:textAlignment="center"
-            android:textSize="@dimen/label_text_size"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pit_habitat_time" />
-
-        <RadioGroup
+        <EditText
             android:id="@+id/pit_programming_language"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/between_margin"
-            android:orientation="horizontal"
+            android:hint="@string/pitprogrammingLanguage"
+            android:inputType="text"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pitProgrammingLanguageText">
-
-            <RadioButton
-                android:id="@+id/javaProgrammingLanguage_Radiobtn"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/radiobutton_margin"
-                android:layout_weight="1"
-                android:text="@string/javaProgrammingLanguage" />
-
-            <RadioButton
-                android:id="@+id/cppProgrammingLanguage_Radiobtn"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/radiobutton_margin"
-                android:layout_weight="1"
-                android:text="@string/cppProgrammingLanguage" />
-
-            <RadioButton
-                android:id="@+id/labviewProgrammingLanguage_Radiobtn"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/radiobutton_margin"
-                android:layout_weight="1"
-                android:text="@string/labviewProgrammingLanguage" />
-
-            <RadioButton
-                android:id="@+id/otherProgrammingLanguage_Radiobtn"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/radiobutton_margin"
-                android:layout_weight="1"
-                android:text="@string/otherProgrammingLanguage" />
-        </RadioGroup>
+            app:layout_constraintTop_toBottomOf="@id/pit_habitat_time" />
 
         <EditText
             android:id="@+id/pit_bonus"
@@ -345,5 +303,16 @@
         app:srcCompat="@drawable/ic_baseline_check_24px"
         android:clickable="true"
         android:onClick="savePitData" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="openCamera"
+        app:srcCompat="@drawable/ic_baseline_camera_24px" />
 
 </FrameLayout>

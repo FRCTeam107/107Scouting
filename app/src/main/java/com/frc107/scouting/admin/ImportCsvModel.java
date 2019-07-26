@@ -20,11 +20,11 @@ public class ImportCsvModel {
                 lines.add(line);
                 line = reader.readLine();
             }
-            Log.d("Scouting", lines.toString());
+            Log.d(Scouting.SCOUTING_TAG, lines.toString());
             // TODO: load the csv data, ask if user wants to merge with existing, replace, or add new file
             // TODO: allow for saving of data to specific location? nah
         } catch (IOException e) {
-            Log.d("Scouting", e.getLocalizedMessage());
+            Log.d(Scouting.SCOUTING_TAG, e.getLocalizedMessage());
         }
     }
 }

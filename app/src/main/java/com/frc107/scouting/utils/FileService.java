@@ -18,7 +18,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class FileService {
@@ -67,11 +72,10 @@ public class FileService {
         return getPhotoDirectory().listFiles();
     }
 
-    public List<Uri> getPhotoUriList(Context context) {
+    public List<Uri> getPhotoUriList() {
         ArrayList<Uri> uriList = new ArrayList<>();
         for (File photo : getPhotos()) {
-            // TODO: This seems weird, look here: https://stackoverflow.com/questions/3004713/get-content-uri-from-file-path-in-android
-            Uri uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", photo);
+            Uri uri = Uri.parse(photo.getAbsolutePath());
             uriList.add(uri);
         }
         return uriList;
@@ -83,6 +87,11 @@ public class FileService {
             return photo;
 
         return null;
+    }
+
+    public boolean fileExists(eFile fileType) {
+        File file = getFile(fileType);
+        return file != null && file.exists();
     }
 
     public File getFile(eFile file) {
@@ -98,6 +107,29 @@ public class FileService {
             return file;
 
         return null;
+    }
+
+    private String getFileNamePrefix(eFile file) {
+        switch (file) {
+            case PIT:
+                return "ConcatPit";
+            default: return "default";
+        }
+    }
+
+    public boolean createPitFile(String data) {
+        String timeMessage = getCurrentTimeMessage();
+        String fileName = "Pit_initialshere_" + timeMessage + ".csv";
+        boolean success = writeDataToNewFile(scoutingDirectory, fileName, data);
+        return success;
+    }
+
+    private static String getCurrentTimeMessage() {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR);
+        int minute = calendar.get(Calendar.MINUTE);
+        int second = calendar.get(Calendar.SECOND);
+        return hour + "-" + minute + "-" + second;
     }
 
     public File getMatchFile(boolean concatenated) {
@@ -126,39 +158,50 @@ public class FileService {
 
         File file = new File(dir, teamNumber + ".jpg");
 
+        // We need to be able to have multiple photos of the same robot, so this handles that.
+        int num = 1;
+        while (file.exists()) {
+            num++;
+            file = new File(dir, teamNumber + "-" + num + ".jpg");
+        }
+
         try {
-            file.createNewFile();
+            boolean success = file.createNewFile();
+            if (!success) {
+                Log.d(Scouting.SCOUTING_TAG, "Photo file already exists! Path: \"" + file.getAbsolutePath() + "\"");
+                return null;
+            }
         } catch (IOException e) {
-            Log.d("Scouting", e.getMessage());
+            Log.d(Scouting.SCOUTING_TAG, e.getMessage());
             return null;
         }
 
         return file;
     }
 
-    public boolean rotateAndCompressPhoto(String teamNumber) {
-        try {
-            File file = getPhoto(teamNumber);
-            FileInputStream fileInputStream = new FileInputStream(file);
+    public boolean rotateAndCompressPhoto(String fileName) {
+        File file = new File(photoDirectory, fileName);
+        if (!file.exists())
+            return false;
 
+        try (FileInputStream fileInputStream = new FileInputStream(file);
+             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+             FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
             if (bitmap == null) {
-                Log.d("Scouting", "Bitmap is null");
+                Log.d(Scouting.SCOUTING_TAG, "Bitmap is null");
                 return false;
             }
-
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
             Matrix matrix = new Matrix();
             matrix.postRotate(90);
             Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
             rotated.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
 
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
             fileOutputStream.write(byteArrayOutputStream.toByteArray());
             return true;
         } catch (IOException e) {
-            Log.d("Scouting", e.getMessage());
+            Log.d(Scouting.SCOUTING_TAG, e.getMessage());
         }
         return false;
     }
@@ -168,13 +211,12 @@ public class FileService {
         if (file == null)
             throw new IllegalArgumentException("Invalid eFile");
 
-        if (StringUtils.isEmptyOrNull(data)) {
+        if (StringUtils.isEmptyOrNull(data))
             return true;
-        }
 
         String state = Environment.getExternalStorageState();
         if (!state.equals(Environment.MEDIA_MOUNTED)) {
-            Log.e("Scouting", "External storage not mounted!");
+            Log.e(Scouting.SCOUTING_TAG, "External storage not mounted!");
             return false;
         }
 
@@ -183,35 +225,44 @@ public class FileService {
             fileOutputStream.flush();
             return true;
         } catch (IOException e) {
-            Log.e("Scouting", e.getMessage());
+            Log.e(Scouting.SCOUTING_TAG, e.getMessage());
             return false;
         }
     }
 
-    public boolean writeData(String fileNameHeader, String data) {
-        if (fileNameHeader == null)
-            throw new IllegalArgumentException("Header cannot be null");
+    public boolean writeDataToMostRecentFile(eFile file, String data) {
+        // todo implement
+        return false;
+    }
+
+    public boolean writeDataToNewFile(eFile file, String data) {
+        String timeMessage = getCurrentTimeMessage();
+        String prefix = getFileNamePrefix(file);
+        String fileName = prefix + "_initialshere_" + timeMessage + ".csv";
+        return writeDataToNewFile(scoutingDirectory, fileName, data);
+    }
+
+    private boolean writeDataToNewFile(File directory, String fileName, String data) {
+        File file = new File(directory, fileName);
+        if (file.exists())
+            throw new IllegalStateException("Invalid file name \"" + fileName + "\"; file already exists.");
 
         if (StringUtils.isEmptyOrNull(data))
-            throw new IllegalArgumentException("Data cannot be null or empty");
+            return true;
 
         String state = Environment.getExternalStorageState();
         if (!state.equals(Environment.MEDIA_MOUNTED)) {
-            Log.e("Scouting", "External storage not mounted!");
+            Log.e(Scouting.SCOUTING_TAG, "External storage not mounted!");
             return false;
         }
 
-        String uniqueId = Scouting.getInstance().getUniqueId();
-        File file = new File(getScoutingDirectory(), fileNameHeader + uniqueId + ".csv");
-
-        try (FileOutputStream fileOutputStream = new FileOutputStream(file, true)) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(file, false)) {
             fileOutputStream.write(data.getBytes());
             fileOutputStream.flush();
+            return true;
         } catch (IOException e) {
-            Log.e("Scouting", e.getMessage());
+            Log.e(Scouting.SCOUTING_TAG, e.getMessage());
             return false;
         }
-
-        return true;
     }
 }

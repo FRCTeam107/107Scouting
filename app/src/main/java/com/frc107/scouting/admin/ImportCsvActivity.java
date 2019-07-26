@@ -9,13 +9,13 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
-import com.frc107.scouting.form.FormActivity;
+import com.frc107.scouting.form.BaseActivity;
 import com.frc107.scouting.form.Table;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class ImportCsvActivity extends FormActivity {
+public class ImportCsvActivity extends BaseActivity {
     private ImportCsvViewModel viewModel;
 
     @Override
@@ -106,7 +106,7 @@ public class ImportCsvActivity extends FormActivity {
         try {
             inputStream = getContentResolver().openInputStream(uri);
         } catch (FileNotFoundException e) {
-            Log.d("Scouting", e.getLocalizedMessage());
+            Log.d(Scouting.SCOUTING_TAG, e.getLocalizedMessage());
             return;
         }
         viewModel.importCsv(targetTable, inputStream);

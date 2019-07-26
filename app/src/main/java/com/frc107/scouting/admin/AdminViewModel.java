@@ -23,18 +23,6 @@ class AdminViewModel {
         return model.concatenateData(AdminModel.PIT);
     }
 
-    List<Uri> getPhotoUriList(Context context) {
-        return model.getPhotoUriList(context);
-    }
-
-    File getMatchFile(boolean concatenated) {
-        return model.getMatchFile(concatenated);
-    }
-
-    File getPitFile(boolean concatenated) {
-        return model.getPitFile(concatenated);
-    }
-
     void setEventKey(String eventKey) {
         model.setEventKey(eventKey);
     }

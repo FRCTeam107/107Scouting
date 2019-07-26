@@ -12,6 +12,8 @@ public class Scouting {
     public static final String VERSION_DATE = "4/21/2019 - 1:25";
     public static final String PREFERENCES_NAME = "ScoutingPreferences";
     public static final String EVENT_KEY_PREFERENCE = "eventKey";
+    public static final String NEW_LINE = System.getProperty("line.separator");
+    public static final String SCOUTING_TAG = "Scoutinator";
 
     public static final int SANDSTORM_HAB_ONE = 0,
                             SANDSTORM_HAB_TWO = 1,

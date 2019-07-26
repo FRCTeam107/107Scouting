@@ -1,10 +1,12 @@
 package com.frc107.scouting.pit;
 
+import androidx.lifecycle.ViewModel;
+
 import com.frc107.scouting.form.FormViewModel;
 
 import java.io.File;
 
-public class PitViewModel {
+public class PitViewModel extends ViewModel {
     private PitModel model;
 
     public PitViewModel() {
@@ -56,10 +58,10 @@ public class PitViewModel {
     }
 
     public File createPhotoFile() {
-        return ((PitModel) model).createPhotoFile();
+        return model.createPhotoFile();
     }
 
     public boolean rotateAndCompressPhoto() {
-        return ((PitModel) model).rotateAndCompressPhoto();
+        return model.rotateAndCompressPhoto();
     }
 }

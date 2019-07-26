@@ -44,9 +44,9 @@ public class LoadDataTask extends AsyncTask<Void, Void, SparseArray<TeamDetails>
     }
 
     public void loadData() {
-        File file = Scouting.FILE_SERVICE.getConcatMatchFile();
+        File file = Scouting.FILE_SERVICE.getMatchFile(true);
         if (file == null) {
-            Log.d("Scouting", "No concatenated match data.");
+            Log.d(Scouting.SCOUTING_TAG, "No concatenated match data.");
             return;
         }
 
@@ -60,7 +60,7 @@ public class LoadDataTask extends AsyncTask<Void, Void, SparseArray<TeamDetails>
                 line = bufferedReader.readLine();
             }
         } catch (IOException e) {
-            Log.d("Scouting", e.getMessage());
+            Log.d(Scouting.SCOUTING_TAG, e.getMessage());
             return;
         }
 
