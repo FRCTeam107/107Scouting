@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
-import com.frc107.scouting.form.BaseActivity;
+import com.frc107.scouting.BaseActivity;
 import com.frc107.scouting.form.Table;
 
 import java.io.FileNotFoundException;

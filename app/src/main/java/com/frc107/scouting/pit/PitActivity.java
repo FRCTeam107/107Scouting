@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.Toast;
@@ -15,7 +14,7 @@ import com.frc107.scouting.R;
 import com.frc107.scouting.utils.PermissionUtils;
 import com.frc107.scouting.utils.StringUtils;
 import com.frc107.scouting.utils.ViewUtils;
-import com.frc107.scouting.form.BaseActivity;
+import com.frc107.scouting.BaseActivity;
 import com.frc107.scouting.ui.questionWrappers.RadioWrapper;
 import com.frc107.scouting.ui.questionWrappers.TextWrapper;
 

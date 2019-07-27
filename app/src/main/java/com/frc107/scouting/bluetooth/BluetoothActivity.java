@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.frc107.scouting.R;
-import com.frc107.scouting.form.BaseActivity;
+import com.frc107.scouting.BaseActivity;
 
 public class BluetoothActivity extends BaseActivity {
     @Override

@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.frc107.scouting.R;
-import com.frc107.scouting.form.BaseActivity;
+import com.frc107.scouting.BaseActivity;
 
 public class BluetoothChildDevicesActivity extends BaseActivity {
     private BluetoothChildDevicesViewModel viewModel;

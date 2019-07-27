@@ -3,7 +3,7 @@ package com.frc107.scouting.analysis.attribute;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
-import com.frc107.scouting.form.BaseActivity;
+import com.frc107.scouting.BaseActivity;
 
 import android.view.View;
 import android.widget.ListView;

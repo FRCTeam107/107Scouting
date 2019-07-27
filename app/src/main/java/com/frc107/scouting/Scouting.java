@@ -99,13 +99,13 @@ public class Scouting {
         return fileService;
     }
 
-    private Integer teamNumber;
-    public void setTeamNumber(Integer teamNumber) {
-        this.teamNumber = teamNumber;
+    private String userInitials;
+    public void setUserInitials(String userInitials) {
+        this.userInitials = userInitials;
     }
 
-    public Integer getTeamNumber() {
-        return teamNumber;
+    public String getUserInitials() {
+        return userInitials;
     }
 
     private String uniqueId;

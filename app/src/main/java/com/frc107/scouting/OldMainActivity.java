@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import com.frc107.scouting.admin.AdminActivity;
 import com.frc107.scouting.pit.PitActivity;
-import com.frc107.scouting.form.BaseActivity;
 
 import android.provider.Settings;
 import android.view.View;

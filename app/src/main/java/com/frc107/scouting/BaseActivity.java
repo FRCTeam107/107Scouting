@@ -1,17 +1,21 @@
-package com.frc107.scouting.form;
+package com.frc107.scouting;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.frc107.scouting.BuildConfig;
-import com.frc107.scouting.MainActivity;
-import com.frc107.scouting.R;
-import com.frc107.scouting.Scouting;
 import com.frc107.scouting.admin.AdminActivity;
+import com.frc107.scouting.callbacks.ICallback;
+import com.frc107.scouting.callbacks.ICallbackWithParam;
+import com.frc107.scouting.callbacks.ICallbackWithParamAndResult;
 import com.frc107.scouting.utils.PermissionUtils;
 import com.frc107.scouting.utils.ViewUtils;
 
@@ -84,6 +88,41 @@ public abstract class BaseActivity extends AppCompatActivity {
             intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", file));
             startActivity(Intent.createChooser(intent, "Share app"));
         }
+    }
+
+    public void showTextDialog(String title, ICallbackWithParamAndResult<String, String> setTextWithError, ICallback onCancel) {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setTitle(title);
+        final EditText editText = new EditText(this);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        editText.setLayoutParams(layoutParams);
+
+        alertBuilder.setView(editText);
+        alertBuilder.setPositiveButton("OK", (dialog, which) -> {
+            String text = editText.getText().toString();
+            String error = setTextWithError.call(text);
+            if (error != null) {
+                editText.setText(null);
+                editText.setHint(error);
+                return;
+            }
+
+            dialog.dismiss();
+        });
+        alertBuilder.setNegativeButton("Cancel", (dialog, which) -> {
+            dialog.cancel();
+        });
+        alertBuilder.setOnCancelListener(dialog -> {
+            dialog.dismiss();
+            onCancel.call();
+        });
+        alertBuilder.show();
+    }
+
+    protected void showMessage(String message, int length) {
+        Toast.makeText(this, message, length).show();
     }
 
     public void focusOnView(int viewId) {

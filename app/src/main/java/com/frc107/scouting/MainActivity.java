@@ -1,18 +1,13 @@
 package com.frc107.scouting;
 
 import android.Manifest;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
 import com.frc107.scouting.analysis.attribute.AttributeAnalysisActivity;
 import com.frc107.scouting.analysis.team.TeamAnalysisActivity;
-import com.frc107.scouting.form.BaseActivity;
 import com.frc107.scouting.pit.PitActivity;
 import com.frc107.scouting.utils.PermissionUtils;
 
@@ -24,6 +19,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import android.view.MenuItem;
 
+import com.frc107.scouting.utils.StringUtils;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -157,6 +153,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     public void goToPit(View view) {
-        startActivity(new Intent(this, PitActivity.class));
+        showTextDialog(
+                "Enter initials:",
+                value -> {
+                    if (StringUtils.isEmptyOrNull(value)) {
+                        return "Can't use empty initials.";
+                    }
+
+                    Scouting.getInstance().setUserInitials(value);
+                    startActivity(new Intent(this, PitActivity.class));
+                    return null;
+                },
+                () -> showMessage("Cannot scout with empty initials.",Toast.LENGTH_SHORT));
     }
 }

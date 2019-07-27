@@ -2,7 +2,7 @@ package com.frc107.scouting.bluetooth;
 
 import android.os.Bundle;
 
-import com.frc107.scouting.form.BaseActivity;
+import com.frc107.scouting.BaseActivity;
 
 import androidx.lifecycle.ViewModelProviders;
 
