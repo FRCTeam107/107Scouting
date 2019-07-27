@@ -16,7 +16,9 @@ import com.frc107.scouting.admin.AdminActivity;
 import com.frc107.scouting.callbacks.ICallback;
 import com.frc107.scouting.callbacks.ICallbackWithParam;
 import com.frc107.scouting.callbacks.ICallbackWithParamAndResult;
+import com.frc107.scouting.pit.PitActivity;
 import com.frc107.scouting.utils.PermissionUtils;
+import com.frc107.scouting.utils.StringUtils;
 import com.frc107.scouting.utils.ViewUtils;
 
 import java.io.File;
@@ -46,13 +48,23 @@ public abstract class BaseActivity extends AppCompatActivity {
             case R.id.send_data:
                 sendData();
                 return true;
+            case R.id.end_shift:
+                showInitialsDialog(value -> {
+                            if (StringUtils.isEmptyOrNull(value)) {
+                                return "Can't use empty initials.";
+                            }
+
+                            Scouting.getInstance().setUserInitials(value);
+                            return null;
+                        }, "Can't use empty initials.");
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
     private void sendData() {
-        File matchFile = Scouting.FILE_SERVICE.getMatchFile(false);
+        File matchFile = Scouting.FILE_SERVICE.getFile("ConcatenatedMatch.csv");
         if (matchFile != null)
             sendFile(matchFile);
     }
@@ -105,7 +117,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             String error = setTextWithError.call(text);
             if (error != null) {
                 editText.setText(null);
-                editText.setHint(error);
+                showMessage(error, Toast.LENGTH_LONG);
                 return;
             }
 
@@ -119,6 +131,13 @@ public abstract class BaseActivity extends AppCompatActivity {
             onCancel.call();
         });
         alertBuilder.show();
+    }
+
+    protected void showInitialsDialog(ICallbackWithParamAndResult<String, String> onFinish, String cancelMessage) {
+        showTextDialog(
+                "Enter initials:",
+                onFinish::call,
+                () -> showMessage(cancelMessage,Toast.LENGTH_SHORT));
     }
 
     protected void showMessage(String message, int length) {

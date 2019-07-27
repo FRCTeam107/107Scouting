@@ -99,15 +99,15 @@ public class AdminActivity extends BaseActivity implements IUIListener {
     }
 
     public void sendPitData(View view) {
-        sendFile(Scouting.FILE_SERVICE.getPitFile(false));
+        //sendFile(Scouting.FILE_SERVICE.getPitFile(false));
     }
 
     public void sendConcatMatchData(View view) {
-        sendFile(Scouting.FILE_SERVICE.getMatchFile(true));
+        //sendFile(Scouting.FILE_SERVICE.getFile("ConcatenatedMatch.csv"));
     }
 
     public void sendConcatPitData(View view) {
-        sendFile(Scouting.FILE_SERVICE.getPitFile(true));
+        //sendFile(Scouting.FILE_SERVICE.getPitFile(true));
     }
 
     public void goToTeamAnalysis(View view) {

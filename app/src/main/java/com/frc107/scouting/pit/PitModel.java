@@ -9,7 +9,7 @@ import java.io.File;
 
 public class PitModel {
     private static final Scouting.eTable TABLE = Scouting.eTable.PIT;
-    private static final FileService.eFile FILE = FileService.eFile.PIT;
+    private static final FileService.eFileType FILE_TYPE = FileService.eFileType.PIT;
 
     private Integer teamNumber;
     private Integer sandstormOperation;
@@ -22,6 +22,11 @@ public class PitModel {
     private String comments;
 
     public void setTeamNumber(String teamNumberAsString) {
+        if (StringUtils.isEmptyOrNull(teamNumberAsString)) {
+            teamNumber = null;
+            return;
+        }
+
         try {
             teamNumber = Integer.parseInt(teamNumberAsString);
         } catch (NumberFormatException e) {
@@ -84,15 +89,10 @@ public class PitModel {
                 habitatTime,
                 programmingLanguage,
                 bonus,
-                comments);
+                comments) + Scouting.NEW_LINE;
 
         FileService fileService = Scouting.getInstance().getFileService();
-        boolean success;
-        if (fileService.fileExists(FILE))
-            success = fileService.writeToEndOfFile(FILE, entry);
-        else
-            success = fileService.writeDataToNewFile(FILE, entry);
-        return success;
+        return fileService.saveData(FILE_TYPE, Scouting.getInstance().getUserInitials(), entry);
     }
 
     private String photoFileName;

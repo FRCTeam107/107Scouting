@@ -115,23 +115,23 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void sendMatchData() {
-        File file = Scouting.FILE_SERVICE.getMatchFile(false);
-        sendFile(file);
+        //File file = Scouting.FILE_SERVICE.getMatchFile(false);
+        //sendFile(file);
     }
 
     private void sendPitData() {
-        File file = Scouting.FILE_SERVICE.getPitFile(false);
-        sendFile(file);
+        //File file = Scouting.FILE_SERVICE.getPitFile(false);
+        //sendFile(file);
     }
 
     private void sendConcatMatchData() {
-        File file = Scouting.FILE_SERVICE.getMatchFile(true);
-        sendFile(file);
+        //File file = Scouting.FILE_SERVICE.getMatchFile(true);
+        //sendFile(file);
     }
 
     private void sendConcatPitData() {
-        File file = Scouting.FILE_SERVICE.getPitFile(true);
-        sendFile(file);
+        //File file = Scouting.FILE_SERVICE.getPitFile(true);
+        //sendFile(file);
     }
 
     private void sendPitPhotos() {
@@ -153,9 +153,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     public void goToPit(View view) {
-        showTextDialog(
-                "Enter initials:",
-                value -> {
+        String initials = Scouting.getInstance().getUserInitials();
+        if (!StringUtils.isEmptyOrNull(initials)) {
+            startActivity(new Intent(this, PitActivity.class));
+            return;
+        }
+
+        showInitialsDialog(value -> {
                     if (StringUtils.isEmptyOrNull(value)) {
                         return "Can't use empty initials.";
                     }
@@ -163,7 +167,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     Scouting.getInstance().setUserInitials(value);
                     startActivity(new Intent(this, PitActivity.class));
                     return null;
-                },
-                () -> showMessage("Cannot scout with empty initials.",Toast.LENGTH_SHORT));
+                }, "Cannot scout with empty initials.");
     }
 }

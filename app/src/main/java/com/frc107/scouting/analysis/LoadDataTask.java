@@ -44,7 +44,7 @@ public class LoadDataTask extends AsyncTask<Void, Void, SparseArray<TeamDetails>
     }
 
     public void loadData() {
-        File file = Scouting.FILE_SERVICE.getMatchFile(true);
+        File file = Scouting.FILE_SERVICE.getFile("ConcatenatedMatch.csv");
         if (file == null) {
             Log.d(Scouting.SCOUTING_TAG, "No concatenated match data.");
             return;
