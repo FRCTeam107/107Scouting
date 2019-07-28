@@ -86,7 +86,7 @@ public class Scouting {
 
         tables.add(pitTable);
 
-        FILE_SERVICE.loadFiles();
+        fileService.loadFiles();
     }
 
     public List<Table> getTables() {
@@ -95,11 +95,9 @@ public class Scouting {
 
     public static final FileService FILE_SERVICE = getInstance().getFileService();
 
-    private FileService fileService;
+    private FileService fileService = new FileService();
 
     public FileService getFileService() {
-        if (fileService == null)
-            fileService = new FileService();
         return fileService;
     }
 
