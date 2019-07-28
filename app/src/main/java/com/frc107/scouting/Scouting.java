@@ -1,10 +1,13 @@
 package com.frc107.scouting;
 
+import android.util.SparseArray;
+
 import com.frc107.scouting.form.Column;
 import com.frc107.scouting.form.Table;
 import com.frc107.scouting.utils.BluetoothService;
 import com.frc107.scouting.utils.FileService;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +15,7 @@ public class Scouting {
     public static final String VERSION_DATE = "4/21/2019 - 1:25";
     public static final String PREFERENCES_NAME = "ScoutingPreferences";
     public static final String EVENT_KEY_PREFERENCE = "eventKey";
+    public static final String USER_INITIALS_PREFERENCE = "userInitials";
     public static final String NEW_LINE = System.getProperty("line.separator");
     public static final String SCOUTING_TAG = "Scoutinator";
 
@@ -47,10 +51,8 @@ public class Scouting {
 
     public static final boolean SAVE_QUESTION_NAMES_AS_ANSWERS = false;
 
-    private static Scouting scouting;
+    private static Scouting scouting = new Scouting();
     public static Scouting getInstance() {
-        if (scouting == null)
-            scouting = new Scouting();
         return scouting;
     }
 
@@ -71,18 +73,20 @@ public class Scouting {
     }
 
     private Scouting() {
-        pitTable = new Table("Pit");
-        pitTable.addColumn(R.id.pit_team_number,                    new Column<>("pit_team_number", Integer.class));
-        pitTable.addColumn(R.id.pit_sandstorm_op,                   new Column<>("pit_sandstorm_op", Integer.class));
-        pitTable.addColumn(R.id.pit_sandstorm_preference,           new Column<>("pit_sandstorm_preference", Integer.class));
-        pitTable.addColumn(R.id.pit_sandstorm_highest_rocket_level, new Column<>("pit_sandstorm_highest_rocket_level", Integer.class));
-        pitTable.addColumn(R.id.pit_highest_habitat,                new Column<>("pit_highest_habitat", Integer.class));
-        pitTable.addColumn(R.id.pit_habitat_time,                   new Column<>("pit_habitat_time", String.class));
-        pitTable.addColumn(R.id.pit_programming_language,           new Column<>("pit_programming_language", String.class));
-        pitTable.addColumn(R.id.pit_bonus,                          new Column<>("pit_bonus", String.class));
-        pitTable.addColumn(R.id.pit_comments,                       new Column<>("pit_comments", String.class));
+        pitTable = new Table("Pit",
+                new Column<>(R.id.pit_team_number, "pit_team_number", Integer.class),
+                new Column<>(R.id.pit_sandstorm_op, "pit_sandstorm_op", Integer.class),
+                new Column<>(R.id.pit_sandstorm_preference, "pit_sandstorm_preference", Integer.class),
+                new Column<>(R.id.pit_sandstorm_highest_rocket_level, "pit_sandstorm_highest_rocket_level", Integer.class),
+                new Column<>(R.id.pit_highest_habitat, "pit_highest_habitat", Integer.class),
+                new Column<>(R.id.pit_habitat_time, "pit_habitat_time", String.class),
+                new Column<>(R.id.pit_programming_language, "pit_programming_language", String.class),
+                new Column<>(R.id.pit_bonus, "pit_bonus", String.class),
+                new Column<>(R.id.pit_comments, "pit_comments", String.class));
 
         tables.add(pitTable);
+
+        FILE_SERVICE.loadFiles();
     }
 
     public List<Table> getTables() {

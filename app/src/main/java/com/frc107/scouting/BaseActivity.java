@@ -3,6 +3,7 @@ package com.frc107.scouting;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,14 +50,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 sendData();
                 return true;
             case R.id.end_shift:
-                showInitialsDialog(value -> {
-                            if (StringUtils.isEmptyOrNull(value)) {
-                                return "Can't use empty initials.";
-                            }
-
-                            Scouting.getInstance().setUserInitials(value);
-                            return null;
-                        }, "Can't use empty initials.");
+                showInitialsDialog(() -> { });
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -133,11 +127,26 @@ public abstract class BaseActivity extends AppCompatActivity {
         alertBuilder.show();
     }
 
-    protected void showInitialsDialog(ICallbackWithParamAndResult<String, String> onFinish, String cancelMessage) {
+    private static final String emptyInitialsError = "Can't use empty initials.";
+    protected void showInitialsDialog(ICallback onFinish) {
         showTextDialog(
                 "Enter initials:",
-                onFinish::call,
-                () -> showMessage(cancelMessage,Toast.LENGTH_SHORT));
+                initials -> {
+                    if (StringUtils.isEmptyOrNull(initials)) {
+                        return emptyInitialsError;
+                    }
+
+                    Scouting.getInstance().setUserInitials(initials);
+
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences(Scouting.PREFERENCES_NAME, MODE_PRIVATE);
+                    SharedPreferences.Editor prefEditor = pref.edit();
+                    prefEditor.putString(Scouting.USER_INITIALS_PREFERENCE, initials);
+                    prefEditor.apply();
+
+                    onFinish.call();
+                    return null;
+                },
+                () -> showMessage(emptyInitialsError, Toast.LENGTH_SHORT));
     }
 
     protected void showMessage(String message, int length) {

@@ -39,12 +39,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO: load records of local scouting files
-
-        checkForPermissions();
-
-        initializeSettings();
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -54,6 +48,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        // TODO: load records of local scouting files
+
+        checkForPermissions();
+
+        initializeSettings();
     }
 
     private void initializeSettings() {
@@ -63,8 +63,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         Scouting.getInstance().setUniqueId(uniqueId);
 
         SharedPreferences pref = getSharedPreferences(Scouting.PREFERENCES_NAME, MODE_PRIVATE);
+
         String eventKey = pref.getString(Scouting.EVENT_KEY_PREFERENCE, "");
         Scouting.getInstance().setEventKey(eventKey);
+
+        String initials = pref.getString(Scouting.USER_INITIALS_PREFERENCE, "");
+        Scouting.getInstance().setUserInitials(initials);
     }
 
     @Override
@@ -159,14 +163,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             return;
         }
 
-        showInitialsDialog(value -> {
-                    if (StringUtils.isEmptyOrNull(value)) {
-                        return "Can't use empty initials.";
-                    }
-
-                    Scouting.getInstance().setUserInitials(value);
-                    startActivity(new Intent(this, PitActivity.class));
-                    return null;
-                }, "Cannot scout with empty initials.");
+        showInitialsDialog(() -> startActivity(new Intent(this, PitActivity.class)));
     }
 }

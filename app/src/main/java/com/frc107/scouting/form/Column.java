@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Column<T> {
+    private int id;
     private String name;
     private ArrayList<T> values = new ArrayList<>();
     private Class<T> typeClass; // Used for typechecking
 
-    public Column(String name, Class<T> typeClass) {
+    public Column(int id, String name, Class<T> typeClass) {
+        this.id = id;
         this.name = name;
         this.typeClass = typeClass;
     }
@@ -31,6 +33,10 @@ public class Column<T> {
 
     public List<T> getValues() {
         return values;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {

@@ -108,10 +108,9 @@ public class FileService {
             photoDirectory.mkdir();
 
         fileDefinitions = new ArrayList<>();
-        loadFiles();
     }
 
-    private void loadFiles() {
+    public void loadFiles() {
         File[] files = scoutingDirectory.listFiles();
         for (File file : files) {
             if (file.isDirectory())
@@ -214,7 +213,7 @@ public class FileService {
         return success;
     }
 
-    private FileDefinition getMostRecentFile(eFileType fileType, String initials) {
+    public FileDefinition getMostRecentFile(eFileType fileType, String initials) {
         List<FileDefinition> definitions = fileDefinitions;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             definitions.sort((o1, o2) -> o2.getDateCreated().compareTo(o1.getDateCreated()));
@@ -294,7 +293,7 @@ public class FileService {
 
     }
 
-    class FileDefinition {
+    public class FileDefinition {
         private File file;
         private Calendar dateCreated;
         private String initials;

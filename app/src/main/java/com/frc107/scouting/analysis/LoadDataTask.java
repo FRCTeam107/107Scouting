@@ -55,7 +55,7 @@ public class LoadDataTask extends AsyncTask<Void, Void, SparseArray<TeamDetails>
             line = bufferedReader.readLine(); // Skip first line, which is the header
             while (line != null) {
                 String[] columns = line.split(",");
-                handleColumns(columns);
+                handleColumnsMatchOld(columns);
 
                 line = bufferedReader.readLine();
             }
@@ -70,7 +70,7 @@ public class LoadDataTask extends AsyncTask<Void, Void, SparseArray<TeamDetails>
         }
     }
 
-    private void handleColumns(String[] columns) {
+    private void handleColumnsMatchOld(String[] columns) {
         int matchNum = Integer.parseInt(columns[COL_MATCH_NUM]);
         int teamNum = Integer.parseInt(columns[COL_TEAM_NUM]);
         int startingItem = Integer.parseInt(columns[COL_STARTING_ITEM]);
