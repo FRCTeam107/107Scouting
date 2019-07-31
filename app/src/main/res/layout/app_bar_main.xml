@@ -22,8 +22,6 @@
 
     <include layout="@layout/content_main" />
 
-
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
@@ -32,6 +30,7 @@
         android:layout_margin="16dp"
         android:clickable="true"
         android:focusable="true"
-        app:srcCompat="@drawable/ic_menu_send" />
+        app:srcCompat="@drawable/ic_menu_send"
+        android:onClick="tryToSendData" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

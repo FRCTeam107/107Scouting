@@ -1,25 +1,24 @@
 package com.frc107.scouting.analysis.attribute;
 
-import android.app.Application;
+import androidx.lifecycle.ViewModel;
 
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.MutableLiveData;
-
-import com.frc107.scouting.utils.ISimpleCallback;
+import com.frc107.scouting.callbacks.ICallback;
 import com.frc107.scouting.analysis.attribute.AttributeAnalysisModel.AnalysisElement;
+import com.frc107.scouting.callbacks.ICallbackWithParam;
 
 import java.util.ArrayList;
 
-public class AttributeAnalysisViewModel extends AndroidViewModel implements ISimpleCallback {
+public class AttributeAnalysisViewModel extends ViewModel {
     private AttributeAnalysisModel model;
-    private MutableLiveData<Boolean> dataLoadedLiveData;
-    private MutableLiveData<Integer> attributeLiveData;
 
-    public AttributeAnalysisViewModel(Application application) {
-        super(application);
-        model = new AttributeAnalysisModel(this);
-        dataLoadedLiveData = new MutableLiveData<>();
-        attributeLiveData = new MutableLiveData<>();
+    public AttributeAnalysisViewModel() { }
+
+    public void initialize(ICallback onDataLoaded, ICallback refreshUI, ICallbackWithParam<String> onError) {
+        model = new AttributeAnalysisModel(onDataLoaded, refreshUI, onError);
+    }
+
+    public boolean hasDataBeenLoaded() {
+        return model.hasDataBeenLoaded();
     }
 
     public void loadData() {
@@ -30,30 +29,23 @@ public class AttributeAnalysisViewModel extends AndroidViewModel implements ISim
         return model.getElements();
     }
 
-    public boolean isDataLoaded() {
-        return model.isDataLoaded();
-    }
-
-    public MutableLiveData<Boolean> getDataLoadedLiveData() {
-        return dataLoadedLiveData;
-    }
-
     public void setAttributeAndUpdateElements(int attribute) {
         model.setAttributeAndUpdateElements(attribute);
-        attributeLiveData.setValue(attribute);
+    }
+
+    public void setTeamNumberAndUpdateElements(int which) {
+        model.setTeamNumberAndUpdateElements(which);
     }
 
     public int getCurrentAttributeType() {
         return model.getCurrentAttributeType();
     }
 
-    public MutableLiveData<Integer> getAttributeLiveData() {
-        return attributeLiveData;
+    public String[] getAttributeNames() {
+        return model.getAttributeNames();
     }
 
-    @Override
-    public void callback(boolean success) {
-        if (dataLoadedLiveData.getValue() == null || dataLoadedLiveData.getValue() != success)
-            dataLoadedLiveData.setValue(success);
+    public String[] getTeamNumbers() {
+        return model.getTeamNumbers();
     }
 }

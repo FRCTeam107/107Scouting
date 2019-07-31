@@ -9,6 +9,10 @@
                 android:id="@+id/pit"
                 android:title="@string/pit"
                 android:icon="@drawable/ic_baseline_assignment_24px" />
+            <item
+                android:id="@+id/concat"
+                android:title="@string/concatenate"
+                android:icon="@drawable/ic_baseline_assessment_24px" />
         </menu>
     </item>
 
@@ -39,10 +43,6 @@
 
     <item android:title="@string/analysis">
         <menu>
-            <item
-                android:id="@+id/team_analysis"
-                android:title="@string/team_analysis"
-                android:icon="@drawable/ic_baseline_assessment_24px" />
             <item
                 android:id="@+id/attribute_analysis"
                 android:title="@string/attribute_analysis"

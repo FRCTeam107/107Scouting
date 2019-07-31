@@ -4,14 +4,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-import com.frc107.scouting.form.ISetter;
+import com.frc107.scouting.callbacks.ICallbackWithParam;
 
 public class TextWrapper {
     private EditText editText;
     private TextWatcher textWatcher;
-    private ISetter<String> setter;
+    private ICallbackWithParam<String> setter;
 
-    public TextWrapper(EditText editText, ISetter<String> setter) {
+    public TextWrapper(EditText editText, ICallbackWithParam<String> setter) {
         this.editText = editText;
         this.setter = setter;
 
@@ -22,7 +22,7 @@ public class TextWrapper {
     private TextWatcher createTextWatcher() {
         return new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                setter.set(s.toString());
+                setter.call(s.toString());
             }
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             public void afterTextChanged(Editable s) { }

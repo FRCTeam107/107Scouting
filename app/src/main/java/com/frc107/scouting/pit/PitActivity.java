@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.Toast;
 
@@ -49,39 +48,10 @@ public class PitActivity extends BaseActivity {
 
         viewModel = ViewModelProviders.of(this).get(PitViewModel.class);
 
-        SparseIntArray radioButtonMappings = new SparseIntArray();
-        radioButtonMappings.put(R.id.visionSystemSandstorm_Radiobtn, 0);
-        radioButtonMappings.put(R.id.cameraDrivingSandstorm_Radiobtn, 1);
-        radioButtonMappings.put(R.id.blindDrivingSandstorm_Radiobtn, 2);
-        radioButtonMappings.put(R.id.noDrivingSandstorm_Radiobtn, 3);
-
-        radioButtonMappings.put(R.id.rocketshipPreferenceSandstorm_Radiobtn, 0);
-        radioButtonMappings.put(R.id.cargoshipPreferenceSandstorm_Radiobtn, 1);
-        radioButtonMappings.put(R.id.noPreferenceSandstorm_Radiobtn, 2);
-
-        radioButtonMappings.put(R.id.topRocketLevelSandstorm_Radiobtn, 0);
-        radioButtonMappings.put(R.id.middleRocketLevelSandstorm_Radiobtn, 1);
-        radioButtonMappings.put(R.id.bottomRocketLevelSandstorm_Radiobtn, 2);
-        radioButtonMappings.put(R.id.noRocketLevelSandstorm_Radiobtn, 3);
-
-        radioButtonMappings.put(R.id.topHabitatLevel_Radiobtn, 0);
-        radioButtonMappings.put(R.id.middleRocketLevelSandstorm_Radiobtn, 1);
-        radioButtonMappings.put(R.id.bottomRocketLevelSandstorm_Radiobtn, 2);
-        radioButtonMappings.put(R.id.noHabitatLevel_Radiobtn, 3);
-
-        sandstormOpWrapper = new RadioWrapper(
-                findViewById(R.id.pit_sandstorm_op),
-                radioButtonMappings,
-                viewModel::setSandstormOperation);
-        sandstormPrefWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_preference),
-                radioButtonMappings,
-                viewModel::setSandstormPreference);
-        highestRocketLevelWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_highest_rocket_level),
-                radioButtonMappings,
-                viewModel::setSandstormHighestRocketLevel);
-        highestHabLevelWrapper = new RadioWrapper(findViewById(R.id.pit_highest_habitat),
-                radioButtonMappings,
-                viewModel::setHighestHabitat);
+        sandstormOpWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_op), viewModel::setSandstormOperation);
+        sandstormPrefWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_preference), viewModel::setSandstormPreference);
+        highestRocketLevelWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_highest_rocket_level), viewModel::setSandstormHighestRocketLevel);
+        highestHabLevelWrapper = new RadioWrapper(findViewById(R.id.pit_highest_habitat), viewModel::setHighestHabitat);
 
         programmingLangWrapper = new TextWrapper(findViewById(R.id.pit_programming_language),               viewModel::setProgrammingLanguage);
         teamNumWrapper = new TextWrapper(findViewById(R.id.pit_team_number),                                viewModel::setTeamNumber);
@@ -113,8 +83,9 @@ public class PitActivity extends BaseActivity {
         if (!PermissionUtils.verifyWritePermissions(this))
             return;
 
-        if (!viewModel.isFinished()) {
-            // todo: replace this focusOnView(viewModel.getUnfinishedQuestionId());
+        int id = viewModel.getUnfinishedQuestionId();
+        if (id != -1) {
+            focusOnView(id);
             return;
         }
 
@@ -175,11 +146,11 @@ public class PitActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        /*if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK) {
-            if (!viewModel.rotateAndCompressPhoto())
+        if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK) {
+            if (!viewModel.compressPhoto())
                 Toast.makeText(this, "Failure while compressing photo.", Toast.LENGTH_SHORT).show();
             else
                 Toast.makeText(this, "Successfully took photo!", Toast.LENGTH_SHORT).show();
-        }*/
+        }
     }
 }

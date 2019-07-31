@@ -3,42 +3,63 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginRight="10dp">
 
-    <Button
+    <!--<Button
         android:id="@+id/analysisChooseAttributeButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/textview_spacer"
         android:onClick="attributeButtonPressed"
-        android:text="@string/analysisChooseAttribute" />
+        android:text="@string/analysisChooseAttribute" />-->
 
     <LinearLayout
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/textview_spacer"
         android:layout_width="match_parent"
         android:orientation="horizontal">
 
-        <TextView
+        <!--<TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp"
             android:text="@string/teamNumberHeading"
             android:textStyle="bold"
-            android:autoSizeMinTextSize="@dimen/min_text_size"
-            android:autoSizeMaxTextSize="@dimen/max_text_size"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical" />-->
 
-        <TextView
-            android:id="@+id/attributeTypeTextView"
+        <Spinner
+            android:id="@+id/team_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:autoSizeMinTextSize="@dimen/min_text_size"
-            android:autoSizeMaxTextSize="@dimen/max_text_size"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="?android:attr/listDivider" />
+
+        <Spinner
+            android:id="@+id/attribute_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical" />
+
     </LinearLayout>
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
 
     <ListView
         android:id="@+id/elementListView"

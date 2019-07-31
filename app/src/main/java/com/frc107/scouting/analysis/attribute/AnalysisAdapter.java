@@ -12,9 +12,11 @@ import com.frc107.scouting.analysis.attribute.AttributeAnalysisModel.AnalysisEle
 import com.frc107.scouting.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class AnalysisAdapter extends ArrayAdapter<AnalysisElement> {
-    private ArrayList<AnalysisElement> elements;
+    private List<AnalysisElement> elements;
 
     AnalysisAdapter(Context context, ArrayList<AnalysisElement> elements) {
         super(context, 0, elements);
@@ -23,17 +25,11 @@ public class AnalysisAdapter extends ArrayAdapter<AnalysisElement> {
 
     @Override
     public int getCount() {
-        if (elements == null)
-            return 0;
-
         return elements.size();
     }
 
     @Override
     public AnalysisElement getItem(int position) {
-        if (elements == null)
-            return null;
-
         return elements.get(position);
     }
 
@@ -48,9 +44,8 @@ public class AnalysisAdapter extends ArrayAdapter<AnalysisElement> {
         if (element == null)
             return convertView;
 
-        if (convertView == null) {
+        if (convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_analysis_element, parent, false);
-        }
 
         TextView teamNumTextView = convertView.findViewById(R.id.elementTeamNumTextView);
         TextView elementTextView = convertView.findViewById(R.id.elementAttributeTextView);
@@ -60,5 +55,4 @@ public class AnalysisAdapter extends ArrayAdapter<AnalysisElement> {
 
         return convertView;
     }
-
 }

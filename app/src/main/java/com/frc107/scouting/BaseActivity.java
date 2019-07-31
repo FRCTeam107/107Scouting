@@ -96,9 +96,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void showTextDialog(String title, ICallbackWithParamAndResult<String, String> setTextWithError, ICallback onCancel) {
+    public void showInitialsDialog(ICallback onFinish) {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-        alertBuilder.setTitle(title);
+        alertBuilder.setTitle("Enter initials:");
         final EditText editText = new EditText(this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -108,45 +108,28 @@ public abstract class BaseActivity extends AppCompatActivity {
         alertBuilder.setView(editText);
         alertBuilder.setPositiveButton("OK", (dialog, which) -> {
             String text = editText.getText().toString();
-            String error = setTextWithError.call(text);
-            if (error != null) {
-                editText.setText(null);
-                showMessage(error, Toast.LENGTH_LONG);
+            if (text.length() == 0) {
+                showMessage("Cannot use empty initials. Try again.", Toast.LENGTH_SHORT);
                 return;
             }
 
-            dialog.dismiss();
+            Scouting.getInstance().setUserInitials(text);
+
+            SharedPreferences pref = getApplicationContext().getSharedPreferences(Scouting.USER_INITIALS_PREFERENCE, MODE_PRIVATE);
+            SharedPreferences.Editor prefEditor = pref.edit();
+            prefEditor.putString(Scouting.EVENT_KEY_PREFERENCE, text);
+            prefEditor.apply();
+
+            onFinish.call();
         });
         alertBuilder.setNegativeButton("Cancel", (dialog, which) -> {
             dialog.cancel();
         });
         alertBuilder.setOnCancelListener(dialog -> {
             dialog.dismiss();
-            onCancel.call();
+            showMessage("No initials set.", Toast.LENGTH_SHORT);
         });
         alertBuilder.show();
-    }
-
-    private static final String emptyInitialsError = "Can't use empty initials.";
-    protected void showInitialsDialog(ICallback onFinish) {
-        showTextDialog(
-                "Enter initials:",
-                initials -> {
-                    if (StringUtils.isEmptyOrNull(initials)) {
-                        return emptyInitialsError;
-                    }
-
-                    Scouting.getInstance().setUserInitials(initials);
-
-                    SharedPreferences pref = getApplicationContext().getSharedPreferences(Scouting.PREFERENCES_NAME, MODE_PRIVATE);
-                    SharedPreferences.Editor prefEditor = pref.edit();
-                    prefEditor.putString(Scouting.USER_INITIALS_PREFERENCE, initials);
-                    prefEditor.apply();
-
-                    onFinish.call();
-                    return null;
-                },
-                () -> showMessage(emptyInitialsError, Toast.LENGTH_SHORT));
     }
 
     protected void showMessage(String message, int length) {

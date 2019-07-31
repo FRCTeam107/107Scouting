@@ -6,7 +6,7 @@
     <dimen name="textview_spacer">10dp</dimen>
     <dimen name="question_height">50dp</dimen>
     <dimen name="label_text_size">18sp</dimen>
-    <dimen name="min_text_size">9sp</dimen>
+    <dimen name="min_text_size">5sp</dimen>
     <dimen name="max_text_size">14sp</dimen>
     <dimen name="text_size_step">2sp</dimen>
 </resources>

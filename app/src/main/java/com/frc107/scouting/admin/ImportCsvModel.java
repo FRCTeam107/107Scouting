@@ -3,6 +3,7 @@ package com.frc107.scouting.admin;
 import android.util.Log;
 
 import com.frc107.scouting.Scouting;
+import com.frc107.scouting.form.eTable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class ImportCsvModel {
-    public void importCsv(Scouting.eTable targetTable, InputStream inputStream) {
+    public void importCsv(eTable targetTable, InputStream inputStream) {
         try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
              BufferedReader reader = new BufferedReader(inputStreamReader)) {
             ArrayList<String> lines = new ArrayList<>();

@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="Tap screen to begin scouting!"
-        android:onClick="goToPit"
+        android:onClick="onMainScreenTap"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

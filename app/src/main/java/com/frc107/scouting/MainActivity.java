@@ -7,11 +7,11 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.frc107.scouting.analysis.attribute.AttributeAnalysisActivity;
-import com.frc107.scouting.analysis.team.TeamAnalysisActivity;
+import com.frc107.scouting.form.eTable;
 import com.frc107.scouting.pit.PitActivity;
+import com.frc107.scouting.utils.FileService;
 import com.frc107.scouting.utils.PermissionUtils;
 
-import android.provider.Settings;
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
@@ -49,19 +49,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        // TODO: load records of local scouting files
-
         checkForPermissions();
 
         initializeSettings();
     }
 
     private void initializeSettings() {
-        // todo: dont' think we need this anyumore, just use initial sand time stanp for filenames
-        String uniqueId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-
-        Scouting.getInstance().setUniqueId(uniqueId);
-
         SharedPreferences pref = getSharedPreferences(Scouting.PREFERENCES_NAME, MODE_PRIVATE);
 
         String eventKey = pref.getString(Scouting.EVENT_KEY_PREFERENCE, "");
@@ -87,7 +80,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         switch (id) {
             case R.id.pit:
                 drawerLayout.closeDrawer(GravityCompat.START);
-                startActivity(new Intent(this, PitActivity.class));
+                tryToGoToPit();
+                break;
+            case R.id.concat:
+                drawerLayout.closeDrawer(GravityCompat.START);
+                startActivity(new Intent(this, ConcatActivity.class));
                 break;
             case R.id.send_match_data:
                 sendMatchData();
@@ -103,10 +100,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
             case R.id.send_pit_photos:
                 sendPitPhotos();
-                break;
-            case R.id.team_analysis:
-                drawerLayout.closeDrawer(GravityCompat.START);
-                startActivity(new Intent(this, TeamAnalysisActivity.class));
                 break;
             case R.id.attribute_analysis:
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -156,7 +149,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-    public void goToPit(View view) {
+    public void onMainScreenTap(View view) {
+        tryToGoToPit();
+    }
+
+    private void tryToGoToPit() {
         String initials = Scouting.getInstance().getUserInitials();
         if (!StringUtils.isEmptyOrNull(initials)) {
             startActivity(new Intent(this, PitActivity.class));
@@ -164,5 +161,27 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
 
         showInitialsDialog(() -> startActivity(new Intent(this, PitActivity.class)));
+    }
+
+    public void tryToSendData(View view) {
+        /*
+         * TODO:
+         * ask user which file to send
+         *
+         * show listview of filedefinitions sorted by date (new at top)
+         * send whichever one is tapped
+         */
+
+        String initials = Scouting.getInstance().getUserInitials();
+        if (!StringUtils.isEmptyOrNull(initials)) {
+            File file = Scouting.FILE_SERVICE.getMostRecentFileDefinition(eTable.PIT, initials).getFile();
+            sendFile(file);
+            return;
+        }
+
+        showInitialsDialog(() -> {
+            File file = Scouting.FILE_SERVICE.getMostRecentFileDefinition(eTable.PIT, initials).getFile();
+            sendFile(file);
+        });
     }
 }

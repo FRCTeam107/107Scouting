@@ -12,12 +12,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.frc107.scouting.R;
-import com.frc107.scouting.bluetooth.BluetoothActivity;
 import com.frc107.scouting.BaseActivity;
 import com.frc107.scouting.ui.IUIListener;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.analysis.attribute.AttributeAnalysisActivity;
-import com.frc107.scouting.analysis.team.TeamAnalysisActivity;
 import com.frc107.scouting.utils.PermissionUtils;
 
 import java.util.ArrayList;
@@ -110,12 +108,6 @@ public class AdminActivity extends BaseActivity implements IUIListener {
         //sendFile(Scouting.FILE_SERVICE.getPitFile(true));
     }
 
-    public void goToTeamAnalysis(View view) {
-        Intent intent = new Intent(getApplicationContext(), TeamAnalysisActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
     public void goToAttributeAnalysis(View view) {
         Intent intent = new Intent(getApplicationContext(), AttributeAnalysisActivity.class);
         startActivity(intent);
@@ -133,11 +125,5 @@ public class AdminActivity extends BaseActivity implements IUIListener {
             message = "Error while downloading OPRs. Double-check your event key.";
 
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-    }
-
-    public void goToBluetoothScreen(View view) {
-        Intent intent = new Intent(getApplicationContext(), BluetoothActivity.class);
-        startActivity(intent);
-        finish();
     }
 }

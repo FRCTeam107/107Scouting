@@ -1,41 +1,29 @@
 package com.frc107.scouting.analysis.attribute;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 
 import com.frc107.scouting.BaseActivity;
 
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProviders;
 
 import com.frc107.scouting.R;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class AttributeAnalysisActivity extends BaseActivity {
-    private AnalysisAdapter adapter;
+    private AnalysisAdapter listAdapter;
     private ListView elementListView;
-    private TextView attributeTypeTextView;
+
     private AttributeAnalysisViewModel viewModel;
-
-    private static final String[] ATTRIBUTE_TYPES = new String[]{
-            "Average Cargo",
-            "Average Hatch Panel",
-            "Average Cargo Ship",
-            "Average Rocket Level 1",
-            "Average Rocket Level 2",
-            "Average Rocket Level 3",
-            "Hab 2 Climb Amount",
-            "Hab 3 Climb Amount",
-            "Successful Defense Amount",
-            "OPR",
-            "DPR"
-    };
-
-    private static final String CURRENT_ATTRIBUTE_KEY = "CURRENT_ATTRIBUTE_KEY";
-
-    private int currentAttributeType = 0;
+    private ArrayList<String> teamNumbers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,49 +31,70 @@ public class AttributeAnalysisActivity extends BaseActivity {
         setContentView(R.layout.activity_attribute_analysis);
 
         viewModel = ViewModelProviders.of(this).get(AttributeAnalysisViewModel.class);
+        viewModel.initialize(this::onDataLoaded, this::updateUI, this::onDataLoadError);
 
-        adapter = new AnalysisAdapter(this, viewModel.getElements());
-        elementListView = findViewById(R.id.elementListView);
-        elementListView.setAdapter(adapter);
-
-        attributeTypeTextView = findViewById(R.id.attributeTypeTextView);
-
-        // These don't run when onCreate is called.
-        viewModel.getDataLoadedLiveData().observe(this, this::onDataLoaded);
-        viewModel.getAttributeLiveData().observe(this, this::onAnalysisElementsUpdated);
-
-        if (viewModel.isDataLoaded())
-            setAttributeType(viewModel.getCurrentAttributeType());
-        else
+        if (!viewModel.hasDataBeenLoaded()) {
             viewModel.loadData();
+        } else {
+            updateUI();
+        }
     }
 
-    private void onAnalysisElementsUpdated(int attribute) {
-        adapter.notifyDataSetChanged();
+    private void onDataLoadError(String error) {
+        showMessage(error, Toast.LENGTH_LONG);
+        finish();
+    }
+
+    private void onDataLoaded() {
+        initialize();
+    }
+
+    private void initialize() {
         findViewById(R.id.analysisProgressBar).setVisibility(View.GONE);
 
+        Spinner attributeSpinner = findViewById(R.id.attribute_spinner);
+        String[] attributeNames = viewModel.getAttributeNames();
+        ArrayAdapter<String> attributeAdapter = new ArrayAdapter<>(this, R.layout.layout_spinner_element, attributeNames);
+        attributeSpinner.setAdapter(attributeAdapter);
+        attributeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                viewModel.setAttributeAndUpdateElements(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
+        teamNumbers = new ArrayList<>();
+        teamNumbers.add("All");
+        teamNumbers.addAll(Arrays.asList(viewModel.getTeamNumbers()));
+
+        ArrayAdapter<String> teamAdapter = new ArrayAdapter<>(this, R.layout.layout_spinner_element, teamNumbers);
+        teamAdapter.notifyDataSetChanged();
+
+        Spinner teamSpinner = findViewById(R.id.team_spinner);
+        teamSpinner.setAdapter(teamAdapter);
+        teamSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                viewModel.setTeamNumberAndUpdateElements(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
+        elementListView = findViewById(R.id.elementListView);
         elementListView.setSelectionAfterHeaderView();
         elementListView.setVisibility(View.VISIBLE);
 
-        currentAttributeType = attribute;
+        listAdapter = new AnalysisAdapter(this, viewModel.getElements());
+        elementListView.setAdapter(listAdapter);
     }
 
-    private void onDataLoaded(boolean dataLoaded) {
-        if (!dataLoaded)
-            return;
-
-        setAttributeType(currentAttributeType);
-    }
-
-    private void setAttributeType(int type) {
-        viewModel.setAttributeAndUpdateElements(type);
-        attributeTypeTextView.setText(ATTRIBUTE_TYPES[type]);
-    }
-
-    public void attributeButtonPressed(View view) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        dialogBuilder.setTitle("Pick an attribute");
-        dialogBuilder.setItems(ATTRIBUTE_TYPES, (dialog, which) -> setAttributeType(which));
-        dialogBuilder.show();
+    private void updateUI() {
+        listAdapter.notifyDataSetChanged();
+        listAdapter.sort((element1, element2) -> Double.compare(element2.getAttribute(), element1.getAttribute()));
     }
 }

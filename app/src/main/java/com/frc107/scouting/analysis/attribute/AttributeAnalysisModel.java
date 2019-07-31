@@ -1,128 +1,116 @@
 package com.frc107.scouting.analysis.attribute;
 
-import android.os.Build;
-import android.util.SparseArray;
-
-import androidx.lifecycle.MutableLiveData;
-
-import com.frc107.scouting.analysis.IAnalysisListener;
-import com.frc107.scouting.ui.IUIListener;
 import com.frc107.scouting.analysis.LoadDataTask;
-import com.frc107.scouting.analysis.TeamDetails;
-import com.frc107.scouting.utils.ISimpleCallback;
+import com.frc107.scouting.callbacks.ICallback;
+import com.frc107.scouting.callbacks.ICallbackWithParam;
 
 import java.util.ArrayList;
 
-public class AttributeAnalysisModel implements IAnalysisListener {
+public class AttributeAnalysisModel {
     private ArrayList<AnalysisElement> elements;
-    private SparseArray<TeamDetails> detailsArray;
-
-    private boolean dataLoaded;
-
-    private static final int AVG_CARGO = 0;
-    private static final int AVG_HATCH_PANEL = 1;
-    private static final int AVG_CARGO_SHIP = 2;
-    private static final int AVG_ROCKET_1 = 3;
-    private static final int AVG_ROCKET_2 = 4;
-    private static final int AVG_ROCKET_3 = 5;
-    private static final int HAB_2_AMOUNT = 6;
-    private static final int HAB_3_AMOUNT = 7;
-    private static final int SUCCESSFUL_DEFENSE_AMOUNT = 8;
-    private static final int OPR = 9;
-    private static final int DPR = 10;
 
     private int currentAttributeType = -1;
 
-    private ISimpleCallback onDataLoaded;
+    private IAnalysisManager attributeManager = new MatchAnalysisManagerOld();
+    private ICallback onDataLoaded;
+    private ICallback updateUI;
+    private ICallbackWithParam<String> onError;
 
-    public AttributeAnalysisModel(ISimpleCallback onDataLoaded) {
+    AttributeAnalysisModel(ICallback onDataLoaded, ICallback updateUI, ICallbackWithParam<String> onError) {
         elements = new ArrayList<>();
         this.onDataLoaded = onDataLoaded;
+        this.updateUI = updateUI;
+        this.onError = onError;
     }
 
-    public void loadData() {
-        new LoadDataTask(this).execute();
+    void loadData() {
+        new LoadDataTask(this::onDataLoaded, this::onDataLoadError).execute(attributeManager);
     }
 
-    @Override
-    public void onDataLoaded(SparseArray<TeamDetails> detailsArray, boolean error) {
-        this.detailsArray = detailsArray;
-        dataLoaded = !error;
-        onDataLoaded.callback(dataLoaded);
+    private boolean hasDataBeenLoaded;
+
+    private void onDataLoaded() {
+        attributeManager.makeFinalCalculations();
+        teamNumbers = attributeManager.getTeamNumbers(); // Set the team numbers so we don't crash
+        hasDataBeenLoaded = true;
+        onDataLoaded.call(); // This should be the only call. Do not call this again.
     }
 
-    public boolean isDataLoaded() {
-        return dataLoaded;
+    private void onDataLoadError(String error) {
+        onError.call(error);
     }
 
-    public void setAttributeAndUpdateElements(int attributeNum) {
+    boolean hasDataBeenLoaded() {
+        return hasDataBeenLoaded;
+    }
+
+    private static final int ALL_TEAMS_INDEX = 0;
+    private Integer[] teamNumbers;
+    void setTeamNumberAndUpdateElements(int which) {
+        if (which == ALL_TEAMS_INDEX) {
+            teamNumbers = attributeManager.getTeamNumbers();
+        } else {
+            int teamNumber = attributeManager.getTeamNumbers()[which - 1];
+            teamNumbers = new Integer[] { teamNumber };
+        }
+
+        updateElements();
+    }
+
+    void setAttributeAndUpdateElements(int attributeNum) {
+        if (currentAttributeType == attributeNum)
+            return;
+
         currentAttributeType = attributeNum;
+        attributeManager.setAttribute(attributeNum);
+
+        updateElements();
+    }
+
+    private void updateElements() {
         elements.clear();
-        for (int i = 0; i < detailsArray.size(); i++) {
-            String teamNumber = detailsArray.keyAt(i) + "";
-            double attribute = 0.0;
 
-            TeamDetails teamDetails = detailsArray.valueAt(i);
-            switch (attributeNum) {
-                case AVG_CARGO:
-                    attribute = teamDetails.getAverageCargo();
-                    break;
-                case AVG_HATCH_PANEL:
-                    attribute = teamDetails.getAverageHatchPanels();
-                    break;
-                case AVG_CARGO_SHIP:
-                    attribute = teamDetails.getAverageCargoShip();
-                    break;
-                case AVG_ROCKET_1:
-                    attribute = teamDetails.getAverageRocket1();
-                    break;
-                case AVG_ROCKET_2:
-                    attribute = teamDetails.getAverageRocket2();
-                    break;
-                case AVG_ROCKET_3:
-                    attribute = teamDetails.getAverageRocket3();
-                    break;
-                case HAB_2_AMOUNT:
-                    attribute = teamDetails.getHab2Num();
-                    break;
-                case HAB_3_AMOUNT:
-                    attribute = teamDetails.getHab3Num();
-                    break;
-                case SUCCESSFUL_DEFENSE_AMOUNT:
-                    attribute = teamDetails.getEffectiveDefenseNum();
-                    break;
-                case OPR:
-                    attribute = teamDetails.getOPR();
-                    break;
-                case DPR:
-                    attribute = teamDetails.getDPR();
-                    break;
-            }
+        if (teamNumbers == null)
+            teamNumbers = attributeManager.getTeamNumbers();
 
-            elements.add(new AnalysisElement(teamNumber, attribute));
+        for (int teamNumber : teamNumbers) {
+            double attribute = attributeManager.getAttributeForTeam(teamNumber);
+            elements.add(new AnalysisElement(teamNumber + "", attribute));
         }
-        sortElements();
+        updateUI.call();
     }
 
-    private void sortElements() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            elements.sort((o1, o2) -> Double.compare(o2.getAttribute(), o1.getAttribute()));
-        }
-    }
-
-    public ArrayList<AnalysisElement> getElements() {
+    ArrayList<AnalysisElement> getElements() {
         return elements;
     }
 
-    public int getCurrentAttributeType() {
+    int getCurrentAttributeType() {
         return currentAttributeType;
+    }
+
+    private String[] teamNumberStrings;
+    String[] getTeamNumbers() {
+        // This method just converts the team numbers into strings.
+        if (teamNumberStrings == null) {
+            Integer[] teamNumbers = attributeManager.getTeamNumbers();
+            teamNumberStrings = new String[teamNumbers.length];
+            for (int i = 0; i < teamNumberStrings.length; i++) {
+                teamNumberStrings[i] = teamNumbers[i] + "";
+            }
+        }
+
+        return teamNumberStrings;
+    }
+
+    String[] getAttributeNames() {
+        return attributeManager.getAttributeNames();
     }
 
     public class AnalysisElement {
         private String teamNumber;
         private double attribute;
 
-        public AnalysisElement(String teamNumber, double attribute) {
+        AnalysisElement(String teamNumber, double attribute) {
             if (teamNumber == null)
                 throw new IllegalArgumentException("Team number cannot be null");
 
@@ -130,7 +118,7 @@ public class AttributeAnalysisModel implements IAnalysisListener {
             this.attribute = attribute;
         }
 
-        public String getTeamNumber() {
+        String getTeamNumber() {
             return teamNumber;
         }
 

@@ -1,12 +1,15 @@
 package com.frc107.scouting.form;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Column<T> {
     private int id;
     private String name;
-    private ArrayList<T> values = new ArrayList<>();
+    //private ArrayList<T> values = new ArrayList<>();
     private Class<T> typeClass; // Used for typechecking
 
     public Column(int id, String name, Class<T> typeClass) {
@@ -15,7 +18,7 @@ public class Column<T> {
         this.typeClass = typeClass;
     }
 
-    public void enterValue(T value) {
+    /*public void enterValue(T value) {
         values.add(value);
     }
 
@@ -32,8 +35,12 @@ public class Column<T> {
     }
 
     public List<T> getValues() {
-        return values;
+        return Collections.unmodifiableList(values);
     }
+
+    public void clear() {
+        values.clear();
+    }*/
 
     public int getId() {
         return id;
@@ -45,5 +52,11 @@ public class Column<T> {
 
     public Class<T> getTypeClass() {
         return typeClass;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return name;
     }
 }

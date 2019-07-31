@@ -11,6 +11,7 @@ import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.BaseActivity;
 import com.frc107.scouting.form.Table;
+import com.frc107.scouting.form.eTable;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -69,9 +70,9 @@ public class ImportCsvActivity extends BaseActivity {
         }
     }
 
-    private Scouting.eTable selectedTableType;
+    private eTable selectedTableType;
     private void openTableDialog() {
-        Scouting.eTable[] tableTypes = Scouting.eTable.values();
+        eTable[] tableTypes = eTable.values();
         String[] names = new String[tableTypes.length];
         for (int i = 0; i < tableTypes.length; i++) {
             Table table = Scouting.getInstance().getTable(tableTypes[i]);
@@ -97,7 +98,7 @@ public class ImportCsvActivity extends BaseActivity {
         alertBuilder.show();
     }
 
-    private void importCsvFile(Scouting.eTable targetTable) {
+    private void importCsvFile(eTable targetTable) {
         Uri uri = getIntent().getData();
         if (uri == null)
             return;

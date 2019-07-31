@@ -1,87 +1,116 @@
 package com.frc107.scouting.form;
 
-import android.util.SparseArray;
+import android.util.SparseIntArray;
 
 import com.frc107.scouting.Scouting;
+import com.frc107.scouting.callbacks.ICallbackWithParam;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class Table {
     private String name;
-    private Map<Integer, Column> columns = new HashMap<>();
+    private String header;
+
+    private Map<String, Integer> nameIdMap = new HashMap<String, Integer>();
+    private Map<Integer, Column> idColumnMap = new HashMap<Integer, Column>();
+
+    private Map<Integer, Integer> colIdIndexMap = new HashMap<Integer, Integer>();
+
+    private List<Column> columns;
+    private List<String> columnNames = new ArrayList<>();
+    private List<Row> rows = new ArrayList<>();
 
     public Table(String name, Column... columnsToAdd) {
         this.name = name;
 
-        for (Column column : columnsToAdd) {
-            if (columns.containsKey(column.getId()))
+        columns = Collections.unmodifiableList(Arrays.asList(columnsToAdd));
+        StringBuilder headerBuilder = new StringBuilder();
+        for (int i = 0; i < columnsToAdd.length; i++) {
+            Column column = columnsToAdd[i];
+            if (idColumnMap.containsKey(column.getId()))
                 throw new IllegalArgumentException("Column with id " + column.getId() + " already exists");
 
-            columns.put(column.getId(), column);
+            nameIdMap.put(column.getName(), column.getId());
+            idColumnMap.put(column.getId(), column);
+
+            headerBuilder.append(column.getName());
+            if (i < columnsToAdd.length - 1)
+                headerBuilder.append(",");
+
+            columnNames.add(column.getName());
+            colIdIndexMap.put(column.getId(), i);
         }
 
-        columns = Collections.unmodifiableMap(columns);
+        header = headerBuilder.toString();
+        idColumnMap = Collections.unmodifiableMap(idColumnMap);
     }
 
     public String getName() {
         return name;
     }
 
-    public Map<Integer, Column> getColumns() {
-        return columns;
+    public String getHeader() {
+        return header;
     }
 
-    private int rowAmount;
+    public Map<Integer, Column> getColumns() {
+        return idColumnMap;
+    }
 
     /**
      * This is used to enter in a whole row at once. Make sure your object types match the order of
-     * the columns as well as the types of each relevant column.
+     * the idColumnMap as well as the types of each relevant column.
      *
-     * If I had 3 columns A{String} B{Boolean} C{Integer}, then I might call enterValues with
+     * If I had 3 idColumnMap A{String} B{Boolean} C{Integer}, then I might call enterValues with
      * the arguments:
      *      enterValues("I am a string", 5, true);
      * @param values
      */
     public String enterNewRow(Object... values) {
-        if (values.length != columns.size())
-            throw new IllegalArgumentException("Cannot pass in a different amount of values than there are columns!\nValue count: " + values.length + "\nColumn count: " + columns.size());
+        if (values.length != columns.size())//idColumnMap.size())
+            throw new IllegalArgumentException("Cannot pass in a different amount of values than there are idColumnMap!\nValue count: " + values.length + "\nColumn count: " + idColumnMap.size());
 
-        Integer[] keys = columns.keySet().toArray(new Integer[0]);
-        for (int i = 0; i < columns.size(); i++) {
-            Column column = columns.get(keys[i]);
-            Object value = values[i];
-            column.enterValue(value);
-        }
+        Row row = new Row(values);
+        rows.add(row);
 
-        rowAmount++;
-
-        return getRowAsString(rowAmount - 1);
+        return getRowAsString(rows.size() - 1);
     }
 
-    public boolean importData(String data) {
-        Map.Entry<Integer, Column>[] entries = columns.entrySet().toArray(new Map.Entry[0]);
-
+    /**
+     * Be light with what you do with forEachRow. Since it runs every single row (of which there can be thousands),
+     * this can be expensive.
+     */
+    public boolean importData(String data, ICallbackWithParam<Row> forEachRow) {
         String[] lines = data.split(Scouting.NEW_LINE);
-        for (int i = 0; i < lines.length; i++) {
-            String[] parts = lines[i].split(",");
-            if (i == 0) {
-                // header
-                for (int j = 0; j < parts.length; j++) {
-                    String columnName = parts[j];
-                    Column column = entries[j].getValue();
-                    if (!columnName.equals(column.getName())) // Columns don't match; exit.
-                        return false;
-                }
-                continue;
-            }
+        String[] columnNames = lines[0].split(",");
+        if (columnNames.length != columns.size())
+            return false; // The imported data has a different amount of columns than we do.
 
+        // Alright, to start off, we'll go through the first line: the header.
+
+        for (int i = 0; i < columnNames.length; i++) {
+            String colName = columnNames[i];
+            if (!this.columnNames.contains(colName))
+                return false; // The imported data contains a column that we don't have. Abort.
+        }
+
+        // Now that we've gotten the first line (header) out of the way, let's look at the actual
+        // data. We start at i = 1, of course, because we already parsed the first line.
+        for (int i = 1; i < lines.length; i++) {
+            String line = lines[i];
+            if (line.isEmpty())
+                continue;
+
+            Object[] values = new Object[columns.size()];
+            String[] parts = line.split(",");
             for (int j = 0; j < parts.length; j++) {
-                Column column = entries[j].getValue();
+                Column column = columns.get(j);
                 Class typeClass = column.getTypeClass();
 
                 Object value = null;
@@ -93,30 +122,22 @@ public class Table {
                     value = parts[j];
                 }
 
-                column.enterValue(value);
+                values[j] = value;
             }
+
+            Row row = new Row(values);
+            rows.add(row);
+
+            forEachRow.call(row);
         }
+
         return true;
     }
 
-    // please don't use this, otherwise you risk having a different amount of rows per column than in total, that's bad
-    /*public void enterValue(int id, Object value) {
-        if (columns.indexOfKey(id) < 0)
-            throw new IllegalArgumentException("No column with id " + id);
+    public void clear() {
+        rows.clear();
 
-        Column<Object> col = columns.get(id);
-        if (value != null && !col.getTypeClass().equals(value.getClass()))
-            throw new IllegalArgumentException("Type of value must be the same as the type of column. value type: " + value.getClass().getName() + ", column type: " + col.getTypeClass().getName());
-
-        col.enterValue(value);
-    }*/
-
-    public List getValuesOfColumn(int id) {
-        if (!columns.containsKey(id))
-            throw new IllegalArgumentException("No column with id " + id);
-
-        Column column = columns.get(id);
-        return column.getValues();
+        nameIdMap.clear();
     }
 
     public String getRowsInRangeAsString(int beginIndex, int endIndex) {
@@ -129,28 +150,23 @@ public class Table {
         return builder.toString();
     }
 
-    public String getLastRowAsString() {
-        return getRowAsString(rowAmount - 1);
-    }
-
-    public String getRowAsString(int row) {
-        Integer[] keys = columns.keySet().toArray(new Integer[0]);
-
-        String[] values = new String[columns.size()];
-        for (int i = 0; i < columns.size(); i++) {
-            Column column = columns.get(keys[i]);
-            Object lastValue = column.getValueAtRow(row);
-            values[i] = lastValue.toString();
-        }
+    public String getRowAsString(int rowIndex) {
+        Row row = rows.get(rowIndex);
 
         // I would use String.join(",", values) but that's only supported in API level 26 and up
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < values.length; i++) {
-            builder.append(values[i]);
+        for (int i = 0; i < columns.size(); i++) {
+            builder.append(row.getValue(i).toString());
 
-            if (i < values.length - 1)
+            if (i < columns.size() - 1)
                 builder.append(',');
         }
         return builder.toString();
+    }
+
+    public Object getColumnValueAtRow(int id, int rowIndex) {
+        int colIndex = colIdIndexMap.get(id);
+        Row row = rows.get(rowIndex);
+        return row.getValue(colIndex);
     }
 }

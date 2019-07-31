@@ -2,21 +2,23 @@ package com.frc107.scouting.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
 import com.frc107.scouting.Scouting;
+import com.frc107.scouting.form.eTable;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 public class FileService {
@@ -37,67 +39,6 @@ public class FileService {
 
     private List<FileDefinition> fileDefinitions;
 
-    /**
-     * This is where you'll define your own file types, if you want to do that.
-     *
-     * For example, for 2019, we would have had 4 different kinds of files:
-     * - Match
-     * - Concatenated Match
-     * - Pit
-     * - Concatenated Pit
-     *
-     * So I would have had the eFileType enum values be:
-     *  - PIT
-     *  - CONCAT_PIT
-     *  - MATCH
-     *  - CONCAT_MATCH
-     *
-     * I would have had four String constants:
-     *  private static final String PIT_PREFIX = "Pit";
-     *  private static final String CONCAT_PIT_PREFIX = "ConcatPit";
-     *  private static final String MATCH_PREFIX = "Match";
-     *  private static final String CONCAT_MATCH_PREFIX = "ConcatMatch";
-     *
-     * Finally I would make sure eFileType.getPrefix and getFileTypeFromPrefix are updated accordingly.
-     */
-    //region File Types
-    private static final String PIT_PREFIX = "Pit";
-    private static final String CONCAT_PIT_PREFIX = "ConcatPit";
-
-    public enum eFileType {
-        PIT,
-        CONCAT_PIT,
-        NONE;
-
-        String getPrefix() {
-            switch (this) {
-                case PIT:
-                    return PIT_PREFIX;
-                case CONCAT_PIT:
-                    return CONCAT_PIT_PREFIX;
-                default:
-                    return null;
-            }
-        }
-    }
-
-    /**
-     * This method is used to figure out what file type an existing file is.
-     * @param prefix
-     * @return
-     */
-    private static eFileType getFileTypeFromPrefix(String prefix) {
-        switch (prefix) {
-            case PIT_PREFIX:
-                return eFileType.PIT;
-            case CONCAT_PIT_PREFIX:
-                return eFileType.CONCAT_PIT;
-            default:
-                return eFileType.NONE;
-        }
-    }
-    //endregion
-
     public FileService() {
         scoutingDirectory = new File(SCOUTING_PATH);
         if (!scoutingDirectory.exists())
@@ -116,55 +57,66 @@ public class FileService {
             if (file.isDirectory())
                 continue;
 
-            String name = file.getName();
-
-            // Separate the content from the extension. We use "\\." instead of "." because .split
-            // will interpret the parameter as regex if possible, and "." is valid regex. "\\."
-            // tells split to use the period character instead of regex.
-            String[] contentAndExtension = name.split("\\.");
-            if (contentAndExtension.length != 2)
+            FileDefinition fileDef = getDefinitionFromFile(file);
+            if (fileDef == null)
                 continue;
 
-            String content = contentAndExtension[0];
-            String extension = contentAndExtension[1];
-            if (!extension.equals(FILE_EXTENSION))
-                continue;
-
-            String[] parts = content.split(FILE_NAME_DELIMITER);
-            if (parts.length != 4)
-                continue;
-
-            String prefix = parts[0];
-            eFileType fileType = getFileTypeFromPrefix(prefix);
-
-            String initials = parts[1];
-
-            int year = 0;
-            int month = 0;
-            int day = 0;
-            int hour = 0;
-            int minute = 0;
-            int second = 0;
-            try {
-                String[] dateParts = parts[2].split(TIME_MESSAGE_DELIMITER);
-                year = Integer.parseInt(dateParts[0]);
-                month = Integer.parseInt(dateParts[1]);
-                day = Integer.parseInt(dateParts[2]);
-
-                String[] timeParts = parts[3].split(TIME_MESSAGE_DELIMITER);
-                hour = Integer.parseInt(timeParts[0]);
-                minute = Integer.parseInt(timeParts[1]);
-                second = Integer.parseInt(timeParts[2]);
-            } catch (NumberFormatException e) {
-                Log.d(Scouting.SCOUTING_TAG, e.getLocalizedMessage());
-            }
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(year, month, day, hour, minute, second);
-
-            FileDefinition fileDefinition = new FileDefinition(file, calendar, initials, fileType);
-            fileDefinitions.add(fileDefinition);
+            fileDefinitions.add(fileDef);
         }
+    }
+
+    public void clearFileDefinitions() {
+        fileDefinitions.clear();
+    }
+
+    private FileDefinition getDefinitionFromFile(File file) {
+        String name = file.getName();
+
+        // Separate the content from the extension. We use "\\." instead of "." because .split
+        // will interpret the parameter as regex if possible, and "." is valid regex. "\\."
+        // tells split to use the period character instead of regex.
+        String[] contentAndExtension = name.split("\\.");
+        if (contentAndExtension.length != 2)
+            return null;
+
+        String content = contentAndExtension[0];
+        String extension = contentAndExtension[1];
+        if (!extension.equals(FILE_EXTENSION))
+            return null;
+
+        String[] parts = content.split(FILE_NAME_DELIMITER);
+        if (parts.length != 4)
+            return null;
+
+        String prefix = parts[0];
+        eTable tableType = eTable.getTableTypeFromPrefix(prefix);
+
+        String initials = parts[1];
+
+        int year = 0;
+        int month = 0;
+        int day = 0;
+        int hour = 0;
+        int minute = 0;
+        int second = 0;
+        try {
+            String[] dateParts = parts[2].split(TIME_MESSAGE_DELIMITER);
+            year = Integer.parseInt(dateParts[0]);
+            month = Integer.parseInt(dateParts[1]);
+            day = Integer.parseInt(dateParts[2]);
+
+            String[] timeParts = parts[3].split(TIME_MESSAGE_DELIMITER);
+            hour = Integer.parseInt(timeParts[0]);
+            minute = Integer.parseInt(timeParts[1]);
+            second = Integer.parseInt(timeParts[2]);
+        } catch (NumberFormatException e) {
+            Log.d(Scouting.SCOUTING_TAG, e.getLocalizedMessage());
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day, hour, minute, second);
+
+        return new FileDefinition(file, calendar, initials, tableType);
     }
 
     public File getScoutingDirectory() {
@@ -196,32 +148,31 @@ public class FileService {
         return year + "-" + month + "-" + day + FILE_NAME_DELIMITER + hour + "-" + minute + "-" + second;
     }
 
-    public boolean saveData(eFileType fileType, String initials, String data) {
-        FileDefinition mostRecentFile = getMostRecentFile(fileType, initials);
-        boolean success;
+    public void saveData(eTable tableType, String initials, String data) throws IOException {
+        FileDefinition mostRecentFile = getMostRecentFileDefinition(tableType, initials);
+        Calendar date = Calendar.getInstance();
         if (mostRecentFile == null) {
-            // there is no FileDefinition for this eFileType and initials
-            success = createAndWriteToNewFile(fileType, initials, data);
+            // there is no FileDefinition for this eFileType and initials; create a new file.
+            createAndWriteToNewFile(tableType, date, initials, data);
         } else if (mostRecentFile.getFile() == null || !mostRecentFile.getFile().exists()) {
-            // there is a FileDefinition, but the file does not exist
+            // there is a FileDefinition, but the file does not exist; delete the existing FileDefinition and create a new file + FileDefinition.
+            File file = createAndWriteToNewFile(tableType, date, initials, data);
+
             fileDefinitions.remove(mostRecentFile);
-            success = createAndWriteToNewFile(fileType, initials, data);
+            addFileDefinition(tableType, file, date, initials);
         } else {
-            // all is well and good, the file exists
-            success = writeToEndOfFile(mostRecentFile.getFile(), data);
+            // all is well and good, the file exists; write to the existing file.
+            writeLineToEndOfFile(mostRecentFile.getFile(), data);
         }
-        return success;
     }
 
-    public FileDefinition getMostRecentFile(eFileType fileType, String initials) {
+    public FileDefinition getMostRecentFileDefinition(eTable tableType, String initials) {
         List<FileDefinition> definitions = fileDefinitions;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            definitions.sort((o1, o2) -> o2.getDateCreated().compareTo(o1.getDateCreated()));
-        }
+        Collections.sort(definitions, (o1, o2) -> o2.getDateCreated().compareTo(o1.getDateCreated()));
 
         FileDefinition mostRecentDefinition = null;
         for (FileDefinition fileDefinition : definitions) {
-            if (fileDefinition.getFileType() != fileType ||
+            if (fileDefinition.getTableType() != tableType ||
                 !fileDefinition.getInitials().equals(initials))
                 continue;
 
@@ -231,7 +182,41 @@ public class FileService {
         return mostRecentDefinition;
     }
 
-    private boolean writeToEndOfFile(File file, String data) {
+    public List<FileDefinition> getFileDefinitionsOfType(eTable tableType) {
+        List<FileDefinition> fileDefs = new ArrayList<>();
+        for (FileDefinition fileDef : fileDefinitions) {
+            if (fileDef.getTableType() == tableType)
+                fileDefs.add(fileDef);
+        }
+        return fileDefs;
+    }
+
+    private void addFileDefinition(eTable tableType, File file, Calendar date, String initials) {
+        FileDefinition fileDef = new FileDefinition(file, date, initials, tableType);
+        fileDefinitions.add(fileDef);
+    }
+
+    public String getFileData(File file) throws IOException {
+        if (file == null)
+            throw new IllegalArgumentException("Parameter \"file\" cannot be null.");
+
+        StringBuilder builder = new StringBuilder();
+
+        // This try block is here so that the FileReader and BufferedReader will automatically be closed.
+        try (FileReader fileReader = new FileReader(file.getPath());
+             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                builder.append(line);
+                builder.append(Scouting.NEW_LINE);
+                line = bufferedReader.readLine();
+            }
+        }
+
+        return builder.toString();
+    }
+
+    private boolean writeLineToEndOfFile(File file, String data) {
         if (file == null)
             throw new IllegalArgumentException("Cannot write to null file!");
 
@@ -244,6 +229,7 @@ public class FileService {
             return false;
         }
 
+        data = Scouting.NEW_LINE + data;
         try (FileOutputStream fileOutputStream = new FileOutputStream(file, true)) {
             fileOutputStream.write(data.getBytes());
             fileOutputStream.flush();
@@ -253,60 +239,87 @@ public class FileService {
             return false;
         }
     }
-    private boolean createAndWriteToNewFile(eFileType fileType, String initials, String data) {
-        Calendar calendar = Calendar.getInstance();
-        String prefix = fileType.getPrefix();
-        String timeMessage = getCurrentTimeMessage(calendar);
-        String fileName = prefix + FILE_NAME_DELIMITER + initials + FILE_NAME_DELIMITER + timeMessage + ".csv";
-        return createAndWriteToNewFileCore(scoutingDirectory, fileName, data, calendar);
+
+    /**
+     * Write data to a new file. This method automatically adds the needed header to the top of the data, so don't worry about that.
+     * @param tableType The type of data that you are writing.
+     * @param initials User initials.
+     * @param data Your data.
+     * @return
+     */
+    private File createAndWriteToNewFile(eTable tableType, Calendar date, String initials, String data) throws IOException {
+        String fileName = getNewFileName(tableType, date, initials);
+        data = tableType.getHeader() + Scouting.NEW_LINE + data;
+        return createAndWriteToNewFileCore(scoutingDirectory, fileName, data);
     }
-    private boolean createAndWriteToNewFileCore(File directory, String fileName, String data, Calendar dateCreated) {
+    private File createAndWriteToNewFileCore(File directory, String fileName, String data) throws IOException {
         File file = new File(directory, fileName);
         if (file.exists())
-            throw new IllegalStateException("Invalid file name \"" + fileName + "\"; file already exists.");
+            throw new IllegalArgumentException("Invalid file name \"" + fileName + "\"; file already exists.");
 
         if (StringUtils.isEmptyOrNull(data))
-            return true;
+            throw new IllegalArgumentException("data cannot be null or empty.");
 
         String state = Environment.getExternalStorageState();
-        if (!state.equals(Environment.MEDIA_MOUNTED)) {
-            Log.e(Scouting.SCOUTING_TAG, "External storage not mounted!");
-            return false;
-        }
+        if (!state.equals(Environment.MEDIA_MOUNTED))
+            throw new IllegalStateException("External storage not mounted; cannot save data.");
 
+        // This try block is here in case the .write fails, as it'll automatically close the FileOutputStream.
         try (FileOutputStream fileOutputStream = new FileOutputStream(file, false)) {
             fileOutputStream.write(data.getBytes());
             fileOutputStream.flush();
-        } catch (IOException e) {
-            Log.e(Scouting.SCOUTING_TAG, e.getMessage());
-            return false;
         }
 
-        String initials = Scouting.getInstance().getUserInitials();
-        FileDefinition fileDefinition = new FileDefinition(file, dateCreated, initials, eFileType.PIT);
-        fileDefinitions.add(fileDefinition);
-
-        return true;
+        return file;
     }
 
-    public void concatenateFiles(eFileType target, File... filesToConcatenate) {
+    private String getNewFileName(eTable tableType, Calendar calendar, String initials) {
+        String prefix = tableType.getPrefix();
+        String timeMessage = getCurrentTimeMessage(calendar);
+        return prefix + FILE_NAME_DELIMITER + initials + FILE_NAME_DELIMITER + timeMessage + ".csv";
+    }
 
+    public File concatenateFiles(eTable target, File... filesToConcatenate) throws IOException {
+        if (target == null)
+            throw new IllegalArgumentException("Cannot concatenate files to a null eTable.");
+
+        String newLine = Scouting.NEW_LINE;
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(target.getHeader());
+        builder.append(newLine);
+
+        for (File file : filesToConcatenate) {
+            String data = getFileData(file);
+            String[] lines = data.split(newLine);
+
+            // We go through each line so that we can skip the header line.
+            for (int i = 1; i < lines.length; i++) {
+                builder.append(lines[i]);
+                builder.append(newLine);
+            }
+        }
+
+        String data = builder.toString();
+        Calendar calendar = Calendar.getInstance();
+        String fileName = target.getConcatPrefix() + FILE_NAME_DELIMITER + getCurrentTimeMessage(calendar) + "." + FILE_EXTENSION;
+        return createAndWriteToNewFileCore(scoutingDirectory, fileName, data);
     }
 
     public class FileDefinition {
-        private File file;
-        private Calendar dateCreated;
-        private String initials;
-        private FileService.eFileType fileType;
+            private File file;
+            private Calendar dateCreated;
+            private String initials;
+            private eTable tableType;
 
-        FileDefinition(File file, Calendar dateCreated, String initials, FileService.eFileType fileType) {
-            this.file = file;
-            this.dateCreated = dateCreated;
-            this.initials = initials;
-            this.fileType = fileType;
-        }
+            FileDefinition(File file, Calendar dateCreated, String initials, eTable tableType) {
+                this.file = file;
+                this.dateCreated = dateCreated;
+                this.initials = initials;
+                this.tableType = tableType;
+            }
 
-        public File getFile() {
+            public File getFile() {
             return file;
         }
 
@@ -318,8 +331,8 @@ public class FileService {
             return initials;
         }
 
-        public FileService.eFileType getFileType() {
-            return fileType;
+        public eTable getTableType() {
+            return tableType;
         }
     }
 
@@ -333,8 +346,8 @@ public class FileService {
         // We need to be able to have multiple photos of the same robot, so this handles that.
         int num = 1;
         while (file.exists()) {
-            num++;
             file = new File(photoDirectory, teamNumber + "-" + num + ".jpg");
+            num++;
         }
 
         try {
@@ -359,7 +372,7 @@ public class FileService {
         return photo;
     }
 
-    public boolean rotateAndCompressPhoto(String fileName) {
+    public boolean compressPhoto(String fileName) {
         File file = new File(photoDirectory, fileName);
         if (!file.exists())
             return false;
@@ -373,10 +386,12 @@ public class FileService {
                 return false;
             }
 
-            Matrix matrix = new Matrix();
+            // Based on recent tests, it's no longer needed to rotate the photo.
+            /*Matrix matrix = new Matrix();
             matrix.postRotate(90);
-            Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-            rotated.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
+            Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);*/
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
 
             fileOutputStream.write(byteArrayOutputStream.toByteArray());
             return true;

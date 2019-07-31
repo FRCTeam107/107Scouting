@@ -17,40 +17,38 @@
         android:roundIcon="@mipmap/icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ConcatActivity"></activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".bluetooth.BluetoothSetMasterDeviceActivity" />
-        <activity android:name=".bluetooth.BluetoothChildDevicesActivity" />
-        <activity android:name=".bluetooth.BluetoothActivity" />
         <activity android:name=".pit.PitActivity" />
         <activity android:name=".admin.AdminActivity" />
         <activity
             android:name=".admin.ImportCsvActivity"
             android:label="@string/title_open_csv_file"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".MainActivity">
-            <intent-filter
-                android:label="Import CSV">
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter android:label="Import CSV">
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.PICK" />
                 <action android:name="android.intent.action.PICK_ACTIVITY" />
-                <category android:name="android.intent.category.DEFAULT"/>
+
+                <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:scheme="file" />
                 <data android:scheme="content" />
                 <data android:mimeType="text/csv" />
                 <data android:mimeType="text/comma-separated-values" />
             </intent-filter>
         </activity>
-        <activity android:name=".analysis.team.TeamAnalysisActivity" />
         <activity android:name=".analysis.attribute.AttributeAnalysisActivity" />
 
         <provider

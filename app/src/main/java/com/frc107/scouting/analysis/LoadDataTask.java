@@ -1,176 +1,48 @@
 package com.frc107.scouting.analysis;
 
 import android.os.AsyncTask;
-import android.util.Log;
-import android.util.SparseArray;
 
 import com.frc107.scouting.Scouting;
+import com.frc107.scouting.analysis.attribute.IAnalysisManager;
+import com.frc107.scouting.callbacks.ICallback;
+import com.frc107.scouting.callbacks.ICallbackWithParam;
+import com.frc107.scouting.form.Table;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 
-public class LoadDataTask extends AsyncTask<Void, Void, SparseArray<TeamDetails>> {
-    private static final int COL_MATCH_NUM = 0,
-                             COL_TEAM_NUM = 1,
-                             COL_STARTING_ITEM = 3,
-                             COL_STARTING_PLACED_LOCATION = 4,
-                             COL_ITEM_PICKED_UP = 8,
-                             COL_ITEM_PLACED_LOCATION = 9,
-                             COL_DEFENSE = 13,
-                             COL_HAB = 11,
-                             COL_OPR = 17,
-                             COL_DPR = 18;
+public class LoadDataTask extends AsyncTask<IAnalysisManager, Void, Void> {
 
-    private IAnalysisListener listener;
-    private SparseArray<TeamDetails> teamDetailsSparseArray;
+    private ICallback listener;
+    private ICallbackWithParam<String> onError;
 
-    public LoadDataTask(IAnalysisListener listener) {
+    public LoadDataTask(ICallback listener, ICallbackWithParam<String> onError) {
         this.listener = listener;
-        teamDetailsSparseArray = new SparseArray<>();
+        this.onError = onError;
     }
 
     @Override
-    protected SparseArray<TeamDetails> doInBackground(Void... voids) {
-        loadData();
-        return teamDetailsSparseArray;
+    protected Void doInBackground(IAnalysisManager... attributeManagers) {
+        loadData(attributeManagers[0]);
+        return null;
     }
 
     @Override
-    protected void onPostExecute(SparseArray<TeamDetails> map) {
-        super.onPostExecute(map);
-        listener.onDataLoaded(map, map == null);
+    protected void onPostExecute(Void v) {
+        super.onPostExecute(v);
+        listener.call();
     }
 
-    public void loadData() {
-        File file = Scouting.FILE_SERVICE.getFile("ConcatenatedMatch.csv");
-        if (file == null) {
-            Log.d(Scouting.SCOUTING_TAG, "No concatenated match data.");
-            return;
-        }
-
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file.getPath()))) {
-            String line = bufferedReader.readLine();
-            line = bufferedReader.readLine(); // Skip first line, which is the header
-            while (line != null) {
-                String[] columns = line.split(",");
-                handleColumnsMatchOld(columns);
-
-                line = bufferedReader.readLine();
-            }
+    private void loadData(IAnalysisManager attributeManager) {
+        String data;
+        try {
+            data = Scouting.FILE_SERVICE.getFileData(attributeManager.getFile());
         } catch (IOException e) {
-            Log.d(Scouting.SCOUTING_TAG, e.getMessage());
+            onError.call(e.getLocalizedMessage());
             return;
         }
 
-        for(int i = 0; i < teamDetailsSparseArray.size(); i ++) {
-            TeamDetails details = teamDetailsSparseArray.valueAt(i);
-            details.calculateAverages();
-        }
-    }
-
-    private void handleColumnsMatchOld(String[] columns) {
-        int matchNum = Integer.parseInt(columns[COL_MATCH_NUM]);
-        int teamNum = Integer.parseInt(columns[COL_TEAM_NUM]);
-        int startingItem = Integer.parseInt(columns[COL_STARTING_ITEM]);
-        int startingPlacedLocation = Integer.parseInt(columns[COL_STARTING_PLACED_LOCATION]);
-        int itemPickedUp = Integer.parseInt(columns[COL_ITEM_PICKED_UP]);
-        int cyclePlacedLocation = Integer.parseInt(columns[COL_ITEM_PLACED_LOCATION]);
-        int defense = Integer.parseInt(columns[COL_DEFENSE]);
-        int habLevel = Integer.parseInt(columns[COL_HAB]);
-        double opr = Double.parseDouble(columns[COL_OPR]);
-        double dpr = Double.parseDouble(columns[COL_DPR]);
-
-        TeamDetails teamDetails = teamDetailsSparseArray.get(teamNum);
-        if (teamDetails == null) {
-            teamDetailsSparseArray.put(teamNum, new TeamDetails());
-            teamDetails = teamDetailsSparseArray.get(teamNum);
-        }
-
-        teamDetails.setOPR(opr);
-        teamDetails.setDPR(dpr);
-        teamDetails.incrementCycleNum();
-
-        if (!teamDetails.hasMatch(matchNum)) {
-            // Sandstorm game pieces
-            if (startingPlacedLocation != Scouting.SANDSTORM_FLOOR && startingPlacedLocation != Scouting.SANDSTORM_NOTHING_PLACED) {
-                switch (startingItem) {
-                    case Scouting.SANDSTORM_CARGO:
-                        teamDetails.incrementCargoNum();
-                        break;
-                    case Scouting.SANDSTORM_PANEL:
-                        teamDetails.incrementHatchNum();
-                        break;
-                }
-            }
-
-            // Match defense
-            switch (defense) {
-                case Scouting.ENDGAME_DEFENSE_EFFECTIVE:
-                    teamDetails.incrementDefenseNum();
-                    teamDetails.incrementEffectiveDefenseNum();
-                    break;
-                case Scouting.ENDGAME_DEFENSE_INEFFECTIVE:
-                    teamDetails.incrementDefenseNum();
-                    break;
-            }
-            teamDetails.addMatch(matchNum);
-        }
-
-        // Cycle game pieces
-        if (cyclePlacedLocation != Scouting.CYCLE_FLOOR && cyclePlacedLocation != Scouting.CYCLE_NOTHING_PLACED) {
-            switch (itemPickedUp) {
-                case Scouting.CYCLE_CARGO:
-                    teamDetails.incrementCargoNum();
-                    break;
-                case Scouting.CYCLE_PANEL:
-                    teamDetails.incrementHatchNum();
-                    break;
-            }
-        }
-
-        // Habitat levels
-        switch (habLevel) {
-            case Scouting.ENDGAME_HAB_ONE:
-                teamDetails.incrementHabOneAmount();
-                break;
-            case Scouting.ENDGAME_HAB_TWO:
-                teamDetails.incrementHabTwoAmount();
-                break;
-            case Scouting.ENDGAME_HAB_THREE:
-                teamDetails.incrementHabThreeAmount();
-                break;
-        }
-
-        // Rocket levels
-        switch (startingPlacedLocation) {
-            case Scouting.SANDSTORM_BOTTOM_ROCKET:
-                teamDetails.incrementRocketOneAmount();
-                break;
-            case Scouting.SANDSTORM_MIDDLE_ROCKET:
-                teamDetails.incrementRocketTwoAmount();
-                break;
-            case Scouting.SANDSTORM_TOP_ROCKET:
-                teamDetails.incrementRocketThreeAmount();
-                break;
-            case Scouting.SANDSTORM_CARGO_SHIP:
-                teamDetails.incrementCargoShipAmount();
-                break;
-        }
-        switch (cyclePlacedLocation) {
-            case Scouting.CYCLE_BOTTOM_ROCKET:
-                teamDetails.incrementRocketOneAmount();
-                break;
-            case Scouting.CYCLE_MIDDLE_ROCKET:
-                teamDetails.incrementRocketTwoAmount();
-                break;
-            case Scouting.CYCLE_TOP_ROCKET:
-                teamDetails.incrementRocketThreeAmount();
-                break;
-            case Scouting.CYCLE_CARGO_SHIP:
-                teamDetails.incrementCargoShipAmount();
-                break;
-        }
+        // todo: replace with something in attribute manager
+        Table table = Scouting.getInstance().getTable(attributeManager.getTableType());
+        table.importData(data, row -> attributeManager.makeCalculationsFromRows(row.getValues()));
     }
 }

@@ -1,27 +1,22 @@
 package com.frc107.scouting.ui.questionWrappers;
 
-import android.util.SparseIntArray;
 import android.widget.RadioGroup;
 
-import com.frc107.scouting.form.ISetter;
+import com.frc107.scouting.callbacks.ICallback;
+import com.frc107.scouting.callbacks.ICallbackWithParam;
 
 public class RadioWrapper {
     private RadioGroup radioGroup;
-    private ISetter<Integer> setter;
-    private SparseIntArray buttonAnswerMappings;
+    private ICallbackWithParam<Integer> setter;
 
-    public RadioWrapper(RadioGroup radioGroup, SparseIntArray buttonAnswerMappings, ISetter<Integer> setter) {
-        this.buttonAnswerMappings = buttonAnswerMappings;
+    public RadioWrapper(RadioGroup radioGroup, ICallbackWithParam<Integer> setter) {
         this.setter = setter;
         this.radioGroup = radioGroup;
         this.radioGroup.setOnCheckedChangeListener(createChangeListener());
     }
 
     private RadioGroup.OnCheckedChangeListener createChangeListener() {
-        return (group, checkedId) -> {
-            int value = buttonAnswerMappings.get(checkedId);
-            setter.set(value);
-        };
+        return (group, checkedId) -> setter.call(checkedId);
     }
 
     public RadioGroup getRadioGroup() {
