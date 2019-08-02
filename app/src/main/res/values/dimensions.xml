@@ -2,7 +2,7 @@
 <resources>
     <dimen name="radiobutton_margin">2dp</dimen>
     <dimen name="between_margin">10dp</dimen>
-    <dimen name="edge_margin">10dp</dimen>
+    <dimen name="edge_margin">8dp</dimen>
     <dimen name="textview_spacer">10dp</dimen>
     <dimen name="question_height">50dp</dimen>
     <dimen name="label_text_size">18sp</dimen>

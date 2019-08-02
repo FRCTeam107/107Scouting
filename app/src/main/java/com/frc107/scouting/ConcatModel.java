@@ -4,17 +4,15 @@ import androidx.lifecycle.ViewModel;
 
 import com.frc107.scouting.callbacks.ICallback;
 import com.frc107.scouting.form.eTable;
-import com.frc107.scouting.utils.FileService;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ConcatModel extends ViewModel {
     private ICallback refreshUI;
-    private List<FileService.FileDefinition> availableFileDefs = new ArrayList<>();
-    private List<FileService.FileDefinition> selectedFileDefs = new ArrayList<>();
+    private ArrayList<FileDefinition> availableFileDefs = new ArrayList<>();
+    private ArrayList<FileDefinition> selectedFileDefs = new ArrayList<>();
     private ArrayList<String> availableFileNames = new ArrayList<>();
     private ArrayList<String> selectedFileNames = new ArrayList<>();
 
@@ -39,13 +37,16 @@ public class ConcatModel extends ViewModel {
     void selectConcatOption(int position) {
         tableType = tableTypes[position];
 
-        availableFileDefs = Scouting.FILE_SERVICE.getFileDefinitionsOfType(tableType);
+        availableFileDefs.clear();
 
+        // Since we're concatenating files, we don't want to be able to concatenate files that are concatenations.
+        availableFileDefs.addAll(Scouting.FILE_SERVICE.getFileDefinitionsOfType(tableType, false));
         availableFileNames.clear();
+
         selectedFileNames.clear();
         selectedFileDefs.clear();
 
-        for (FileService.FileDefinition fileDefinition : availableFileDefs) {
+        for (FileDefinition fileDefinition : availableFileDefs) {
             String name = fileDefinition.getFile().getName();
             availableFileNames.add(name);
         }
@@ -58,7 +59,7 @@ public class ConcatModel extends ViewModel {
             return;
 
         String fileName = availableFileNames.get(position);
-        FileService.FileDefinition fileDef = availableFileDefs.get(position);
+        FileDefinition fileDef = availableFileDefs.get(position);
 
         availableFileNames.remove(fileName);
         availableFileDefs.remove(fileDef);
@@ -73,7 +74,7 @@ public class ConcatModel extends ViewModel {
             return;
 
         String fileName = selectedFileNames.get(position);
-        FileService.FileDefinition fileDef = selectedFileDefs.get(position);
+        FileDefinition fileDef = selectedFileDefs.get(position);
 
         selectedFileNames.remove(fileName);
         selectedFileDefs.remove(fileDef);
@@ -81,6 +82,14 @@ public class ConcatModel extends ViewModel {
         availableFileDefs.add(fileDef);
 
         refreshUI.call();
+    }
+
+    ArrayList<FileDefinition> getAvailableFileDefs() {
+        return availableFileDefs;
+    }
+
+    ArrayList<FileDefinition> getSelectedFileDefs() {
+        return selectedFileDefs;
     }
 
     ArrayList<String> getAvailableFileNames() {
@@ -91,7 +100,7 @@ public class ConcatModel extends ViewModel {
         return selectedFileNames;
     }
 
-    boolean allowConcatenation() {
+    boolean userHasSelectedFiles() {
         return !selectedFileDefs.isEmpty();
     }
 

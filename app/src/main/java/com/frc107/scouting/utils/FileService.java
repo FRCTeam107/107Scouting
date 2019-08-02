@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+import com.frc107.scouting.FileDefinition;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.form.eTable;
 
@@ -113,10 +114,11 @@ public class FileService {
             Log.d(Scouting.SCOUTING_TAG, e.getLocalizedMessage());
         }
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day, hour, minute, second);
+        Calendar date = Calendar.getInstance();
+        date.set(year, month, day, hour, minute, second);
 
-        return new FileDefinition(file, calendar, initials, tableType);
+        boolean isConcat = prefix.startsWith("Concat");
+        return new FileDefinition(tableType, file, date, initials, isConcat);
     }
 
     public File getScoutingDirectory() {
@@ -153,13 +155,14 @@ public class FileService {
         Calendar date = Calendar.getInstance();
         if (mostRecentFile == null) {
             // there is no FileDefinition for this eFileType and initials; create a new file.
-            createAndWriteToNewFile(tableType, date, initials, data);
+            File file = createAndWriteToNewFile(tableType, date, initials, data, false);
+            addFileDefinition(tableType, file, date, initials, false);
         } else if (mostRecentFile.getFile() == null || !mostRecentFile.getFile().exists()) {
             // there is a FileDefinition, but the file does not exist; delete the existing FileDefinition and create a new file + FileDefinition.
-            File file = createAndWriteToNewFile(tableType, date, initials, data);
+            File file = createAndWriteToNewFile(tableType, date, initials, data, false);
 
             fileDefinitions.remove(mostRecentFile);
-            addFileDefinition(tableType, file, date, initials);
+            addFileDefinition(tableType, file, date, initials, false);
         } else {
             // all is well and good, the file exists; write to the existing file.
             writeLineToEndOfFile(mostRecentFile.getFile(), data);
@@ -182,17 +185,24 @@ public class FileService {
         return mostRecentDefinition;
     }
 
-    public List<FileDefinition> getFileDefinitionsOfType(eTable tableType) {
+    public List<FileDefinition> getFileDefinitionsOfType(eTable tableType, boolean includeConcat) {
         List<FileDefinition> fileDefs = new ArrayList<>();
         for (FileDefinition fileDef : fileDefinitions) {
+            if (fileDef.isConcat() != includeConcat)
+                continue;
+
             if (fileDef.getTableType() == tableType)
                 fileDefs.add(fileDef);
         }
         return fileDefs;
     }
 
-    private void addFileDefinition(eTable tableType, File file, Calendar date, String initials) {
-        FileDefinition fileDef = new FileDefinition(file, date, initials, tableType);
+    public List<FileDefinition> getFileDefinitions() {
+        return new ArrayList<>(fileDefinitions);
+    }
+
+    private void addFileDefinition(eTable tableType, File file, Calendar date, String initials, boolean isConcat) {
+        FileDefinition fileDef = new FileDefinition(tableType, file, date, initials, isConcat);
         fileDefinitions.add(fileDef);
     }
 
@@ -247,8 +257,8 @@ public class FileService {
      * @param data Your data.
      * @return
      */
-    private File createAndWriteToNewFile(eTable tableType, Calendar date, String initials, String data) throws IOException {
-        String fileName = getNewFileName(tableType, date, initials);
+    private File createAndWriteToNewFile(eTable tableType, Calendar date, String initials, String data, boolean concat) throws IOException {
+        String fileName = getNewFileName(tableType, date, initials, concat);
         data = tableType.getHeader() + Scouting.NEW_LINE + data;
         return createAndWriteToNewFileCore(scoutingDirectory, fileName, data);
     }
@@ -273,8 +283,8 @@ public class FileService {
         return file;
     }
 
-    private String getNewFileName(eTable tableType, Calendar calendar, String initials) {
-        String prefix = tableType.getPrefix();
+    private String getNewFileName(eTable tableType, Calendar calendar, String initials, boolean concat) {
+        String prefix = tableType.getPrefix(concat);
         String timeMessage = getCurrentTimeMessage(calendar);
         return prefix + FILE_NAME_DELIMITER + initials + FILE_NAME_DELIMITER + timeMessage + ".csv";
     }
@@ -300,40 +310,19 @@ public class FileService {
             }
         }
 
+
+        Calendar date = Calendar.getInstance();
+        String initials = Scouting.getInstance().getUserInitials();
+        String fileName = getNewFileName(target, date, initials, true);
+
         String data = builder.toString();
-        Calendar calendar = Calendar.getInstance();
-        String fileName = target.getConcatPrefix() + FILE_NAME_DELIMITER + getCurrentTimeMessage(calendar) + "." + FILE_EXTENSION;
-        return createAndWriteToNewFileCore(scoutingDirectory, fileName, data);
-    }
 
-    public class FileDefinition {
-            private File file;
-            private Calendar dateCreated;
-            private String initials;
-            private eTable tableType;
+        // We call createAndWriteToNewFileCore instead of saveData because we always want a new file for concatenation.
+        File file = createAndWriteToNewFileCore(scoutingDirectory, fileName, data);
 
-            FileDefinition(File file, Calendar dateCreated, String initials, eTable tableType) {
-                this.file = file;
-                this.dateCreated = dateCreated;
-                this.initials = initials;
-                this.tableType = tableType;
-            }
+        addFileDefinition(target, file, date, initials, true);
 
-            public File getFile() {
-            return file;
-        }
-
-        public Calendar getDateCreated() {
-            return dateCreated;
-        }
-
-        public String getInitials() {
-            return initials;
-        }
-
-        public eTable getTableType() {
-            return tableType;
-        }
+        return file;
     }
 
     // region Photo

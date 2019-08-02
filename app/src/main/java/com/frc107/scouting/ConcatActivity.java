@@ -11,13 +11,17 @@ import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import com.frc107.scouting.utils.StringUtils;
+
+import java.util.ArrayList;
+
 public class ConcatActivity extends BaseActivity {
     private Spinner fileTypeSpinner;
     private ArrayAdapter<String> fileTypeAdapter;
     private ListView availableFilesListView;
-    private ArrayAdapter<String> availableFilesAdapter;
+    private FileArrayAdapter availableFilesAdapter;
     private ListView selectedFilesListView;
-    private ArrayAdapter<String> selectedFilesAdapter;
+    private FileArrayAdapter selectedFilesAdapter;
     private Button concatButton;
 
     private ConcatModel model;
@@ -46,24 +50,31 @@ public class ConcatActivity extends BaseActivity {
             public void onNothingSelected(AdapterView<?> parent) { }
         });
 
-        availableFilesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, model.getAvailableFileNames());
+        availableFilesAdapter = new FileArrayAdapter(this, model.getAvailableFileDefs());
         availableFilesListView.setAdapter(availableFilesAdapter);
         availableFilesListView.setOnItemClickListener((parent, view, position, id) -> model.selectFile(position));
 
-        selectedFilesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, model.getSelectedFileNames());
+        selectedFilesAdapter = new FileArrayAdapter(this, model.getSelectedFileDefs());
         selectedFilesListView.setAdapter(selectedFilesAdapter);
         selectedFilesListView.setOnItemClickListener((parent, view, position, id) -> model.unselectFile(position));
-
-        model.selectFile(0);
     }
 
     private void refresh() {
         availableFilesAdapter.notifyDataSetChanged();
         selectedFilesAdapter.notifyDataSetChanged();
-        concatButton.setEnabled(model.allowConcatenation());
+        concatButton.setEnabled(model.userHasSelectedFiles());
     }
 
     public void onConcatButtonTapped(View view) {
+        if (!StringUtils.isEmptyOrNull(Scouting.getInstance().getUserInitials())) {
+            concatenateAndFinish();
+            return;
+        }
+
+        showInitialsDialog(this::concatenateAndFinish);
+    }
+
+    void concatenateAndFinish() {
         String result = model.concatenate();
         showMessage(result, Toast.LENGTH_LONG);
         finish();

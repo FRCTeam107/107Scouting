@@ -9,6 +9,7 @@ import android.os.Bundle;
 import com.frc107.scouting.analysis.attribute.AttributeAnalysisActivity;
 import com.frc107.scouting.form.eTable;
 import com.frc107.scouting.pit.PitActivity;
+import com.frc107.scouting.send.SendFileActivity;
 import com.frc107.scouting.utils.FileService;
 import com.frc107.scouting.utils.PermissionUtils;
 
@@ -174,14 +175,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         String initials = Scouting.getInstance().getUserInitials();
         if (!StringUtils.isEmptyOrNull(initials)) {
-            File file = Scouting.FILE_SERVICE.getMostRecentFileDefinition(eTable.PIT, initials).getFile();
-            sendFile(file);
+            startActivity(new Intent(this, SendFileActivity.class));
+            //File file = Scouting.FILE_SERVICE.getMostRecentFileDefinition(eTable.PIT, initials).getFile();
+            //sendFile(file);
             return;
         }
 
         showInitialsDialog(() -> {
-            File file = Scouting.FILE_SERVICE.getMostRecentFileDefinition(eTable.PIT, initials).getFile();
-            sendFile(file);
+            startActivity(new Intent(this, SendFileActivity.class));
+            //File file = Scouting.FILE_SERVICE.getMostRecentFileDefinition(eTable.PIT, initials).getFile();
+            //sendFile(file);
         });
     }
 }

@@ -30,23 +30,12 @@ public enum eTable {
     private static final String CONCAT_PIT_PREFIX = "ConcatPit";
     private static final String CONCAT_MATCH_PREFIX = "ConcatMatch";
 
-    public String getPrefix() {
+    public String getPrefix(boolean concat) {
         switch (this) {
             case PIT:
-                return PIT_PREFIX;
+                return concat ? CONCAT_PIT_PREFIX : PIT_PREFIX;
             case MATCH:
-                return MATCH_PREFIX;
-            default:
-                return null;
-        }
-    }
-
-    public String getConcatPrefix() {
-        switch (this) {
-            case PIT:
-                return CONCAT_PIT_PREFIX;
-            case MATCH:
-                return CONCAT_MATCH_PREFIX;
+                return concat ? CONCAT_MATCH_PREFIX : MATCH_PREFIX;
             default:
                 return null;
         }
@@ -70,6 +59,17 @@ public enum eTable {
                 return "Pit";
             case MATCH:
                 return "Match";
+            default:
+                return "None";
+        }
+    }
+
+    public String toStringConcat() {
+        switch (this) {
+            case PIT:
+                return "Concatenated Pit";
+            case MATCH:
+                return "Concatenated Match";
             default:
                 return "None";
         }

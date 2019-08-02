@@ -189,7 +189,7 @@ public class MatchAnalysisManagerOld implements IAnalysisManager {
     }
 
     @Override
-    public double getAttributeForTeam(int teamNumber) {
+    public double getAttributeValueForTeam(int teamNumber) {
         TeamDetails teamDetails = teamDetailsSparseArray.get(teamNumber);
         double attribute;
         switch (attributeIndex) {

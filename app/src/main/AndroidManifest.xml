@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ConcatActivity"></activity>
+        <activity android:name=".send.SendFileActivity"></activity>
+        <activity android:name=".ConcatActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
