@@ -5,22 +5,22 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.frc107.scouting.utils.StringUtils;
-
-import java.util.ArrayList;
 
 public class ConcatActivity extends BaseActivity {
     private Spinner fileTypeSpinner;
     private ArrayAdapter<String> fileTypeAdapter;
-    private ListView availableFilesListView;
+    private RecyclerView availableFilesRecyclerView;
     private FileArrayAdapter availableFilesAdapter;
-    private ListView selectedFilesListView;
+    private RecyclerView selectedFilesRecyclerView;
     private FileArrayAdapter selectedFilesAdapter;
     private Button concatButton;
 
@@ -31,8 +31,8 @@ public class ConcatActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_concat);
         fileTypeSpinner = findViewById(R.id.file_type_spinner);
-        availableFilesListView = findViewById(R.id.available_files_list_view);
-        selectedFilesListView = findViewById(R.id.selected_files_list_view);
+        availableFilesRecyclerView = findViewById(R.id.available_files_recycler_view);
+        selectedFilesRecyclerView = findViewById(R.id.selected_files_recycler_view);
         concatButton = findViewById(R.id.concat_button);
 
         model = ViewModelProviders.of(this).get(ConcatModel.class);
@@ -51,12 +51,21 @@ public class ConcatActivity extends BaseActivity {
         });
 
         availableFilesAdapter = new FileArrayAdapter(this, model.getAvailableFileDefs());
-        availableFilesListView.setAdapter(availableFilesAdapter);
-        availableFilesListView.setOnItemClickListener((parent, view, position, id) -> model.selectFile(position));
+        availableFilesAdapter.setOnItemClickListener(position -> model.selectFile(position));
+        setupRecyclerView(availableFilesRecyclerView, availableFilesAdapter);
 
         selectedFilesAdapter = new FileArrayAdapter(this, model.getSelectedFileDefs());
-        selectedFilesListView.setAdapter(selectedFilesAdapter);
-        selectedFilesListView.setOnItemClickListener((parent, view, position, id) -> model.unselectFile(position));
+        selectedFilesAdapter.setOnItemClickListener(position -> model.unselectFile(position));
+        setupRecyclerView(selectedFilesRecyclerView, selectedFilesAdapter);
+    }
+
+    void setupRecyclerView(RecyclerView recyclerView, RecyclerView.Adapter adapter) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        DividerItemDecoration decoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
+        recyclerView.addItemDecoration(decoration);
+        recyclerView.setAdapter(adapter);
     }
 
     private void refresh() {
@@ -74,7 +83,7 @@ public class ConcatActivity extends BaseActivity {
         showInitialsDialog(this::concatenateAndFinish);
     }
 
-    void concatenateAndFinish() {
+    private void concatenateAndFinish() {
         String result = model.concatenate();
         showMessage(result, Toast.LENGTH_LONG);
         finish();

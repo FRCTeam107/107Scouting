@@ -56,8 +56,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
-    <ListView
-        android:id="@+id/available_files_list_view"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/available_files_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -69,14 +69,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/available_files_text_view">
 
-    </ListView>
-
-    <View
-        android:id="@+id/divider4"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintTop_toBottomOf="@id/available_files_list_view"/>
+    </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
         android:id="@+id/selected_files_text_view"
@@ -90,10 +83,10 @@
         android:text="@string/selected_files"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider4" />
+        app:layout_constraintTop_toBottomOf="@+id/available_files_recycler_view" />
 
-    <ListView
-        android:id="@+id/selected_files_list_view"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/selected_files_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -105,14 +98,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/selected_files_text_view">
 
-    </ListView>
-
-    <View
-        android:id="@+id/divider5"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintTop_toBottomOf="@id/selected_files_list_view" />
+    </androidx.recyclerview.widget.RecyclerView>
 
     <Button
         android:id="@+id/concat_button"

@@ -1,7 +1,6 @@
 package com.frc107.scouting.send;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -9,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.frc107.scouting.BaseActivity;
+import com.frc107.scouting.FileArrayAdapter;
 import com.frc107.scouting.FileDefinition;
 import com.frc107.scouting.R;
 
@@ -18,7 +18,7 @@ public class SendFileActivity extends BaseActivity {
     private SendFileModel model;
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
-    private FileArrayAdapterRecyclerView adapter;
+    private FileArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +37,9 @@ public class SendFileActivity extends BaseActivity {
         DividerItemDecoration decoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
         recyclerView.addItemDecoration(decoration);
 
-        adapter = new FileArrayAdapterRecyclerView(this, fileDefinitions);
-        adapter.setOnItemClickListener(fileDef -> {
-            sendFile(fileDef.getFile());
+        adapter = new FileArrayAdapter(this, fileDefinitions);
+        adapter.setOnItemClickListener(position -> {
+            sendFile(model.getFile(position));
             finish();
         });
 

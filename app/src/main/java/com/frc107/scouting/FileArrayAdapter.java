@@ -5,54 +5,77 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
-public class FileArrayAdapter extends ArrayAdapter<FileDefinition> {
-    private List<FileDefinition> elements = new ArrayList<>();
+public class FileArrayAdapter extends RecyclerView.Adapter<FileArrayAdapter.FileViewHolder> {
+    private List<FileDefinition> fileDefinitions;
+    private LayoutInflater layoutInflater;
+    private OnItemClickListener clickListener;
 
-    public FileArrayAdapter(Context context, List<FileDefinition> elements) {
-        super(context, R.layout.layout_file_item, elements);
-        this.elements = elements;
+    public FileArrayAdapter(Context context, List<FileDefinition> fileDefinitions) {
+        layoutInflater = LayoutInflater.from(context);
+        this.fileDefinitions = fileDefinitions;
+    }
+
+    @NonNull
+    @Override
+    public FileViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = layoutInflater.inflate(R.layout.layout_file_item, parent, false);
+        return new FileViewHolder(view);
     }
 
     @Override
-    public int getCount() {
-        return elements.size();
+    public void onBindViewHolder(@NonNull FileViewHolder holder, int position) {
+        FileDefinition fileDefinition = fileDefinitions.get(position);
+        holder.bind(fileDefinition, position);
     }
 
     @Override
-    public FileDefinition getItem(int position) {
-        return elements.get(position);
+    public int getItemCount() {
+        return fileDefinitions.size();
     }
 
-    @Override
-    public long getItemId(int id) {
-        return id;
+    public void setOnItemClickListener(OnItemClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null)
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_file_item, parent, false);
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
 
-        FileDefinition element = getItem(position);
-        if (element == null)
-            return convertView;
+    class FileViewHolder extends RecyclerView.ViewHolder {
+        private TextView fileTypeView;
+        private TextView creatorInitialsView;
+        private TextView dateTextView;
+        private FileDefinition fileDefinition;
+        private int position;
 
-        TextView fileTypeView = convertView.findViewById(R.id.file_type_view);
-        TextView creatorInitialsView = convertView.findViewById(R.id.creator_initials_view);
-        TextView dateTextView = convertView.findViewById(R.id.date_created_view);
+        FileViewHolder(@NonNull View itemView) {
+            super(itemView);
+            fileTypeView = itemView.findViewById(R.id.file_type_view);
+            creatorInitialsView = itemView.findViewById(R.id.creator_initials_view);
+            dateTextView = itemView.findViewById(R.id.date_created_view);
+        }
 
-        fileTypeView.setText(element.getType());
-        creatorInitialsView.setText(element.getInitials());
+        void bind(FileDefinition fileDefinition, int position) {
+            this.fileDefinition = fileDefinition;
+            this.position = position;
 
-        String date = DateFormat.format("h:mm A, MMM d", element.getDateCreated()).toString();
-        dateTextView.setText(date);
+            fileTypeView.setText(fileDefinition.getType());
+            creatorInitialsView.setText(fileDefinition.getInitials());
 
-        return convertView;
+            String date = DateFormat.format("h:mm A, MMM d", fileDefinition.getDateCreated()).toString();
+            dateTextView.setText(date);
+
+            itemView.setOnClickListener(view -> {
+                if (clickListener != null)
+                    clickListener.onItemClick(position);
+            });
+        }
     }
 }
