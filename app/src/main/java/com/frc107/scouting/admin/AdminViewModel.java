@@ -1,18 +1,12 @@
 package com.frc107.scouting.admin;
 
-import android.content.Context;
-import android.net.Uri;
-
-import com.frc107.scouting.ui.IUIListener;
-
-import java.io.File;
-import java.util.List;
+import com.frc107.scouting.callbacks.ICallbackWithParam;
 
 class AdminViewModel {
     private AdminModel model;
 
-    AdminViewModel(IUIListener listener) {
-        model = new AdminModel(listener);
+    AdminViewModel(ICallbackWithParam<Boolean> callback) {
+        model = new AdminModel(callback);
     }
 
     boolean concatenateMatchData() {

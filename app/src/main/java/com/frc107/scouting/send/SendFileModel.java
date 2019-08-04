@@ -2,7 +2,7 @@ package com.frc107.scouting.send;
 
 import androidx.lifecycle.ViewModel;
 
-import com.frc107.scouting.FileDefinition;
+import com.frc107.scouting.file.FileDefinition;
 import com.frc107.scouting.Scouting;
 
 import java.io.File;

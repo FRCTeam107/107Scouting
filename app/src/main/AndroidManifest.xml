@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".send.SendFileActivity"></activity>
-        <activity android:name=".ConcatActivity" />
+        <activity android:name=".concat.ConcatActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"

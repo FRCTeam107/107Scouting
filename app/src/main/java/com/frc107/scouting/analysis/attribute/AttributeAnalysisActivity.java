@@ -2,7 +2,7 @@ package com.frc107.scouting.analysis.attribute;
 
 import android.os.Bundle;
 
-import com.frc107.scouting.BaseActivity;
+import com.frc107.scouting.ui.BaseActivity;
 
 import android.view.View;
 import android.widget.AdapterView;

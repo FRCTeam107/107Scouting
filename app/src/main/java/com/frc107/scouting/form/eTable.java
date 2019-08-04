@@ -7,14 +7,14 @@ import com.frc107.scouting.Scouting;
  *
  * For example, for 2019, we would have had 2 different tables:
  * - Match
- * - Pit
+ * - PitAnswers
  *
  * So I would have had my new eTable enum values be:
  *  - PIT
  *  - MATCH
  *
  * I would have had four String constants:
- *  private static final String PIT_PREFIX = "Pit";
+ *  private static final String PIT_PREFIX = "PitAnswers";
  *  private static final String CONCAT_PIT_PREFIX = "ConcatPit";
  *  private static final String MATCH_PREFIX = "Match";
  *  private static final String CONCAT_MATCH_PREFIX = "ConcatMatch";
@@ -25,7 +25,7 @@ public enum eTable {
     PIT,
     MATCH;
 
-    private static final String PIT_PREFIX = "Pit";
+    private static final String PIT_PREFIX = "PitAnswers";
     private static final String MATCH_PREFIX = "Match";
     private static final String CONCAT_PIT_PREFIX = "ConcatPit";
     private static final String CONCAT_MATCH_PREFIX = "ConcatMatch";
@@ -56,7 +56,7 @@ public enum eTable {
     public String toString() {
         switch (this) {
             case PIT:
-                return "Pit";
+                return "PitAnswers";
             case MATCH:
                 return "Match";
             default:
@@ -67,7 +67,7 @@ public enum eTable {
     public String toStringConcat() {
         switch (this) {
             case PIT:
-                return "Concatenated Pit";
+                return "Concatenated PitAnswers";
             case MATCH:
                 return "Concatenated Match";
             default:

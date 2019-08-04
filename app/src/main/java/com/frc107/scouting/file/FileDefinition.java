@@ -1,4 +1,4 @@
-package com.frc107.scouting;
+package com.frc107.scouting.file;
 
 import com.frc107.scouting.form.eTable;
 

@@ -19,22 +19,6 @@
     <item android:title="@string/bluetooth">
         <menu>
             <item
-                android:id="@+id/send_match_data"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/send_match_data" />
-            <item
-                android:id="@+id/send_pit_data"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/send_pit_data" />
-            <item
-                android:id="@+id/send_concat_match_data"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/send_concat_match_data" />
-            <item
-                android:id="@+id/send_concat_pit_data"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/send_concat_pit_data" />
-            <item
                 android:id="@+id/send_pit_photos"
                 android:icon="@drawable/ic_menu_send"
                 android:title="@string/send_pit_photos" />

@@ -5,9 +5,10 @@ import android.util.SparseIntArray;
 
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
+import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.form.Table;
 import com.frc107.scouting.form.eTable;
-import com.frc107.scouting.utils.FileService;
+import com.frc107.scouting.file.FileService;
 import com.frc107.scouting.utils.StringUtils;
 
 import java.io.File;
@@ -29,24 +30,24 @@ class PitModel {
     private static SparseIntArray radioButtonMappings = new SparseIntArray();
 
     static {
-        radioButtonMappings.put(R.id.visionSystemSandstorm_Radiobtn, Pit.VISION_SYSTEM);
-        radioButtonMappings.put(R.id.cameraDrivingSandstorm_Radiobtn, Pit.CAMERA_DRIVING);
-        radioButtonMappings.put(R.id.blindDrivingSandstorm_Radiobtn, Pit.BLIND_DRIVING);
-        radioButtonMappings.put(R.id.noDrivingSandstorm_Radiobtn, Pit.NO_DRIVING);
+        radioButtonMappings.put(R.id.visionSystemSandstorm_Radiobtn, PitAnswers.VISION_SYSTEM);
+        radioButtonMappings.put(R.id.cameraDrivingSandstorm_Radiobtn, PitAnswers.CAMERA_DRIVING);
+        radioButtonMappings.put(R.id.blindDrivingSandstorm_Radiobtn, PitAnswers.BLIND_DRIVING);
+        radioButtonMappings.put(R.id.noDrivingSandstorm_Radiobtn, PitAnswers.NO_DRIVING);
 
-        radioButtonMappings.put(R.id.rocketshipPreferenceSandstorm_Radiobtn, Pit.ROCKET_SHIP_PREF);
-        radioButtonMappings.put(R.id.cargoshipPreferenceSandstorm_Radiobtn, Pit.CARGO_SHIP_PREF);
-        radioButtonMappings.put(R.id.noPreferenceSandstorm_Radiobtn, Pit.NO_PREF);
+        radioButtonMappings.put(R.id.rocketshipPreferenceSandstorm_Radiobtn, PitAnswers.ROCKET_SHIP_PREF);
+        radioButtonMappings.put(R.id.cargoshipPreferenceSandstorm_Radiobtn, PitAnswers.CARGO_SHIP_PREF);
+        radioButtonMappings.put(R.id.noPreferenceSandstorm_Radiobtn, PitAnswers.NO_PREF);
 
-        radioButtonMappings.put(R.id.topRocketLevelSandstorm_Radiobtn, Pit.TOP_ROCKET);
-        radioButtonMappings.put(R.id.middleRocketLevelSandstorm_Radiobtn, Pit.MID_ROCKET);
-        radioButtonMappings.put(R.id.bottomRocketLevelSandstorm_Radiobtn, Pit.BOTTOM_ROCKET);
-        radioButtonMappings.put(R.id.noRocketLevelSandstorm_Radiobtn, Pit.NO_ROCKET);
+        radioButtonMappings.put(R.id.topRocketLevelSandstorm_Radiobtn, PitAnswers.TOP_ROCKET);
+        radioButtonMappings.put(R.id.middleRocketLevelSandstorm_Radiobtn, PitAnswers.MID_ROCKET);
+        radioButtonMappings.put(R.id.bottomRocketLevelSandstorm_Radiobtn, PitAnswers.BOTTOM_ROCKET);
+        radioButtonMappings.put(R.id.noRocketLevelSandstorm_Radiobtn, PitAnswers.NO_ROCKET);
 
-        radioButtonMappings.put(R.id.topHabitatLevel_Radiobtn, Pit.TOP_HAB);
-        radioButtonMappings.put(R.id.middleHabitatLevel_Radiobtn, Pit.MID_HAB);
-        radioButtonMappings.put(R.id.bottomHabitatLevel_Radiobtn, Pit.BOTTOM_HAB);
-        radioButtonMappings.put(R.id.noHabitatLevel_Radiobtn, Pit.NO_HAB);
+        radioButtonMappings.put(R.id.topHabitatLevel_Radiobtn, PitAnswers.TOP_HAB);
+        radioButtonMappings.put(R.id.middleHabitatLevel_Radiobtn, PitAnswers.MID_HAB);
+        radioButtonMappings.put(R.id.bottomHabitatLevel_Radiobtn, PitAnswers.BOTTOM_HAB);
+        radioButtonMappings.put(R.id.noHabitatLevel_Radiobtn, PitAnswers.NO_HAB);
     }
 
     void setTeamNumber(String teamNumberAsString) {
@@ -132,10 +133,10 @@ class PitModel {
 
         FileService fileService = Scouting.getInstance().getFileService();
         try {
-            fileService.saveData(TABLE, Scouting.getInstance().getUserInitials(), entry);
+            fileService.saveScoutingData(TABLE, Scouting.getInstance().getUserInitials(), entry);
             return true;
         } catch (IOException e) {
-            Log.d(Scouting.SCOUTING_TAG, e.getLocalizedMessage());
+            Log.d(ScoutingStrings.SCOUTING_TAG, e.getLocalizedMessage());
             return false;
         }
     }

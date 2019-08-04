@@ -1,17 +1,14 @@
 package com.frc107.scouting.admin;
 
-import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 
-import com.frc107.scouting.BuildConfig;
-import com.frc107.scouting.ui.IUIListener;
+import com.frc107.scouting.callbacks.ICallbackWithParam;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.analysis.IOPRListener;
 import com.frc107.scouting.analysis.OPRTask;
 import com.frc107.scouting.analysis.tba.OPR;
-import com.frc107.scouting.utils.FileService;
+import com.frc107.scouting.file.FileService;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,27 +16,23 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import androidx.core.content.FileProvider;
 
 public class AdminModel implements IOPRListener {
     public static final int MATCH = 0;
     public static final int PIT = 1;
 
-    private IUIListener listener;
+    private ICallbackWithParam<Boolean> callback;
     private OPR opr;
 
-    public AdminModel(IUIListener listener) {
-        this.listener = listener;
+    public AdminModel(ICallbackWithParam<Boolean> callback) {
+        this.callback = callback;
     }
 
     public boolean concatenateData(int type) {
         String prefix = "Match";
         String header = ScoutingStrings.MATCH_HEADER;
         if (type == PIT) {
-            prefix = "Pit";
+            prefix = "PitAnswers";
             header = ScoutingStrings.PIT_HEADER;
         }
 
@@ -69,7 +62,7 @@ public class AdminModel implements IOPRListener {
                     line = bufferedReader.readLine();
                 }
             } catch (IOException e) {
-                Log.d(Scouting.SCOUTING_TAG, e.getMessage());
+                Log.d(ScoutingStrings.SCOUTING_TAG, e.getMessage());
             }
         }
 
@@ -84,7 +77,7 @@ public class AdminModel implements IOPRListener {
             fileWriter.write(builder.toString());
             return true;
         } catch (IOException e) {
-            Log.d(Scouting.SCOUTING_TAG, e.getMessage());
+            Log.d(ScoutingStrings.SCOUTING_TAG, e.getMessage());
         }
 
         return false;
@@ -117,6 +110,6 @@ public class AdminModel implements IOPRListener {
     @Override
     public void onOPRLoaded(OPR opr) {
         this.opr = opr;
-        listener.callback(opr == null);
+        callback.call(opr == null);
     }
 }

@@ -1,35 +1,60 @@
-package com.frc107.scouting;
+package com.frc107.scouting.ui;
 
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.frc107.scouting.BuildConfig;
+import com.frc107.scouting.MainActivity;
+import com.frc107.scouting.R;
+import com.frc107.scouting.Scouting;
+import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.admin.AdminActivity;
 import com.frc107.scouting.callbacks.ICallback;
-import com.frc107.scouting.callbacks.ICallbackWithParam;
-import com.frc107.scouting.callbacks.ICallbackWithParamAndResult;
-import com.frc107.scouting.pit.PitActivity;
+import com.frc107.scouting.send.SendFileActivity;
 import com.frc107.scouting.utils.PermissionUtils;
 import com.frc107.scouting.utils.StringUtils;
 import com.frc107.scouting.utils.ViewUtils;
 
 import java.io.File;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 public abstract class BaseActivity extends AppCompatActivity {
+    private SharedPreferences sharedPreferences;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Scouting.FILE_SERVICE.reloadFileDefinitions();
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        sharedPreferences = getApplicationContext().getSharedPreferences(ScoutingStrings.PREFERENCES_NAME, MODE_PRIVATE);
+    }
+
+    protected SharedPreferences getSharedPreferences() {
+        return sharedPreferences;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -44,10 +69,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                 return true;
             case R.id.admin_activity:
                 startActivity(new Intent(this, AdminActivity.class));
-                finish();
                 return true;
             case R.id.send_data:
-                sendData();
+                tryToGoToSendDataScreen();
                 return true;
             case R.id.end_shift:
                 showInitialsDialog(() -> { });
@@ -55,12 +79,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void sendData() {
-        File matchFile = Scouting.FILE_SERVICE.getFile("ConcatenatedMatch.csv");
-        if (matchFile != null)
-            sendFile(matchFile);
     }
 
     protected void checkForPermissions() {
@@ -81,7 +99,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void sendFile(File file) {
+    protected void tryToGoToSendDataScreen() {
+        String initials = Scouting.getInstance().getUserInitials();
+        if (!StringUtils.isEmptyOrNull(initials)) {
+            startActivity(new Intent(this, SendFileActivity.class));
+            return;
+        }
+
+        showInitialsDialog(() -> startActivity(new Intent(this, SendFileActivity.class)));
+    }
+
+    protected void sendFile(File file) {
         if (file == null) {
             Toast.makeText(this, "File does not exist.", Toast.LENGTH_SHORT).show();
             return;
@@ -96,13 +124,33 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    private static InputFilter letterFilter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            String value = source.toString();
+            char[] chars = value.toCharArray();
+
+            StringBuilder builder = new StringBuilder();
+            for (char c : chars) {
+                if (Character.isLetter(c))
+                    builder.append(c);
+            }
+
+            return builder.toString();
+        }
+    };
+
     public void showInitialsDialog(ICallback onFinish) {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setTitle("Enter initials:");
         final EditText editText = new EditText(this);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Limit the input to just letters.
+        editText.setFilters(new InputFilter[] { letterFilter });
+        editText.setSingleLine();
+        editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         editText.setLayoutParams(layoutParams);
 
         alertBuilder.setView(editText);
@@ -115,9 +163,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
             Scouting.getInstance().setUserInitials(text);
 
-            SharedPreferences pref = getApplicationContext().getSharedPreferences(Scouting.USER_INITIALS_PREFERENCE, MODE_PRIVATE);
-            SharedPreferences.Editor prefEditor = pref.edit();
-            prefEditor.putString(Scouting.EVENT_KEY_PREFERENCE, text);
+            SharedPreferences.Editor prefEditor = getSharedPreferences().edit();
+            prefEditor.putString(ScoutingStrings.USER_INITIALS_PREFERENCE, text);
             prefEditor.apply();
 
             onFinish.call();

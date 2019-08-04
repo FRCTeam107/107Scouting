@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.frc107.scouting.BaseActivity;
-import com.frc107.scouting.FileArrayAdapter;
-import com.frc107.scouting.FileDefinition;
+import com.frc107.scouting.ui.BaseActivity;
+import com.frc107.scouting.ui.FileArrayAdapter;
+import com.frc107.scouting.file.FileDefinition;
 import com.frc107.scouting.R;
 
 import java.util.List;

@@ -41,7 +41,6 @@ public class LoadDataTask extends AsyncTask<IAnalysisManager, Void, Void> {
             return;
         }
 
-        // todo: replace with something in attribute manager
         Table table = Scouting.getInstance().getTable(attributeManager.getTableType());
         table.importData(data, row -> attributeManager.makeCalculationsFromRows(row.getValues()));
     }

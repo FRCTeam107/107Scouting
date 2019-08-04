@@ -1,13 +1,11 @@
 package com.frc107.scouting.form;
 
-import android.util.SparseIntArray;
-
-import com.frc107.scouting.Scouting;
+import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.callbacks.ICallbackWithParam;
+import com.frc107.scouting.form.column.Column;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -17,9 +15,7 @@ public class Table {
     private String name;
     private String header;
 
-    private Map<String, Integer> nameIdMap = new HashMap<String, Integer>();
     private Map<Integer, Column> idColumnMap = new HashMap<Integer, Column>();
-
     private Map<Integer, Integer> colIdIndexMap = new HashMap<Integer, Integer>();
 
     private List<Column> columns;
@@ -36,7 +32,6 @@ public class Table {
             if (idColumnMap.containsKey(column.getId()))
                 throw new IllegalArgumentException("Column with id " + column.getId() + " already exists");
 
-            nameIdMap.put(column.getName(), column.getId());
             idColumnMap.put(column.getId(), column);
 
             headerBuilder.append(column.getName());
@@ -87,7 +82,7 @@ public class Table {
      * this can be expensive.
      */
     public boolean importData(String data, ICallbackWithParam<Row> forEachRow) {
-        String[] lines = data.split(Scouting.NEW_LINE);
+        String[] lines = data.split(ScoutingStrings.NEW_LINE);
         String[] columnNames = lines[0].split(",");
         if (columnNames.length != columns.size())
             return false; // The imported data has a different amount of columns than we do.
@@ -107,25 +102,7 @@ public class Table {
             if (line.isEmpty())
                 continue;
 
-            Object[] values = new Object[columns.size()];
-            String[] parts = line.split(",");
-            for (int j = 0; j < parts.length; j++) {
-                Column column = columns.get(j);
-                Class typeClass = column.getTypeClass();
-
-                Object value = null;
-                if (typeClass.equals(Integer.class)) {
-                    value = Integer.parseInt(parts[j]);
-                }
-
-                if (typeClass.equals(String.class)) {
-                    value = parts[j];
-                }
-
-                values[j] = value;
-            }
-
-            Row row = new Row(values);
+            Row row = parseRow(line);
             rows.add(row);
 
             forEachRow.call(row);
@@ -134,26 +111,39 @@ public class Table {
         return true;
     }
 
+    private Row parseRow(String line) {
+        Object[] values = new Object[columns.size()];
+        String[] parts = line.split(",");
+        for (int j = 0; j < parts.length; j++) {
+            Column column = columns.get(j);
+            Class typeClass = column.getTypeClass();
+
+            Object value = null;
+
+            if (typeClass.equals(Integer.class)) {
+                value = Integer.parseInt(parts[j]);
+            }
+
+            if (typeClass.equals(String.class)) {
+                value = parts[j];
+            }
+
+            values[j] = value;
+        }
+        return new Row(values);
+    }
+
     public void clear() {
         rows.clear();
-
-        nameIdMap.clear();
     }
 
-    public String getRowsInRangeAsString(int beginIndex, int endIndex) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = beginIndex; i <= endIndex; i++) {
-            String row = getRowAsString(i);
-            builder.append(row);
-            builder.append(Scouting.NEW_LINE);
-        }
-        return builder.toString();
-    }
-
-    public String getRowAsString(int rowIndex) {
+    private String getRowAsString(int rowIndex) {
         Row row = rows.get(rowIndex);
 
         // I would use String.join(",", values) but that's only supported in API level 26 and up
+
+        // FormatStringUtils.addDelimiter does something almost identical to this, but I rewrote it
+        // here since I'm working off of an Object[] and need to call toString.
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < columns.size(); i++) {
             builder.append(row.getValue(i).toString());
@@ -164,8 +154,8 @@ public class Table {
         return builder.toString();
     }
 
-    public Object getColumnValueAtRow(int id, int rowIndex) {
-        int colIndex = colIdIndexMap.get(id);
+    public Object getColumnValueAtRow(int columnId, int rowIndex) {
+        int colIndex = colIdIndexMap.get(columnId);
         Row row = rows.get(rowIndex);
         return row.getValue(colIndex);
     }

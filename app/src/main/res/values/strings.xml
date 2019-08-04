@@ -22,7 +22,7 @@
 
     <string name="teamNumberHeading">Team Number</string>
 
-    <!--Pit Scouting Strings-->
+    <!--PitAnswers Scouting Strings-->
     <string name="pitTeamNumber">Team Number</string>
 
     <string name="pitSandstormOperation">Sandstorm Operation</string>

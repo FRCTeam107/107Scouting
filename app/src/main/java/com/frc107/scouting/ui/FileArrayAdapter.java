@@ -1,4 +1,4 @@
-package com.frc107.scouting;
+package com.frc107.scouting.ui;
 
 import android.content.Context;
 import android.text.format.DateFormat;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.frc107.scouting.file.FileDefinition;
+import com.frc107.scouting.R;
 
 import java.util.List;
 

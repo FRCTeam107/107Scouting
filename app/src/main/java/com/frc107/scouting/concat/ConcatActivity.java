@@ -1,4 +1,4 @@
-package com.frc107.scouting;
+package com.frc107.scouting.concat;
 
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +13,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.frc107.scouting.ui.BaseActivity;
+import com.frc107.scouting.R;
+import com.frc107.scouting.Scouting;
+import com.frc107.scouting.ui.FileArrayAdapter;
 import com.frc107.scouting.utils.StringUtils;
 
 public class ConcatActivity extends BaseActivity {

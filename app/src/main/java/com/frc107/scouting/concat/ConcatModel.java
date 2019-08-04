@@ -1,7 +1,9 @@
-package com.frc107.scouting;
+package com.frc107.scouting.concat;
 
 import androidx.lifecycle.ViewModel;
 
+import com.frc107.scouting.file.FileDefinition;
+import com.frc107.scouting.Scouting;
 import com.frc107.scouting.callbacks.ICallback;
 import com.frc107.scouting.form.eTable;
 

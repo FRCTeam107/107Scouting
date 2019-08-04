@@ -23,12 +23,6 @@ public class AttributeAnalysisModel {
         this.onError = onError;
     }
 
-    void initialize(ICallback onDataLoaded, ICallback refreshUI, ICallbackWithParam<String> onError) {
-        this.onDataLoaded = onDataLoaded;
-        this.refreshUI = refreshUI;
-        this.onError = onError;
-    }
-
     void loadData() {
         new LoadDataTask(this::onDataLoaded, this::onDataLoadError).execute(attributeManager);
     }

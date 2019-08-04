@@ -1,4 +1,4 @@
-package com.frc107.scouting.form;
+package com.frc107.scouting.form.column;
 
 import androidx.annotation.NonNull;
 
@@ -9,7 +9,6 @@ import java.util.List;
 public class Column<T> {
     private int id;
     private String name;
-    //private ArrayList<T> values = new ArrayList<>();
     private Class<T> typeClass; // Used for typechecking
 
     public Column(int id, String name, Class<T> typeClass) {
@@ -17,30 +16,6 @@ public class Column<T> {
         this.name = name;
         this.typeClass = typeClass;
     }
-
-    /*public void enterValue(T value) {
-        values.add(value);
-    }
-
-    public boolean hasValueAtRow(int row) {
-        return row > values.size() - 1;
-    }
-
-    public T getValueAtRow(int row) {
-        return values.get(row);
-    }
-
-    public T getValueAtLastRow() {
-        return values.get(values.size() - 1);
-    }
-
-    public List<T> getValues() {
-        return Collections.unmodifiableList(values);
-    }
-
-    public void clear() {
-        values.clear();
-    }*/
 
     public int getId() {
         return id;

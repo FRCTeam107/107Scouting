@@ -12,8 +12,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.frc107.scouting.R;
-import com.frc107.scouting.BaseActivity;
-import com.frc107.scouting.ui.IUIListener;
+import com.frc107.scouting.ui.BaseActivity;
+import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.analysis.attribute.AttributeAnalysisActivity;
 import com.frc107.scouting.utils.PermissionUtils;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * Created by Matt on 10/9/2017.
  */
 
-public class AdminActivity extends BaseActivity implements IUIListener {
+public class AdminActivity extends BaseActivity {
     private AdminViewModel viewModel;
     private EditText eventKeyEditText;
 
@@ -35,10 +35,15 @@ public class AdminActivity extends BaseActivity implements IUIListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        viewModel = new AdminViewModel(this);
+        viewModel = new AdminViewModel(error -> {
+            String message = "OPRs downloaded successfully.";
+            if (error)
+                message = "Error while downloading OPRs. Double-check your event key.";
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(Scouting.PREFERENCES_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor prefEditor = pref.edit();
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        });
+
+        SharedPreferences.Editor prefEditor = getSharedPreferences().edit();
 
         eventKeyEditText = findViewById(R.id.eventKeyEditText);
         eventKeyEditText.setText(viewModel.getEventKey());
@@ -47,7 +52,7 @@ public class AdminActivity extends BaseActivity implements IUIListener {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 viewModel.setEventKey(s.toString());
-                prefEditor.putString(Scouting.EVENT_KEY_PREFERENCE, s.toString());
+                prefEditor.putString(ScoutingStrings.EVENT_KEY_PREFERENCE, s.toString());
                 prefEditor.apply();
             }
             public void afterTextChanged(Editable s) { }
@@ -116,14 +121,5 @@ public class AdminActivity extends BaseActivity implements IUIListener {
 
     public void downloadOPRs(View view) {
         viewModel.downloadOPRs();
-    }
-
-    @Override
-    public void callback(boolean error) {
-        String message = "OPRs downloaded successfully.";
-        if (error)
-            message = "Error while downloading OPRs. Double-check your event key.";
-
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 }

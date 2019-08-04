@@ -2,27 +2,19 @@ package com.frc107.scouting;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.frc107.scouting.form.IntColumn;
-import com.frc107.scouting.form.StringColumn;
+import com.frc107.scouting.file.FileDefinition;
+import com.frc107.scouting.form.column.IntColumn;
+import com.frc107.scouting.form.column.StringColumn;
 import com.frc107.scouting.form.Table;
 import com.frc107.scouting.form.eTable;
-import com.frc107.scouting.utils.FileService;
+import com.frc107.scouting.pit.PitIDs;
+import com.frc107.scouting.file.FileService;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Scouting {
-    public static final String PREFERENCES_NAME = "ScoutingPreferences";
-    public static final String EVENT_KEY_PREFERENCE = "eventKey";
-    public static final String USER_INITIALS_PREFERENCE = "userInitials";
-
-    @NonNull
-    public static final String NEW_LINE = System.getProperty("line.separator");
-    public static final String SCOUTING_TAG = "Scoutinator";
-
     public static final boolean SAVE_QUESTION_NAMES_AS_ANSWERS = false;
 
     private static Scouting scouting = new Scouting();
@@ -45,28 +37,30 @@ public class Scouting {
         }
     }
 
-    public static final String COL_PIT_TEAM_NUM = "pit_team_number";
-    public static final String COL_PIT_SANDSTORM_OP = "pit_sandstorm_op";
-    public static final String COL_PIT_SANDSTORM_PREF = "pit_sandstorm_preference";
-    public static final String COL_PIT_SANDSTORM_HIGHEST_ROCKET_LEVEL = "pit_sandstorm_highest_rocket_level";
-    public static final String COL_PIT_HIGHEST_HABITAT = "pit_highest_habitat";
-    public static final String COL_PIT_HABITAT_TIME = "pit_habitat_time";
-    public static final String COL_PIT_PROGRAMMING_LANG = "pit_programming_language";
-    public static final String COL_PIT_BONUS = "pit_bonus";
-    public static final String COL_PIT_COMMENTS = "pit_comments";
+    private static final String COL_PIT_TEAM_NUM = "pit_team_number";
+    private static final String COL_PIT_SANDSTORM_OP = "pit_sandstorm_op";
+    private static final String COL_PIT_SANDSTORM_PREF = "pit_sandstorm_preference";
+    private static final String COL_PIT_SANDSTORM_HIGHEST_ROCKET_LEVEL = "pit_sandstorm_highest_rocket_level";
+    private static final String COL_PIT_HIGHEST_HABITAT = "pit_highest_habitat";
+    private static final String COL_PIT_HABITAT_TIME = "pit_habitat_time";
+    private static final String COL_PIT_PROGRAMMING_LANG = "pit_programming_language";
+    private static final String COL_PIT_BONUS = "pit_bonus";
+    private static final String COL_PIT_COMMENTS = "pit_comments";
+
     private String pitHeader;
+    private String matchHeader;
 
     private Scouting() {
-        pitTable = new Table("Pit",
-                new IntColumn(R.id.pit_team_number, COL_PIT_TEAM_NUM),
-                new IntColumn(R.id.pit_sandstorm_op, COL_PIT_SANDSTORM_OP),
-                new IntColumn(R.id.pit_sandstorm_preference, COL_PIT_SANDSTORM_PREF),
-                new IntColumn(R.id.pit_sandstorm_highest_rocket_level, COL_PIT_SANDSTORM_HIGHEST_ROCKET_LEVEL),
-                new IntColumn(R.id.pit_highest_habitat, COL_PIT_HIGHEST_HABITAT),
-                new StringColumn(R.id.pit_habitat_time, COL_PIT_HABITAT_TIME),
-                new StringColumn(R.id.pit_programming_language, COL_PIT_PROGRAMMING_LANG),
-                new StringColumn(R.id.pit_bonus, COL_PIT_BONUS),
-                new StringColumn(R.id.pit_comments, COL_PIT_COMMENTS));
+        pitTable = new Table("PitAnswers",
+                new IntColumn(PitIDs.TEAM_NUM, COL_PIT_TEAM_NUM),
+                new IntColumn(PitIDs.SANDSTORM_OP, COL_PIT_SANDSTORM_OP),
+                new IntColumn(PitIDs.SANDSTORM_PREF, COL_PIT_SANDSTORM_PREF),
+                new IntColumn(PitIDs.SANDSTORM_HIGHEST_ROCKET_LEVEL, COL_PIT_SANDSTORM_HIGHEST_ROCKET_LEVEL),
+                new IntColumn(PitIDs.HIGHEST_HAB, COL_PIT_HIGHEST_HABITAT),
+                new StringColumn(PitIDs.HAB_TIME, COL_PIT_HABITAT_TIME),
+                new StringColumn(PitIDs.PROGRAMMING_LANG, COL_PIT_PROGRAMMING_LANG),
+                new StringColumn(PitIDs.BONUS, COL_PIT_BONUS),
+                new StringColumn(PitIDs.COMMENTS, COL_PIT_COMMENTS));
 
         pitHeader = pitTable.getHeader();
 
@@ -93,6 +87,8 @@ public class Scouting {
                 new StringColumn(17, "OPR"),
                 new StringColumn(18, "DPR"));
 
+        matchHeader = matchTable.getHeader();
+
         tables.add(matchTable);
 
         reloadData();
@@ -103,14 +99,14 @@ public class Scouting {
     }
 
     public String getMatchHeader() {
-        return "eeee";
+        return matchHeader;
     }
 
     private void reloadData() {
         pitTable.clear();
 
         fileService.clearFileDefinitions();
-        fileService.loadFiles();
+        fileService.loadFileDefinitions();
 
         FileDefinition fileDef = fileService.getMostRecentFileDefinition(eTable.PIT, userInitials);
         if (fileDef != null) {
@@ -118,7 +114,7 @@ public class Scouting {
             try {
                 fileData = fileService.getFileData(fileDef.getFile());
             } catch (IOException e) {
-                Log.d(SCOUTING_TAG, e.getLocalizedMessage());
+                Log.d(ScoutingStrings.SCOUTING_TAG, e.getLocalizedMessage());
                 return;
             }
             pitTable.importData(fileData, row -> {});

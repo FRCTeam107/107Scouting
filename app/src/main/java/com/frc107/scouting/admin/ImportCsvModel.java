@@ -1,31 +1,35 @@
 package com.frc107.scouting.admin;
 
-import android.util.Log;
-
 import com.frc107.scouting.Scouting;
-import com.frc107.scouting.form.eTable;
+import com.frc107.scouting.ScoutingStrings;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
-public class ImportCsvModel {
-    public void importCsv(eTable targetTable, InputStream inputStream) {
+class ImportCsvModel {
+    boolean doesFileExist(String name) {
+        return Scouting.FILE_SERVICE.doesFileExist(name);
+    }
+
+    void copyFile(InputStream inputStream, String name) throws IOException {
+        StringBuilder builder = new StringBuilder();
         try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
              BufferedReader reader = new BufferedReader(inputStreamReader)) {
-            ArrayList<String> lines = new ArrayList<>();
             String line = reader.readLine();
             while (line != null) {
-                lines.add(line);
+                builder.append(line);
+                builder.append(ScoutingStrings.NEW_LINE);
                 line = reader.readLine();
             }
-            Log.d(Scouting.SCOUTING_TAG, lines.toString());
-            // TODO: load the csv data, ask if user wants to merge with existing, replace, or add new file
-            // TODO: allow for saving of data to specific location? nah
-        } catch (IOException e) {
-            Log.d(Scouting.SCOUTING_TAG, e.getLocalizedMessage());
         }
+
+        File targetFile = new File(Scouting.FILE_SERVICE.getScoutingDirectory(), name);
+        if (targetFile.exists())
+            throw new IOException("File already exists! Path: " + targetFile.getPath());
+
+        Scouting.FILE_SERVICE.createAndWriteToNewFileCore(targetFile.getParentFile(), targetFile.getName(), builder.toString());
     }
 }

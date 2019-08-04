@@ -15,81 +15,14 @@
         android:layout_marginBottom="@dimen/edge_margin">
 
         <Button
-            android:id="@+id/button15"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="concatenateMatchData"
-            android:text="@string/concatenateMatchData"
-            android:layout_marginTop="@dimen/edge_margin"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/button16"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/edge_margin"
-            android:onClick="concatenatePitData"
-            android:text="@string/concatenatePitData"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button15" />
-
-        <Button
             android:id="@+id/button17"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
             android:onClick="sendRobotPhotos"
             android:text="@string/sendRobotPhotos"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button16" />
-
-        <Button
-            android:id="@+id/send_pit_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/edge_margin"
-            android:onClick="sendPitData"
-            android:text="@string/sendPitData"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button17" />
-
-        <Button
-            android:id="@+id/button18"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/edge_margin"
-            android:onClick="sendConcatMatchData"
-            android:text="@string/sendConcatMatchData"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/send_pit_data" />
-
-        <Button
-            android:id="@+id/send_concat_pit_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/edge_margin"
-            android:onClick="sendConcatPitData"
-            android:text="@string/sendConcatPitData"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button18" />
-
-        <Button
-            android:id="@+id/button19"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:onClick="goToTeamAnalysis"
-            android:text="@string/teamAnalysisButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/send_concat_pit_data" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/button20"
@@ -100,7 +33,7 @@
             android:text="@string/attributeAnalysisButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button19" />
+            app:layout_constraintTop_toBottomOf="@+id/button17" />
 
         <EditText
             android:id="@+id/eventKeyEditText"

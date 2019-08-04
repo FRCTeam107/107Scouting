@@ -13,7 +13,7 @@ import com.frc107.scouting.R;
 import com.frc107.scouting.utils.PermissionUtils;
 import com.frc107.scouting.utils.StringUtils;
 import com.frc107.scouting.utils.ViewUtils;
-import com.frc107.scouting.BaseActivity;
+import com.frc107.scouting.ui.BaseActivity;
 import com.frc107.scouting.ui.questionWrappers.RadioWrapper;
 import com.frc107.scouting.ui.questionWrappers.TextWrapper;
 

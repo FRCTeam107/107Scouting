@@ -31,6 +31,6 @@
         android:clickable="true"
         android:focusable="true"
         app:srcCompat="@drawable/ic_menu_send"
-        android:onClick="tryToSendData" />
+        android:onClick="tryToGoToSendDataScreen" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

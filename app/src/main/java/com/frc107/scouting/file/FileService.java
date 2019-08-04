@@ -1,4 +1,4 @@
-package com.frc107.scouting.utils;
+package com.frc107.scouting.file;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -6,9 +6,10 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
-import com.frc107.scouting.FileDefinition;
 import com.frc107.scouting.Scouting;
+import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.form.eTable;
+import com.frc107.scouting.utils.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -52,7 +53,12 @@ public class FileService {
         fileDefinitions = new ArrayList<>();
     }
 
-    public void loadFiles() {
+    public void reloadFileDefinitions() {
+        clearFileDefinitions();
+        loadFileDefinitions();
+    }
+
+    public void loadFileDefinitions() {
         File[] files = scoutingDirectory.listFiles();
         for (File file : files) {
             if (file.isDirectory())
@@ -111,7 +117,7 @@ public class FileService {
             minute = Integer.parseInt(timeParts[1]);
             second = Integer.parseInt(timeParts[2]);
         } catch (NumberFormatException e) {
-            Log.d(Scouting.SCOUTING_TAG, e.getLocalizedMessage());
+            Log.d(ScoutingStrings.SCOUTING_TAG, e.getLocalizedMessage());
         }
 
         Calendar date = Calendar.getInstance();
@@ -150,16 +156,16 @@ public class FileService {
         return year + "-" + month + "-" + day + FILE_NAME_DELIMITER + hour + "-" + minute + "-" + second;
     }
 
-    public void saveData(eTable tableType, String initials, String data) throws IOException {
+    public void saveScoutingData(eTable tableType, String initials, String data) throws IOException {
         FileDefinition mostRecentFile = getMostRecentFileDefinition(tableType, initials);
         Calendar date = Calendar.getInstance();
         if (mostRecentFile == null) {
             // there is no FileDefinition for this eFileType and initials; create a new file.
-            File file = createAndWriteToNewFile(tableType, date, initials, data, false);
+            File file = createAndWriteToNewScoutingFile(tableType, date, initials, data, false);
             addFileDefinition(tableType, file, date, initials, false);
         } else if (mostRecentFile.getFile() == null || !mostRecentFile.getFile().exists()) {
             // there is a FileDefinition, but the file does not exist; delete the existing FileDefinition and create a new file + FileDefinition.
-            File file = createAndWriteToNewFile(tableType, date, initials, data, false);
+            File file = createAndWriteToNewScoutingFile(tableType, date, initials, data, false);
 
             fileDefinitions.remove(mostRecentFile);
             addFileDefinition(tableType, file, date, initials, false);
@@ -218,7 +224,7 @@ public class FileService {
             String line = bufferedReader.readLine();
             while (line != null) {
                 builder.append(line);
-                builder.append(Scouting.NEW_LINE);
+                builder.append(ScoutingStrings.NEW_LINE);
                 line = bufferedReader.readLine();
             }
         }
@@ -235,17 +241,17 @@ public class FileService {
 
         String state = Environment.getExternalStorageState();
         if (!state.equals(Environment.MEDIA_MOUNTED)) {
-            Log.e(Scouting.SCOUTING_TAG, "External storage not mounted!");
+            Log.e(ScoutingStrings.SCOUTING_TAG, "External storage not mounted!");
             return false;
         }
 
-        data = Scouting.NEW_LINE + data;
+        data = ScoutingStrings.NEW_LINE + data;
         try (FileOutputStream fileOutputStream = new FileOutputStream(file, true)) {
             fileOutputStream.write(data.getBytes());
             fileOutputStream.flush();
             return true;
         } catch (IOException e) {
-            Log.e(Scouting.SCOUTING_TAG, e.getMessage());
+            Log.e(ScoutingStrings.SCOUTING_TAG, e.getMessage());
             return false;
         }
     }
@@ -257,12 +263,12 @@ public class FileService {
      * @param data Your data.
      * @return
      */
-    private File createAndWriteToNewFile(eTable tableType, Calendar date, String initials, String data, boolean concat) throws IOException {
+    private File createAndWriteToNewScoutingFile(eTable tableType, Calendar date, String initials, String data, boolean concat) throws IOException {
         String fileName = getNewFileName(tableType, date, initials, concat);
-        data = tableType.getHeader() + Scouting.NEW_LINE + data;
+        data = tableType.getHeader() + ScoutingStrings.NEW_LINE + data;
         return createAndWriteToNewFileCore(scoutingDirectory, fileName, data);
     }
-    private File createAndWriteToNewFileCore(File directory, String fileName, String data) throws IOException {
+    public File createAndWriteToNewFileCore(File directory, String fileName, String data) throws IOException {
         File file = new File(directory, fileName);
         if (file.exists())
             throw new IllegalArgumentException("Invalid file name \"" + fileName + "\"; file already exists.");
@@ -293,7 +299,7 @@ public class FileService {
         if (target == null)
             throw new IllegalArgumentException("Cannot concatenate files to a null eTable.");
 
-        String newLine = Scouting.NEW_LINE;
+        String newLine = ScoutingStrings.NEW_LINE;
 
         StringBuilder builder = new StringBuilder();
         builder.append(target.getHeader());
@@ -317,12 +323,16 @@ public class FileService {
 
         String data = builder.toString();
 
-        // We call createAndWriteToNewFileCore instead of saveData because we always want a new file for concatenation.
+        // We call createAndWriteToNewFileCore instead of saveScoutingData because we always want a new file for concatenation.
         File file = createAndWriteToNewFileCore(scoutingDirectory, fileName, data);
 
         addFileDefinition(target, file, date, initials, true);
 
         return file;
+    }
+
+    public boolean doesFileExist(String name) {
+        return new File(scoutingDirectory, name).exists();
     }
 
     // region Photo
@@ -342,11 +352,11 @@ public class FileService {
         try {
             boolean success = file.createNewFile();
             if (!success) {
-                Log.d(Scouting.SCOUTING_TAG, "Photo file already exists! Path: \"" + file.getAbsolutePath() + "\"");
+                Log.d(ScoutingStrings.SCOUTING_TAG, "Photo file already exists! Path: \"" + file.getAbsolutePath() + "\"");
                 return null;
             }
         } catch (IOException e) {
-            Log.d(Scouting.SCOUTING_TAG, e.getMessage());
+            Log.d(ScoutingStrings.SCOUTING_TAG, e.getMessage());
             return null;
         }
 
@@ -371,7 +381,7 @@ public class FileService {
              FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
             if (bitmap == null) {
-                Log.d(Scouting.SCOUTING_TAG, "Bitmap is null");
+                Log.d(ScoutingStrings.SCOUTING_TAG, "Bitmap is null");
                 return false;
             }
 
@@ -385,7 +395,7 @@ public class FileService {
             fileOutputStream.write(byteArrayOutputStream.toByteArray());
             return true;
         } catch (IOException e) {
-            Log.d(Scouting.SCOUTING_TAG, e.getMessage());
+            Log.d(ScoutingStrings.SCOUTING_TAG, e.getMessage());
         }
         return false;
     }

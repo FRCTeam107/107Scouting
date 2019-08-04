@@ -1,6 +1,6 @@
 package com.frc107.scouting.pit;
 
-public class Pit {
+public class PitAnswers {
     public static final int VISION_SYSTEM = 0;
     public static final int CAMERA_DRIVING = 1;
     public static final int BLIND_DRIVING = 2;

@@ -7,10 +7,9 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.frc107.scouting.analysis.attribute.AttributeAnalysisActivity;
-import com.frc107.scouting.form.eTable;
+import com.frc107.scouting.concat.ConcatActivity;
 import com.frc107.scouting.pit.PitActivity;
-import com.frc107.scouting.send.SendFileActivity;
-import com.frc107.scouting.utils.FileService;
+import com.frc107.scouting.ui.BaseActivity;
 import com.frc107.scouting.utils.PermissionUtils;
 
 import android.view.View;
@@ -29,7 +28,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.widget.Toast;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -56,12 +54,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void initializeSettings() {
-        SharedPreferences pref = getSharedPreferences(Scouting.PREFERENCES_NAME, MODE_PRIVATE);
+        SharedPreferences pref = getSharedPreferences(ScoutingStrings.PREFERENCES_NAME, MODE_PRIVATE);
 
-        String eventKey = pref.getString(Scouting.EVENT_KEY_PREFERENCE, "");
+        String eventKey = pref.getString(ScoutingStrings.EVENT_KEY_PREFERENCE, "");
         Scouting.getInstance().setEventKey(eventKey);
 
-        String initials = pref.getString(Scouting.USER_INITIALS_PREFERENCE, "");
+        String initials = pref.getString(ScoutingStrings.USER_INITIALS_PREFERENCE, "");
         Scouting.getInstance().setUserInitials(initials);
     }
 
@@ -87,18 +85,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 drawerLayout.closeDrawer(GravityCompat.START);
                 startActivity(new Intent(this, ConcatActivity.class));
                 break;
-            case R.id.send_match_data:
-                sendMatchData();
-                break;
-            case R.id.send_pit_data:
-                sendPitData();
-                break;
-            case R.id.send_concat_match_data:
-                sendConcatMatchData();
-                break;
-            case R.id.send_concat_pit_data:
-                sendConcatPitData();
-                break;
             case R.id.send_pit_photos:
                 sendPitPhotos();
                 break;
@@ -110,26 +96,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
         }
         return true;
-    }
-
-    private void sendMatchData() {
-        //File file = Scouting.FILE_SERVICE.getMatchFile(false);
-        //sendFile(file);
-    }
-
-    private void sendPitData() {
-        //File file = Scouting.FILE_SERVICE.getPitFile(false);
-        //sendFile(file);
-    }
-
-    private void sendConcatMatchData() {
-        //File file = Scouting.FILE_SERVICE.getMatchFile(true);
-        //sendFile(file);
-    }
-
-    private void sendConcatPitData() {
-        //File file = Scouting.FILE_SERVICE.getPitFile(true);
-        //sendFile(file);
     }
 
     private void sendPitPhotos() {
@@ -164,27 +130,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         showInitialsDialog(() -> startActivity(new Intent(this, PitActivity.class)));
     }
 
-    public void tryToSendData(View view) {
-        /*
-         * TODO:
-         * ask user which file to send
-         *
-         * show listview of filedefinitions sorted by date (new at top)
-         * send whichever one is tapped
-         */
-
-        String initials = Scouting.getInstance().getUserInitials();
-        if (!StringUtils.isEmptyOrNull(initials)) {
-            startActivity(new Intent(this, SendFileActivity.class));
-            //File file = Scouting.FILE_SERVICE.getMostRecentFileDefinition(eTable.PIT, initials).getFile();
-            //sendFile(file);
-            return;
-        }
-
-        showInitialsDialog(() -> {
-            startActivity(new Intent(this, SendFileActivity.class));
-            //File file = Scouting.FILE_SERVICE.getMostRecentFileDefinition(eTable.PIT, initials).getFile();
-            //sendFile(file);
-        });
+    public void tryToGoToSendDataScreen(View view) {
+        tryToGoToSendDataScreen();
     }
 }
