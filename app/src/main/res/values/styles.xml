@@ -9,6 +9,7 @@
         <item name="radioButtonStyle">@style/radioButtonStyle</item>
         <item name="android:radioButtonStyle">@style/radioButtonStyle</item>
         <item name="android:buttonStyle">@style/buttonStyle</item>
+        <item name="android:checkboxStyle">@style/radioButtonStyle</item>
         <!--<item name="android:editTextColor">@color/textColor</item>
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textColorHint">@color/hintColor</item>

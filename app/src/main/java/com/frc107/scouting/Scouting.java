@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Scouting {
-    public static final boolean SAVE_QUESTION_NAMES_AS_ANSWERS = false;
+    public static final boolean SAVE_ANSWER_NAMES_AS_ANSWERS_FOR_RADIO_QUESTIONS = false;
 
     private static Scouting scouting = new Scouting();
     public static Scouting getInstance() {

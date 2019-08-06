@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/pit_constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/edge_margin"
@@ -223,7 +223,7 @@
                 android:text="@string/middleHabitatLevel" />
 
             <RadioButton
-                android:id="@+id/bottomHabitatLevel_Radiobtn"
+                android:id="@+id/rb_pit_bottom_hab"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/radiobutton_margin"
@@ -231,7 +231,7 @@
                 android:text="@string/bottomHabitatLevel" />
 
             <RadioButton
-                android:id="@+id/noHabitatLevel_Radiobtn"
+                android:id="@+id/rb_pit_no_hab"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/radiobutton_margin"
@@ -240,7 +240,7 @@
         </RadioGroup>
 
         <EditText
-            android:id="@+id/pit_habitat_time"
+            android:id="@+id/edittext_pit_habitat_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/between_margin"
@@ -252,7 +252,7 @@
             app:layout_constraintTop_toBottomOf="@id/pit_highest_habitat" />
 
         <EditText
-            android:id="@+id/pit_programming_language"
+            android:id="@+id/edittext_pit_programming_language"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/between_margin"
@@ -261,10 +261,10 @@
             android:maxLines="1"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pit_habitat_time" />
+            app:layout_constraintTop_toBottomOf="@id/edittext_pit_habitat_time" />
 
         <EditText
-            android:id="@+id/pit_bonus"
+            android:id="@+id/edittext_pit_bonus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/between_margin"
@@ -273,10 +273,10 @@
             android:maxLines="1"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pit_programming_language" />
+            app:layout_constraintTop_toBottomOf="@id/edittext_pit_programming_language" />
 
         <EditText
-            android:id="@+id/pit_comments"
+            android:id="@+id/edittext_pit_comments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/between_margin"
@@ -286,7 +286,7 @@
             android:imeOptions="actionDone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pit_bonus" />
+            app:layout_constraintTop_toBottomOf="@id/edittext_pit_bonus" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -294,18 +294,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/fab_margin"
         android:focusable="true"
         app:srcCompat="@drawable/ic_baseline_check_24px"
         android:clickable="true"
         android:onClick="savePitData" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/fab_margin"
         android:clickable="true"
         android:focusable="true"
         android:onClick="openCamera"

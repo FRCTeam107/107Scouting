@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.frc107.scouting.analysis.attribute.AttributeAnalysisActivity;
 import com.frc107.scouting.concat.ConcatActivity;
+import com.frc107.scouting.match.sandstorm.SandstormActivity;
 import com.frc107.scouting.pit.PitActivity;
 import com.frc107.scouting.ui.BaseActivity;
 import com.frc107.scouting.utils.PermissionUtils;
@@ -81,6 +82,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 drawerLayout.closeDrawer(GravityCompat.START);
                 tryToGoToPit();
                 break;
+            case R.id.match:
+                drawerLayout.closeDrawer(GravityCompat.START);
+                tryToGoToMatch();
+                break;
             case R.id.concat:
                 drawerLayout.closeDrawer(GravityCompat.START);
                 startActivity(new Intent(this, ConcatActivity.class));
@@ -117,7 +122,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     public void onMainScreenTap(View view) {
-        tryToGoToPit();
+        tryToGoToMatch();
     }
 
     private void tryToGoToPit() {
@@ -128,6 +133,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
 
         showInitialsDialog(() -> startActivity(new Intent(this, PitActivity.class)));
+    }
+
+    private void tryToGoToMatch() {
+        String initials = Scouting.getInstance().getUserInitials();
+        if (!StringUtils.isEmptyOrNull(initials)) {
+            startActivity(new Intent(this, SandstormActivity.class));
+            return;
+        }
+
+        showInitialsDialog(() -> startActivity(new Intent(this, SandstormActivity.class)));
     }
 
     public void tryToGoToSendDataScreen(View view) {

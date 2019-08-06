@@ -9,14 +9,6 @@ class AdminViewModel {
         model = new AdminModel(callback);
     }
 
-    boolean concatenateMatchData() {
-        return model.concatenateData(AdminModel.MATCH);
-    }
-
-    boolean concatenatePitData() {
-        return model.concatenateData(AdminModel.PIT);
-    }
-
     void setEventKey(String eventKey) {
         model.setEventKey(eventKey);
     }

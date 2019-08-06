@@ -1,5 +1,7 @@
 package com.frc107.scouting.ui.questionWrappers;
 
+import android.app.Activity;
+import android.content.Context;
 import android.widget.RadioGroup;
 
 import com.frc107.scouting.callbacks.ICallback;
@@ -9,10 +11,11 @@ public class RadioWrapper {
     private RadioGroup radioGroup;
     private ICallbackWithParam<Integer> setter;
 
-    public RadioWrapper(RadioGroup radioGroup, ICallbackWithParam<Integer> setter) {
+    public RadioWrapper(Activity context, int id, ICallbackWithParam<Integer> setter) {
+        radioGroup = context.findViewById(id);
+
         this.setter = setter;
-        this.radioGroup = radioGroup;
-        this.radioGroup.setOnCheckedChangeListener(createChangeListener());
+        radioGroup.setOnCheckedChangeListener(createChangeListener());
     }
 
     private RadioGroup.OnCheckedChangeListener createChangeListener() {
@@ -29,6 +32,7 @@ public class RadioWrapper {
     }
 
     public void clear() {
+        // todo: make sure this calls the listener
         radioGroup.clearCheck();
     }
 }

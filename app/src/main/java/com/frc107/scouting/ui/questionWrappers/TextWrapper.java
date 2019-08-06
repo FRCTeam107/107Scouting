@@ -1,5 +1,6 @@
 package com.frc107.scouting.ui.questionWrappers;
 
+import android.app.Activity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
@@ -11,12 +12,12 @@ public class TextWrapper {
     private TextWatcher textWatcher;
     private ICallbackWithParam<String> setter;
 
-    public TextWrapper(EditText editText, ICallbackWithParam<String> setter) {
-        this.editText = editText;
-        this.setter = setter;
+    public TextWrapper(Activity context, int id, ICallbackWithParam<String> setter) {
+        editText = context.findViewById(id);
 
+        this.setter = setter;
         textWatcher = createTextWatcher();
-        this.editText.addTextChangedListener(textWatcher);
+        editText.addTextChangedListener(textWatcher);
     }
 
     private TextWatcher createTextWatcher() {
@@ -44,6 +45,7 @@ public class TextWrapper {
     }
 
     public void clear() {
+        // todo: make sure this calls the listener
         editText.setText("");
     }
 }

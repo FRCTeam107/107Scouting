@@ -46,8 +46,8 @@ class PitModel {
 
         radioButtonMappings.put(R.id.topHabitatLevel_Radiobtn, PitAnswers.TOP_HAB);
         radioButtonMappings.put(R.id.middleHabitatLevel_Radiobtn, PitAnswers.MID_HAB);
-        radioButtonMappings.put(R.id.bottomHabitatLevel_Radiobtn, PitAnswers.BOTTOM_HAB);
-        radioButtonMappings.put(R.id.noHabitatLevel_Radiobtn, PitAnswers.NO_HAB);
+        radioButtonMappings.put(R.id.rb_pit_bottom_hab, PitAnswers.BOTTOM_HAB);
+        radioButtonMappings.put(R.id.rb_pit_no_hab, PitAnswers.NO_HAB);
     }
 
     void setTeamNumber(String teamNumberAsString) {
@@ -107,13 +107,13 @@ class PitModel {
         if (highestHabitat == null)
             return R.id.pit_highest_habitat;
         if (StringUtils.isEmptyOrNull(habitatTime))
-            return R.id.pit_habitat_time;
+            return R.id.edittext_pit_habitat_time;
         if (StringUtils.isEmptyOrNull(programmingLanguage))
-            return R.id.pit_programming_language;
+            return R.id.edittext_pit_programming_language;
         if (StringUtils.isEmptyOrNull(bonus))
-            return R.id.pit_bonus;
+            return R.id.edittext_pit_bonus;
         if (StringUtils.isEmptyOrNull(comments))
-            return R.id.pit_comments;
+            return R.id.edittext_pit_comments;
 
         return -1;
     }

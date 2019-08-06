@@ -67,22 +67,6 @@ public class AdminActivity extends BaseActivity {
         eventKeyTextWatcher = null;
     }
 
-    public void concatenateMatchData(View view) {
-        String result = "Failure concatenating data.";
-        if (viewModel.concatenateMatchData()) {
-            result = "Successfully concatenated data.";
-        }
-        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
-    }
-
-    public void concatenatePitData(View view) {
-        String result = "Failure concatenating data.";
-        if (viewModel.concatenatePitData()) {
-            result = "Successfully concatenated data.";
-        }
-        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
-    }
-
     public void sendRobotPhotos(View view) {
         if (!PermissionUtils.checkForPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             return;
@@ -99,18 +83,6 @@ public class AdminActivity extends BaseActivity {
             intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
             startActivity(Intent.createChooser(intent, "Share app"));
         }
-    }
-
-    public void sendPitData(View view) {
-        //sendFile(Scouting.FILE_SERVICE.getPitFile(false));
-    }
-
-    public void sendConcatMatchData(View view) {
-        //sendFile(Scouting.FILE_SERVICE.getFile("ConcatenatedMatch.csv"));
-    }
-
-    public void sendConcatPitData(View view) {
-        //sendFile(Scouting.FILE_SERVICE.getPitFile(true));
     }
 
     public void goToAttributeAnalysis(View view) {

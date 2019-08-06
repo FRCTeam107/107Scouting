@@ -66,9 +66,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.main_activity:
                 startActivity(new Intent(this, MainActivity.class));
+                finishIfNeeded();
                 return true;
             case R.id.admin_activity:
                 startActivity(new Intent(this, AdminActivity.class));
+                finishIfNeeded();
                 return true;
             case R.id.send_data:
                 tryToGoToSendDataScreen();
@@ -79,6 +81,13 @@ public abstract class BaseActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void finishIfNeeded() {
+        if (this instanceof MainActivity)
+            return;
+
+        finish();
     }
 
     protected void checkForPermissions() {

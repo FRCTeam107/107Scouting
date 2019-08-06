@@ -22,10 +22,6 @@ import java.io.File;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProviders;
 
-/**
- * Created by Matt on 9/30/2017.
- */
-
 public class PitActivity extends BaseActivity {
     private RadioWrapper sandstormOpWrapper;
     private RadioWrapper sandstormPrefWrapper;
@@ -48,16 +44,16 @@ public class PitActivity extends BaseActivity {
 
         viewModel = ViewModelProviders.of(this).get(PitViewModel.class);
 
-        sandstormOpWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_op), viewModel::setSandstormOperation);
-        sandstormPrefWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_preference), viewModel::setSandstormPreference);
-        highestRocketLevelWrapper = new RadioWrapper(findViewById(R.id.pit_sandstorm_highest_rocket_level), viewModel::setSandstormHighestRocketLevel);
-        highestHabLevelWrapper = new RadioWrapper(findViewById(R.id.pit_highest_habitat), viewModel::setHighestHabitat);
+        sandstormOpWrapper = new RadioWrapper(this, R.id.pit_sandstorm_op, viewModel::setSandstormOperation);
+        sandstormPrefWrapper = new RadioWrapper(this, R.id.pit_sandstorm_preference, viewModel::setSandstormPreference);
+        highestRocketLevelWrapper = new RadioWrapper(this, R.id.pit_sandstorm_highest_rocket_level, viewModel::setSandstormHighestRocketLevel);
+        highestHabLevelWrapper = new RadioWrapper(this, R.id.pit_highest_habitat, viewModel::setHighestHabitat);
 
-        programmingLangWrapper = new TextWrapper(findViewById(R.id.pit_programming_language),               viewModel::setProgrammingLanguage);
-        teamNumWrapper = new TextWrapper(findViewById(R.id.pit_team_number),                                viewModel::setTeamNumber);
-        habTimeWrapper = new TextWrapper(findViewById(R.id.pit_habitat_time),                               viewModel::setHabitatTime);
-        arcadeGameWrapper = new TextWrapper(findViewById(R.id.pit_bonus),                                   viewModel::setBonus);
-        commentsWrapper = new TextWrapper(findViewById(R.id.pit_comments),                                  viewModel::setComments);
+        programmingLangWrapper = new TextWrapper(this, R.id.edittext_pit_programming_language,               viewModel::setProgrammingLanguage);
+        teamNumWrapper = new TextWrapper(this, R.id.pit_team_number,                                viewModel::setTeamNumber);
+        habTimeWrapper = new TextWrapper(this, R.id.edittext_pit_habitat_time,                               viewModel::setHabitatTime);
+        arcadeGameWrapper = new TextWrapper(this, R.id.edittext_pit_bonus,                                   viewModel::setBonus);
+        commentsWrapper = new TextWrapper(this, R.id.edittext_pit_comments,                                  viewModel::setComments);
 
         checkForPermissions();
     }
@@ -106,7 +102,7 @@ public class PitActivity extends BaseActivity {
     public void openCamera(View view) {
         String teamNumber = teamNumWrapper.getValue();
         if (StringUtils.isEmptyOrNull(teamNumber)) {
-            ViewUtils.requestFocus(findViewById(R.id.pit_team_number), this);
+            ViewUtils.requestFocus(teamNumWrapper.getEditText(), this);
             Toast.makeText(getApplicationContext(), "Enter a team number.", Toast.LENGTH_LONG).show();
             return;
         }

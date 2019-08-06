@@ -28,61 +28,6 @@ public class AdminModel implements IOPRListener {
         this.callback = callback;
     }
 
-    public boolean concatenateData(int type) {
-        String prefix = "Match";
-        String header = ScoutingStrings.MATCH_HEADER;
-        if (type == PIT) {
-            prefix = "PitAnswers";
-            header = ScoutingStrings.PIT_HEADER;
-        }
-
-        StringBuilder builder = new StringBuilder();
-        builder.append(header);
-        builder.append("\n");
-
-        FileService fileService = Scouting.FILE_SERVICE;
-
-        File[] files = fileService.getFilesInDirectory();
-
-        for (File file : files) {
-            if (!file.getName().startsWith(prefix))
-                continue;
-
-            try (FileReader fileReader = new FileReader(file);
-                 BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-
-                String line = bufferedReader.readLine();
-                while (line != null) {
-                    String[] columns = line.split(",");
-                    int teamNumber = Integer.parseInt(columns[1]);
-
-                    String oprAndDpr = getOPRAndDPR(teamNumber);
-
-                    builder.append(line).append(oprAndDpr).append('\n');
-                    line = bufferedReader.readLine();
-                }
-            } catch (IOException e) {
-                Log.d(ScoutingStrings.SCOUTING_TAG, e.getMessage());
-            }
-        }
-
-        String fileName = "Concatenated" + prefix + ".csv";
-        File newFile = new File(fileService.getScoutingDirectory(), fileName);
-        try (FileOutputStream fileOutputStream = new FileOutputStream(newFile, false);
-             FileWriter fileWriter = new FileWriter(fileOutputStream.getFD())) {
-            if (newFile.exists()) {
-                fileWriter.write("");
-            }
-
-            fileWriter.write(builder.toString());
-            return true;
-        } catch (IOException e) {
-            Log.d(ScoutingStrings.SCOUTING_TAG, e.getMessage());
-        }
-
-        return false;
-    }
-
     private String getOPRAndDPR(int teamNumber) {
         String empty = "-1,-1";
         if (opr == null)

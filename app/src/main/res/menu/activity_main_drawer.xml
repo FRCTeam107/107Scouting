@@ -10,6 +10,10 @@
                 android:title="@string/pit"
                 android:icon="@drawable/ic_baseline_assignment_24px" />
             <item
+                android:id="@+id/match"
+                android:title="@string/match"
+                android:icon="@drawable/ic_baseline_assignment_24px" />
+            <item
                 android:id="@+id/concat"
                 android:title="@string/concatenate"
                 android:icon="@drawable/ic_baseline_assessment_24px" />
