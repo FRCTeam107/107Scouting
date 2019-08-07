@@ -1,8 +1,9 @@
-package com.frc107.scouting.analysis.attribute;
+package com.frc107.scouting.match;
 
 import android.util.SparseArray;
 
 import com.frc107.scouting.Scouting;
+import com.frc107.scouting.analysis.attribute.IAnalysisManager;
 import com.frc107.scouting.form.eTable;
 
 import java.io.File;
@@ -11,7 +12,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MatchAnalysisManagerOld implements IAnalysisManager {
+public class MatchAnalysisManager implements IAnalysisManager {
     // Table column indices
     private static final int COL_MATCH_NUM = 0;
     private static final int COL_TEAM_NUM = 1;

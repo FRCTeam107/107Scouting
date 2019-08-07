@@ -31,6 +31,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".match.sandstorm.SandstormActivity" />
+        <activity android:name=".match.cycle.CycleActivity" />
         <activity android:name=".pit.PitActivity" />
         <activity android:name=".admin.AdminActivity" />
         <activity

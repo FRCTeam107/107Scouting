@@ -152,7 +152,7 @@
                 android:text="@string/cargoshipItemPlaced" />
 
             <RadioButton
-                android:id="@+id/rb_cycle_floor_placed_location"
+                android:id="@+id/rb_cycle_dropped_placed_location"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/radiobutton_margin"
@@ -179,7 +179,7 @@
             app:layout_constraintTop_toBottomOf="@+id/rb_cycle_placed_location" />
 
         <CheckBox
-            android:id="@+id/chkbx_cycle_all_defense"
+            android:id="@+id/chkbx_cycle_only_defense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/big_between_margin"

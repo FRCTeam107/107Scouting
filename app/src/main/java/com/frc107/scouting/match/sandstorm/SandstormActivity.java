@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.frc107.scouting.R;
 import com.frc107.scouting.ScoutingStrings;
+import com.frc107.scouting.match.cycle.CycleActivity;
 import com.frc107.scouting.ui.BaseActivity;
 import com.frc107.scouting.ui.questionWrappers.RadioWrapper;
 import com.frc107.scouting.ui.questionWrappers.TextWrapper;
@@ -80,9 +81,9 @@ public class SandstormActivity extends BaseActivity {
         }
 
         SandstormData data = model.getData();
-        //Intent intent = new Intent(this, CycleActivity.class);
-        //intent.putExtra(ScoutingStrings.SANDSTORM_DATA_EXTRA_KEY, data);
-        //startActivity(intent);
+        Intent intent = new Intent(this, CycleActivity.class);
+        intent.putExtra(ScoutingStrings.SANDSTORM_DATA_EXTRA_KEY, data);
+        startActivity(intent);
 
         clearAnswers();
         // todo: go to cycle with intent extra

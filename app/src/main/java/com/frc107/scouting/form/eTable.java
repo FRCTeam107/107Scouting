@@ -25,7 +25,7 @@ public enum eTable {
     PIT,
     MATCH;
 
-    private static final String PIT_PREFIX = "PitAnswers";
+    private static final String PIT_PREFIX = "Pit";
     private static final String MATCH_PREFIX = "Match";
     private static final String CONCAT_PIT_PREFIX = "ConcatPit";
     private static final String CONCAT_MATCH_PREFIX = "ConcatMatch";
@@ -56,7 +56,7 @@ public enum eTable {
     public String toString() {
         switch (this) {
             case PIT:
-                return "PitAnswers";
+                return "Pit";
             case MATCH:
                 return "Match";
             default:
@@ -67,7 +67,7 @@ public enum eTable {
     public String toStringConcat() {
         switch (this) {
             case PIT:
-                return "Concatenated PitAnswers";
+                return "Concatenated Pit";
             case MATCH:
                 return "Concatenated Match";
             default:

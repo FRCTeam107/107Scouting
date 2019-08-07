@@ -12,7 +12,7 @@ public class SandstormAnswers {
 
     public static final int CARGO_SHIP =    0;
     public static final int BOTTOM_ROCKET = 1;
-    public static final int MID_ROCKET =    2;
+    public static final int MIDDLE_ROCKET =    2;
     public static final int TOP_ROCKET =    3;
     public static final int FLOOR =         4;
     public static final int NOT_PLACED =    5;
@@ -28,7 +28,7 @@ public class SandstormAnswers {
 
         buttonIdToAnswerNumMap.put(SandstormIDs.CARGO_SHIP_OPTION,      CARGO_SHIP);
         buttonIdToAnswerNumMap.put(SandstormIDs.BOTTOM_ROCKET_OPTION,   BOTTOM_ROCKET);
-        buttonIdToAnswerNumMap.put(SandstormIDs.MID_ROCKET_OPTION,      MID_ROCKET);
+        buttonIdToAnswerNumMap.put(SandstormIDs.MID_ROCKET_OPTION,      MIDDLE_ROCKET);
         buttonIdToAnswerNumMap.put(SandstormIDs.TOP_ROCKET_OPTION,      TOP_ROCKET);
         buttonIdToAnswerNumMap.put(SandstormIDs.FLOOR_OPTION,           FLOOR);
         buttonIdToAnswerNumMap.put(SandstormIDs.NOT_PLACED_OPTION,      NOT_PLACED);

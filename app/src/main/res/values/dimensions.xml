@@ -5,6 +5,7 @@
     <dimen name="big_between_margin">30dp</dimen>
     <dimen name="between_margin">10dp</dimen>
     <dimen name="edge_margin">8dp</dimen>
+    <dimen name="bottom_spacer_size">100dp</dimen>
 
     <dimen name="textview_spacer">10dp</dimen>
     <dimen name="question_height">50dp</dimen>

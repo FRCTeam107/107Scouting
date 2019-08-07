@@ -3,6 +3,7 @@ package com.frc107.scouting.analysis.attribute;
 import com.frc107.scouting.analysis.LoadDataTask;
 import com.frc107.scouting.callbacks.ICallback;
 import com.frc107.scouting.callbacks.ICallbackWithParam;
+import com.frc107.scouting.match.MatchAnalysisManager;
 
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ public class AttributeAnalysisModel {
 
     private int currentAttributeType = -1;
 
-    private IAnalysisManager attributeManager = new MatchAnalysisManagerOld();
+    private IAnalysisManager attributeManager = new MatchAnalysisManager();
     private ICallback onDataLoaded;
     private ICallback refreshUI;
     private ICallbackWithParam<String> onError;
