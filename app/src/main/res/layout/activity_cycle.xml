@@ -198,7 +198,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:clickable="true"
         android:focusable="true"
-        android:onClick="enterNewCycle"
+        android:onClick="tryToEnterNewCycle"
         app:srcCompat="@drawable/ic_baseline_arrow_forward_24px" />
 
 </FrameLayout>

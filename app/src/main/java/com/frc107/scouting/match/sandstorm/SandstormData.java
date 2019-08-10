@@ -61,6 +61,15 @@ public class SandstormData implements Parcelable {
         this.crossedBaseline = crossedBaseline;
     }
 
+    public void clear() {
+        matchNumber = null;
+        teamNumber = null;
+        startingLocation = null;
+        startingGamePiece = null;
+        placedLocation = null;
+        crossedBaseline = false;
+    }
+
     public SandstormData(Parcel in) {
         // One might think that one should instead call readValue because we're looking at
         // objects of type Integer. However, at this point, none of these should be null.

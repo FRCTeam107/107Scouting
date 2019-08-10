@@ -10,17 +10,19 @@ import java.util.ArrayList;
 public class AttributeAnalysisModel {
     private ArrayList<AnalysisElement> elements;
 
-    private int currentAttributeType = -1;
+    private int currentAttributeTypeIndex = -1;
+    private int currentTeamNumberIndex = -1;
 
     private IAnalysisManager attributeManager = new MatchAnalysisManager();
     private ICallback onDataLoaded;
-    private ICallback refreshUI;
     private ICallbackWithParam<String> onError;
 
-    AttributeAnalysisModel(ICallback onDataLoaded, ICallback refreshUI, ICallbackWithParam<String> onError) {
+    AttributeAnalysisModel() {
         elements = new ArrayList<>();
+    }
+
+    void setCallbacks(ICallback onDataLoaded, ICallbackWithParam<String> onError) {
         this.onDataLoaded = onDataLoaded;
-        this.refreshUI = refreshUI;
         this.onError = onError;
     }
 
@@ -48,6 +50,7 @@ public class AttributeAnalysisModel {
     private static final int ALL_TEAMS_INDEX = 0;
     private Integer[] teamNumbers;
     void setTeamNumberAndUpdateElements(int which) {
+        currentTeamNumberIndex = which;
         if (which == ALL_TEAMS_INDEX) {
             teamNumbers = attributeManager.getTeamNumbers();
         } else {
@@ -58,12 +61,16 @@ public class AttributeAnalysisModel {
         updateElements();
     }
 
-    void setAttributeAndUpdateElements(int attributeNum) {
-        if (currentAttributeType == attributeNum)
+    int getCurrentTeamNumberIndex() {
+        return currentTeamNumberIndex;
+    }
+
+    void setAttributeAndUpdateElements(int attributeIndex) {
+        if (currentAttributeTypeIndex == attributeIndex)
             return;
 
-        currentAttributeType = attributeNum;
-        attributeManager.setAttribute(attributeNum);
+        currentAttributeTypeIndex = attributeIndex;
+        attributeManager.setAttribute(attributeIndex);
 
         updateElements();
     }
@@ -78,15 +85,14 @@ public class AttributeAnalysisModel {
             double attribute = attributeManager.getAttributeValueForTeam(teamNumber);
             elements.add(new AnalysisElement(teamNumber + "", attribute));
         }
-        refreshUI.call();
     }
 
     ArrayList<AnalysisElement> getElements() {
         return elements;
     }
 
-    int getCurrentAttributeType() {
-        return currentAttributeType;
+    int getCurrentAttributeTypeIndex() {
+        return currentAttributeTypeIndex;
     }
 
     private String[] teamNumberStrings;

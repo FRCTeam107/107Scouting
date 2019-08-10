@@ -6,17 +6,22 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CycleData implements Parcelable {
-    private int cycleNum;
-    private boolean wasStartingItemUsed;
+public class CyclesData implements Parcelable {
+    private int cycleNum = 1;
 
-    private List<Integer> pickupLocationList = new ArrayList<>();
-    private List<Integer> itemPickedUpList = new ArrayList<>();
-    private List<Integer> locationPlacedList = new ArrayList<>();
-    private List<Boolean> defenseList = new ArrayList<>();
-    private List<Boolean> onlyDefenseList = new ArrayList<>();
+    private List<Integer> pickupLocationList;
+    private List<Integer> itemPickedUpList;
+    private List<Integer> locationPlacedList;
+    private List<Boolean> defenseList;
+    private List<Boolean> onlyDefenseList;
 
-    CycleData() { }
+    CyclesData() {
+        pickupLocationList = new ArrayList<>();
+        itemPickedUpList = new ArrayList<>();
+        locationPlacedList = new ArrayList<>();
+        defenseList = new ArrayList<>();
+        onlyDefenseList = new ArrayList<>();
+    }
 
     public int getCycleNum() {
         return cycleNum;
@@ -24,14 +29,6 @@ public class CycleData implements Parcelable {
 
     public void incrementCycleNum() {
         cycleNum++;
-    }
-
-    public boolean wasStartingItemUsed() {
-        return wasStartingItemUsed;
-    }
-
-    public void setWasStartingItemUsed(boolean wasStartingItemUsed) {
-        this.wasStartingItemUsed = wasStartingItemUsed;
     }
 
     public List<Integer> getPickupLocationList() {
@@ -62,7 +59,7 @@ public class CycleData implements Parcelable {
         onlyDefenseList.add(onlyDefense);
     }
 
-    public CycleData(Parcel in) {
+    public CyclesData(Parcel in) {
         // One might think that one should instead call readValue because we're looking at
         // objects of type Integer. However, at this point, none of these should be null.
         // If one of them is null, we have a bug when validating sandstorm, as we need to have
@@ -71,9 +68,6 @@ public class CycleData implements Parcelable {
         // Go fix it.
 
         cycleNum = in.readInt();
-
-        // apparently there isn't a method to read booleans, wat
-        wasStartingItemUsed = (Boolean) in.readValue(null);
 
         in.readList(pickupLocationList, Integer.class.getClassLoader());
         in.readList(itemPickedUpList, Integer.class.getClassLoader());
@@ -85,7 +79,7 @@ public class CycleData implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(cycleNum);
-        dest.writeValue(wasStartingItemUsed);
+
         dest.writeList(pickupLocationList);
         dest.writeList(itemPickedUpList);
         dest.writeList(locationPlacedList);
@@ -98,15 +92,15 @@ public class CycleData implements Parcelable {
         return 0;
     }
 
-    public static final Creator<CycleData> CREATOR = new Creator<CycleData>() {
+    public static final Creator<CyclesData> CREATOR = new Creator<CyclesData>() {
         @Override
-        public CycleData createFromParcel(Parcel in) {
-            return new CycleData(in);
+        public CyclesData createFromParcel(Parcel in) {
+            return new CyclesData(in);
         }
 
         @Override
-        public CycleData[] newArray(int size) {
-            return new CycleData[size];
+        public CyclesData[] newArray(int size) {
+            return new CyclesData[size];
         }
     };
 }

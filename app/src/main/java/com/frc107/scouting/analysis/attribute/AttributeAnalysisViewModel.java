@@ -11,41 +11,47 @@ import java.util.ArrayList;
 public class AttributeAnalysisViewModel extends ViewModel {
     private AttributeAnalysisModel model;
 
-    public AttributeAnalysisViewModel() { }
-
-    public void initialize(ICallback onDataLoaded, ICallback refreshUI, ICallbackWithParam<String> onError) {
-        model = new AttributeAnalysisModel(onDataLoaded, refreshUI, onError);
+    public AttributeAnalysisViewModel() {
+        model = new AttributeAnalysisModel();
     }
 
-    public boolean hasDataBeenLoaded() {
+    void initialize(ICallback onDataLoaded, ICallbackWithParam<String> onError) {
+        model.setCallbacks(onDataLoaded, onError);
+    }
+
+    boolean hasDataBeenLoaded() {
         return model.hasDataBeenLoaded();
     }
 
-    public void loadData() {
+    void loadData() {
         model.loadData();
     }
 
-    public ArrayList<AnalysisElement> getElements() {
+    ArrayList<AnalysisElement> getElements() {
         return model.getElements();
     }
 
-    public void setAttributeAndUpdateElements(int attribute) {
+    void setAttributeAndUpdateElements(int attribute) {
         model.setAttributeAndUpdateElements(attribute);
     }
 
-    public void setTeamNumberAndUpdateElements(int which) {
+    void setTeamNumberAndUpdateElements(int which) {
         model.setTeamNumberAndUpdateElements(which);
     }
 
-    public int getCurrentAttributeType() {
-        return model.getCurrentAttributeType();
+    int getCurrentTeamNumberIndex() {
+        return model.getCurrentTeamNumberIndex();
     }
 
-    public String[] getAttributeNames() {
+    int getCurrentAttributeType() {
+        return model.getCurrentAttributeTypeIndex();
+    }
+
+    String[] getAttributeNames() {
         return model.getAttributeNames();
     }
 
-    public String[] getTeamNumbers() {
+    String[] getTeamNumbers() {
         return model.getTeamNumbers();
     }
 }

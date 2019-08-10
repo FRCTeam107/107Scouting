@@ -49,6 +49,10 @@ public class SandstormModel extends ViewModel {
         data.setCrossedBaseline(crossedBaseline);
     }
 
+    void clear() {
+        data.clear();
+    }
+
     int getUnfinishedQuestionId() {
         if (data.getMatchNumber() == null)
             return SandstormIDs.MATCH_NUM;

@@ -22,6 +22,9 @@ public class AttributeAnalysisActivity extends BaseActivity {
     private AnalysisAdapter listAdapter;
     private ListView elementListView;
 
+    private Spinner teamNumberSpinner;
+    private Spinner attributeSpinner;
+
     private AttributeAnalysisViewModel viewModel;
     private ArrayList<String> teamNumbers;
 
@@ -30,12 +33,16 @@ public class AttributeAnalysisActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attribute_analysis);
 
+        teamNumberSpinner = findViewById(R.id.team_spinner);
+        attributeSpinner = findViewById(R.id.attribute_spinner);
+
         viewModel = ViewModelProviders.of(this).get(AttributeAnalysisViewModel.class);
-        viewModel.initialize(this::onDataLoaded, this::updateUI, this::onDataLoadError);
+        viewModel.initialize(this::onDataLoaded, this::onDataLoadError);
 
         if (!viewModel.hasDataBeenLoaded()) {
             viewModel.loadData();
         } else {
+            initializeUI();
             updateUI();
         }
     }
@@ -46,13 +53,12 @@ public class AttributeAnalysisActivity extends BaseActivity {
     }
 
     private void onDataLoaded() {
-        initialize();
+        initializeUI();
     }
 
-    private void initialize() {
+    private void initializeUI() {
         findViewById(R.id.analysisProgressBar).setVisibility(View.GONE);
 
-        Spinner attributeSpinner = findViewById(R.id.attribute_spinner);
         String[] attributeNames = viewModel.getAttributeNames();
         ArrayAdapter<String> attributeAdapter = new ArrayAdapter<>(this, R.layout.layout_spinner_element, attributeNames);
         attributeSpinner.setAdapter(attributeAdapter);
@@ -60,6 +66,7 @@ public class AttributeAnalysisActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 viewModel.setAttributeAndUpdateElements(position);
+                updateUI();
             }
 
             @Override
@@ -73,12 +80,12 @@ public class AttributeAnalysisActivity extends BaseActivity {
         ArrayAdapter<String> teamAdapter = new ArrayAdapter<>(this, R.layout.layout_spinner_element, teamNumbers);
         teamAdapter.notifyDataSetChanged();
 
-        Spinner teamSpinner = findViewById(R.id.team_spinner);
-        teamSpinner.setAdapter(teamAdapter);
-        teamSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        teamNumberSpinner.setAdapter(teamAdapter);
+        teamNumberSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 viewModel.setTeamNumberAndUpdateElements(position);
+                updateUI();
             }
 
             @Override
@@ -94,6 +101,9 @@ public class AttributeAnalysisActivity extends BaseActivity {
     }
 
     private void updateUI() {
+        teamNumberSpinner.setSelection(viewModel.getCurrentTeamNumberIndex());
+        attributeSpinner.setSelection(viewModel.getCurrentAttributeType());
+
         listAdapter.notifyDataSetChanged();
         listAdapter.sort((element1, element2) -> Double.compare(element2.getAttribute(), element1.getAttribute()));
     }
