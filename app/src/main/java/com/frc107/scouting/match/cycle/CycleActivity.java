@@ -1,5 +1,6 @@
 package com.frc107.scouting.match.cycle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.frc107.scouting.R;
 import com.frc107.scouting.ScoutingStrings;
+import com.frc107.scouting.match.endgame.EndgameActivity;
 import com.frc107.scouting.match.sandstorm.SandstormData;
 import com.frc107.scouting.match.sandstorm.SandstormIDs;
 import com.frc107.scouting.ui.BaseActivity;
@@ -127,10 +129,29 @@ public class CycleActivity extends BaseActivity {
         model = null;
     }
 
-    public void tryToEnterNewCycle(View view) {
-        if (!PermissionUtils.verifyWritePermissions(this))
+    public void tryToGoToEndgame(View view) {
+        if (model.areAllQuestionsUnanswered()) {
+            openEndgameActivity();
             return;
+        }
 
+        int id = model.getUnfinishedQuestionId();
+        if (id != -1) {
+            focusOnView(id);
+            return;
+        }
+
+        openEndgameActivity();
+    }
+
+    private void openEndgameActivity() {
+        Intent intent = new Intent(this, EndgameActivity.class);
+        intent.putExtra(ScoutingStrings.SANDSTORM_DATA_EXTRA_KEY, sandstormData);
+        intent.putExtra(ScoutingStrings.CYCLE_DATA_EXTRA_KEY, model.getData());
+        startActivity(intent);
+    }
+
+    public void tryToEnterNewCycle(View view) {
         int id = model.getUnfinishedQuestionId();
         if (id != -1) {
             focusOnView(id);

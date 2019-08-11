@@ -9,46 +9,36 @@ import java.util.List;
 public class CyclesData implements Parcelable {
     private int cycleNum = 1;
 
-    private List<Integer> pickupLocationList;
-    private List<Integer> itemPickedUpList;
-    private List<Integer> locationPlacedList;
-    private List<Boolean> defenseList;
-    private List<Boolean> onlyDefenseList;
+    private List<Integer> pickupLocationList = new ArrayList<>();
+    private List<Integer> itemPickedUpList = new ArrayList<>();
+    private List<Integer> locationPlacedList = new ArrayList<>();
+    private List<Boolean> defenseList = new ArrayList<>();
+    private List<Boolean> onlyDefenseList = new ArrayList<>();
 
-    CyclesData() {
-        pickupLocationList = new ArrayList<>();
-        itemPickedUpList = new ArrayList<>();
-        locationPlacedList = new ArrayList<>();
-        defenseList = new ArrayList<>();
-        onlyDefenseList = new ArrayList<>();
-    }
+    CyclesData() { }
 
     public int getCycleNum() {
         return cycleNum;
     }
 
-    public void incrementCycleNum() {
-        cycleNum++;
+    public int getPickupLocation(int index) {
+        return pickupLocationList.get(index);
     }
 
-    public List<Integer> getPickupLocationList() {
-        return pickupLocationList;
+    public int getItemPickedUp(int index) {
+        return itemPickedUpList.get(index);
     }
 
-    public List<Integer> getItemPickedUpList() {
-        return itemPickedUpList;
+    public int getLocationPlaced(int index) {
+        return locationPlacedList.get(index);
     }
 
-    public List<Integer> getLocationPlacedList() {
-        return locationPlacedList;
+    public boolean getDefense(int index) {
+        return defenseList.get(index);
     }
 
-    public List<Boolean> getDefenseList() {
-        return defenseList;
-    }
-
-    public List<Boolean> getOnlyDefenseList() {
-        return onlyDefenseList;
+    public boolean getOnlyDefense(int index) {
+        return onlyDefenseList.get(index);
     }
 
     public void addEntry(int pickupLocation, int itemPickedUp, int locationPlaced, boolean defense, boolean onlyDefense) {
@@ -57,6 +47,7 @@ public class CyclesData implements Parcelable {
         locationPlacedList.add(locationPlaced);
         defenseList.add(defense);
         onlyDefenseList.add(onlyDefense);
+        cycleNum++;
     }
 
     public CyclesData(Parcel in) {
@@ -64,7 +55,7 @@ public class CyclesData implements Parcelable {
         // objects of type Integer. However, at this point, none of these should be null.
         // If one of them is null, we have a bug when validating sandstorm, as we need to have
         // ALL questions answered when exiting.
-        // That said, if it crashes here when trying to readInt, then you have a bug earlier on.
+        // That said, if it crashes here when trying to readInt, then you have a bug when creating the parcel.
         // Go fix it.
 
         cycleNum = in.readInt();

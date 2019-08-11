@@ -85,8 +85,8 @@ public class SandstormActivity extends BaseActivity {
         intent.putExtra(ScoutingStrings.SANDSTORM_DATA_EXTRA_KEY, data);
         startActivity(intent);
 
+        model.clear();
         clearAnswers();
-        // todo: go to cycle with intent extra
     }
 
     private void clearAnswers() {

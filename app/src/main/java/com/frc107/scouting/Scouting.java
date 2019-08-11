@@ -7,6 +7,7 @@ import com.frc107.scouting.form.column.IntColumn;
 import com.frc107.scouting.form.column.StringColumn;
 import com.frc107.scouting.form.Table;
 import com.frc107.scouting.form.eTable;
+import com.frc107.scouting.match.MatchColumnIDs;
 import com.frc107.scouting.pit.PitIDs;
 import com.frc107.scouting.file.FileService;
 
@@ -67,25 +68,25 @@ public class Scouting {
         tables.add(pitTable);
 
         matchTable = new Table("Match",
-                new IntColumn(0, "Match number"),
-                new IntColumn(1, "Team number"),
-                new IntColumn(2, "Starting location"),
-                new IntColumn(3, "Starting item"),
-                new IntColumn(4, "Starting item placed"),
-                new IntColumn(5, "Crossed baseline"),
-                new IntColumn(6, "Cycle number"),
-                new IntColumn(7, "Pick up location"),
-                new IntColumn(8, "Item picked up"),
-                new IntColumn(9, "Item placed"),
-                new IntColumn(10, "Defense"),
-                new IntColumn(11, "Hab level"),
-                new IntColumn(12, "All match"),
-                new IntColumn(13, "Match defense"),
-                new IntColumn(14, "Fouls"),
-                new IntColumn(15, "Max Cycles"),
-                new StringColumn(16, "Scouter Initials"),
-                new StringColumn(17, "OPR"),
-                new StringColumn(18, "DPR"));
+                new IntColumn(MatchColumnIDs.MATCH_NUM, "Match number"),
+                new IntColumn(MatchColumnIDs.TEAM_NUM, "Team number"),
+                new IntColumn(MatchColumnIDs.STARTING_LOCATION, "Starting location"),
+                new IntColumn(MatchColumnIDs.STARTING_ITEM, "Starting item"),
+                new IntColumn(MatchColumnIDs.STARTING_ITEM_PLACED, "Starting item placed"),
+                new IntColumn(MatchColumnIDs.CROSSED_BASELINE, "Crossed baseline"),
+                new IntColumn(MatchColumnIDs.CYCLE_NUM, "Cycle number"),
+                new IntColumn(MatchColumnIDs.PICKUP_LOCATION, "Pick up location"),
+                new IntColumn(MatchColumnIDs.ITEM_PICKED_UP, "Item picked up"),
+                new IntColumn(MatchColumnIDs.ITEM_PLACED, "Item placed"),
+                new IntColumn(MatchColumnIDs.DEFENSE, "Defense"),
+                new IntColumn(MatchColumnIDs.HAB_LEVEL, "Hab level"),
+                new IntColumn(MatchColumnIDs.ALL_MATCH, "All match"),
+                new IntColumn(MatchColumnIDs.MATCH_DEFENSE, "Match defense"),
+                new IntColumn(MatchColumnIDs.FOULS, "Fouls"),
+                new IntColumn(MatchColumnIDs.MAX_CYCLES, "Max Cycles"),
+                new StringColumn(MatchColumnIDs.SCOUTER_INITIALS, "Scouter Initials"),
+                new StringColumn(MatchColumnIDs.OPR, "OPR"),
+                new StringColumn(MatchColumnIDs.DPR, "DPR"));
 
         matchHeader = matchTable.getHeader();
 

@@ -4,69 +4,69 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class SandstormData implements Parcelable {
-    private Integer matchNumber;
-    private Integer teamNumber;
-    private Integer startingLocation;
-    private Integer startingGamePiece;
-    private Integer placedLocation;
-    private Boolean crossedBaseline;
+    private int matchNumber = -1;
+    private int teamNumber = -1;
+    private int startingLocation = -1;
+    private int startingGamePiece = -1;
+    private int placedLocation = -1;
+    private boolean crossedBaseline;
 
     SandstormData() { }
 
-    public Integer getMatchNumber() {
+    public int getMatchNumber() {
         return matchNumber;
     }
 
-    public void setMatchNumber(Integer matchNumber) {
+    public void setMatchNumber(int matchNumber) {
         this.matchNumber = matchNumber;
     }
 
-    public Integer getTeamNumber() {
+    public int getTeamNumber() {
         return teamNumber;
     }
 
-    public void setTeamNumber(Integer teamNumber) {
+    public void setTeamNumber(int teamNumber) {
         this.teamNumber = teamNumber;
     }
 
-    public Integer getStartingLocation() {
+    public int getStartingLocation() {
         return startingLocation;
     }
 
-    public void setStartingLocation(Integer startingLocation) {
+    public void setStartingLocation(int startingLocation) {
         this.startingLocation = startingLocation;
     }
 
-    public Integer getStartingGamePiece() {
+    public int getStartingGamePiece() {
         return startingGamePiece;
     }
 
-    public void setStartingGamePiece(Integer startingGamePiece) {
+    public void setStartingGamePiece(int startingGamePiece) {
         this.startingGamePiece = startingGamePiece;
     }
 
-    public Integer getPlacedLocation() {
+    public int getPlacedLocation() {
         return placedLocation;
     }
 
-    public void setPlacedLocation(Integer placedLocation) {
+    public void setPlacedLocation(int placedLocation) {
         this.placedLocation = placedLocation;
     }
 
-    public Boolean getCrossedBaseline() {
+    public boolean getCrossedBaseline() {
         return crossedBaseline;
     }
 
-    public void setCrossedBaseline(Boolean crossedBaseline) {
+    public void setCrossedBaseline(boolean crossedBaseline) {
         this.crossedBaseline = crossedBaseline;
     }
 
     public void clear() {
-        matchNumber = null;
-        teamNumber = null;
-        startingLocation = null;
-        startingGamePiece = null;
-        placedLocation = null;
+        matchNumber = -1;
+        teamNumber = -1;
+        startingLocation = -1;
+        startingGamePiece = -1;
+        placedLocation = -1;
         crossedBaseline = false;
     }
 

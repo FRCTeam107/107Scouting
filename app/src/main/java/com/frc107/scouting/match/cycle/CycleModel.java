@@ -10,16 +10,16 @@ public class CycleModel extends ViewModel {
     private boolean defense;
     private boolean defenseAllCycle;
 
-    void setPickupLocation(Integer pickupLocation) {
-        this.pickupLocation = pickupLocation;
+    void setPickupLocation(Integer pickupLocationId) {
+        this.pickupLocation = CycleAnswers.getAnswerFromId(pickupLocationId);
     }
 
-    void setItemPickedUp(Integer itemPickedUp) {
-        this.itemPickedUp = itemPickedUp;
+    void setItemPickedUp(Integer itemPickedUpId) {
+        this.itemPickedUp = CycleAnswers.getAnswerFromId(itemPickedUpId);
     }
 
-    void setLocationPlaced(Integer locationPlaced) {
-        this.locationPlaced = locationPlaced;
+    void setLocationPlaced(Integer locationPlacedId) {
+        this.locationPlaced = CycleAnswers.getAnswerFromId(locationPlacedId);
     }
 
     void setDefense(boolean defense) {
@@ -31,7 +31,6 @@ public class CycleModel extends ViewModel {
     }
 
     void finishCycle() {
-        data.incrementCycleNum();
         data.addEntry(pickupLocation, itemPickedUp, locationPlaced, defense, defenseAllCycle);
         clear();
     }
@@ -42,6 +41,25 @@ public class CycleModel extends ViewModel {
         locationPlaced = -1;
         defense = false;
         defenseAllCycle = false;
+    }
+
+    boolean areAllQuestionsUnanswered() {
+        if (defense)
+            return false;
+
+        if (defenseAllCycle)
+            return false;
+
+        if (!answerIsEmpty(pickupLocation))
+            return false;
+
+        if (!answerIsEmpty(itemPickedUp))
+            return false;
+
+        if (!answerIsEmpty(locationPlaced))
+            return false;
+
+        return true;
     }
 
     int getUnfinishedQuestionId() {
