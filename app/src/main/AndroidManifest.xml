@@ -17,8 +17,8 @@
         android:roundIcon="@mipmap/icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".send.SendFileActivity"></activity>
-        <activity android:name=".concat.ConcatActivity" />
+        <activity android:name=".core.send.SendFileActivity"></activity>
+        <activity android:name=".core.concat.ConcatActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
@@ -34,9 +34,9 @@
         <activity android:name=".match.cycle.CycleActivity" />
         <activity android:name=".match.endgame.EndgameActivity" />
         <activity android:name=".pit.PitActivity" />
-        <activity android:name=".admin.AdminActivity" />
+        <activity android:name=".core.admin.AdminActivity" />
         <activity
-            android:name=".admin.ImportCsvActivity"
+            android:name=".core.csvimport.ImportCsvActivity"
             android:label="@string/title_open_csv_file"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -53,7 +53,7 @@
                 <data android:mimeType="text/comma-separated-values" />
             </intent-filter>
         </activity>
-        <activity android:name=".analysis.attribute.AttributeAnalysisActivity" />
+        <activity android:name=".core.analysis.AnalysisActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

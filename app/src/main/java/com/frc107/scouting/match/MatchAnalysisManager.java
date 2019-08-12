@@ -3,13 +3,11 @@ package com.frc107.scouting.match;
 import android.util.SparseArray;
 
 import com.frc107.scouting.Scouting;
-import com.frc107.scouting.analysis.attribute.IAnalysisManager;
-import com.frc107.scouting.form.eTable;
+import com.frc107.scouting.core.analysis.IAnalysisManager;
+import com.frc107.scouting.core.table.eTableType;
 import com.frc107.scouting.match.cycle.CycleAnswers;
 import com.frc107.scouting.match.endgame.EndgameAnswers;
-import com.frc107.scouting.match.sandstorm.SandstormActivity;
 import com.frc107.scouting.match.sandstorm.SandstormAnswers;
-import com.frc107.scouting.match.sandstorm.SandstormIDs;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -110,43 +108,43 @@ public class MatchAnalysisManager implements IAnalysisManager {
 
         // Habitat levels
         switch (habLevel) {
-            case ENDGAME_HAB_ONE:
+            case EndgameAnswers.HAB_ONE:
                 teamDetails.incrementHabOneAmount();
                 break;
-            case ENDGAME_HAB_TWO:
+            case EndgameAnswers.HAB_TWO:
                 teamDetails.incrementHabTwoAmount();
                 break;
-            case ENDGAME_HAB_THREE:
+            case EndgameAnswers.HAB_THREE:
                 teamDetails.incrementHabThreeAmount();
                 break;
         }
 
         // Rocket levels
         switch (startingPlacedLocation) {
-            case SANDSTORM_BOTTOM_ROCKET:
+            case SandstormAnswers.BOTTOM_ROCKET:
                 teamDetails.incrementRocketOneAmount();
                 break;
-            case SANDSTORM_MIDDLE_ROCKET:
+            case SandstormAnswers.MIDDLE_ROCKET:
                 teamDetails.incrementRocketTwoAmount();
                 break;
-            case SANDSTORM_TOP_ROCKET:
+            case SandstormAnswers.TOP_ROCKET:
                 teamDetails.incrementRocketThreeAmount();
                 break;
-            case SANDSTORM_CARGO_SHIP:
+            case SandstormAnswers.CARGO_SHIP:
                 teamDetails.incrementCargoShipAmount();
                 break;
         }
         switch (cyclePlacedLocation) {
-            case CYCLE_BOTTOM_ROCKET:
+            case CycleAnswers.BOTTOM_ROCKET:
                 teamDetails.incrementRocketOneAmount();
                 break;
-            case CYCLE_MIDDLE_ROCKET:
+            case CycleAnswers.MIDDLE_ROCKET:
                 teamDetails.incrementRocketTwoAmount();
                 break;
-            case CYCLE_TOP_ROCKET:
+            case CycleAnswers.TOP_ROCKET:
                 teamDetails.incrementRocketThreeAmount();
                 break;
-            case CYCLE_CARGO_SHIP:
+            case CycleAnswers.CARGO_SHIP:
                 teamDetails.incrementCargoShipAmount();
                 break;
         }
@@ -247,8 +245,8 @@ public class MatchAnalysisManager implements IAnalysisManager {
     }
 
     @Override
-    public eTable getTableType() {
-        return eTable.MATCH;
+    public eTableType getTableType() {
+        return eTableType.MATCH;
     }
 
     private class TeamDetails {

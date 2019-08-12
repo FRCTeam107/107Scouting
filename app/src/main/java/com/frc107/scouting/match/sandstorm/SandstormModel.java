@@ -2,7 +2,7 @@ package com.frc107.scouting.match.sandstorm;
 
 import androidx.lifecycle.ViewModel;
 
-import com.frc107.scouting.utils.StringUtils;
+import com.frc107.scouting.core.utils.StringUtils;
 
 public class SandstormModel extends ViewModel {
     private SandstormData data = new SandstormData();

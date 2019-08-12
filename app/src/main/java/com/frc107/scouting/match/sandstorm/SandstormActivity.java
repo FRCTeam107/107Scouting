@@ -10,10 +10,10 @@ import androidx.lifecycle.ViewModelProviders;
 import com.frc107.scouting.R;
 import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.match.cycle.CycleActivity;
-import com.frc107.scouting.ui.BaseActivity;
-import com.frc107.scouting.ui.questionWrappers.RadioWrapper;
-import com.frc107.scouting.ui.questionWrappers.TextWrapper;
-import com.frc107.scouting.utils.PermissionUtils;
+import com.frc107.scouting.core.ui.BaseActivity;
+import com.frc107.scouting.core.ui.questionWrappers.RadioWrapper;
+import com.frc107.scouting.core.ui.questionWrappers.TextWrapper;
+import com.frc107.scouting.core.utils.PermissionUtils;
 
 public class SandstormActivity extends BaseActivity {
     private TextWrapper matchNumberWrapper;

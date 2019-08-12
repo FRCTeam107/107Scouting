@@ -6,12 +6,12 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.frc107.scouting.analysis.attribute.AttributeAnalysisActivity;
-import com.frc107.scouting.concat.ConcatActivity;
+import com.frc107.scouting.core.analysis.AnalysisActivity;
+import com.frc107.scouting.core.concat.ConcatActivity;
 import com.frc107.scouting.match.sandstorm.SandstormActivity;
 import com.frc107.scouting.pit.PitActivity;
-import com.frc107.scouting.ui.BaseActivity;
-import com.frc107.scouting.utils.PermissionUtils;
+import com.frc107.scouting.core.ui.BaseActivity;
+import com.frc107.scouting.core.utils.PermissionUtils;
 
 import android.view.View;
 
@@ -20,7 +20,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import android.view.MenuItem;
 
-import com.frc107.scouting.utils.StringUtils;
+import com.frc107.scouting.core.utils.StringUtils;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -95,7 +95,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
             case R.id.attribute_analysis:
                 drawerLayout.closeDrawer(GravityCompat.START);
-                startActivity(new Intent(this, AttributeAnalysisActivity.class));
+                startActivity(new Intent(this, AnalysisActivity.class));
                 break;
             case R.id.settings:
                 break;

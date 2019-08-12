@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="true"
-    tools:context=".concat.ConcatActivity">
+    tools:context=".core.concat.ConcatActivity">
 
     <TextView
         android:id="@+id/file_type_text_view"

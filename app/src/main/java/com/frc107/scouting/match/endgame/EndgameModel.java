@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.ScoutingStrings;
-import com.frc107.scouting.form.Table;
-import com.frc107.scouting.form.eTable;
+import com.frc107.scouting.core.table.Table;
+import com.frc107.scouting.core.table.eTableType;
 import com.frc107.scouting.match.cycle.CyclesData;
 import com.frc107.scouting.match.sandstorm.SandstormData;
 
@@ -51,7 +51,7 @@ public class EndgameModel extends ViewModel {
     }
 
     boolean save() {
-        Table matchTable = Scouting.getInstance().getTable(eTable.MATCH);
+        Table matchTable = Scouting.getInstance().getTable(eTableType.MATCH);
 
         int matchNumber = sandstormData.getMatchNumber();
         int teamNumber = sandstormData.getTeamNumber();
@@ -98,7 +98,7 @@ public class EndgameModel extends ViewModel {
         }
 
         try {
-            Scouting.FILE_SERVICE.saveScoutingData(eTable.MATCH, initials, builder.toString());
+            Scouting.FILE_SERVICE.saveScoutingData(eTableType.MATCH, initials, builder.toString());
         } catch (IOException e) {
             Log.e(ScoutingStrings.SCOUTING_TAG, e.getLocalizedMessage());
             return false;

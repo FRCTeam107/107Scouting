@@ -10,12 +10,12 @@ import android.widget.Toast;
 
 import com.frc107.scouting.BuildConfig;
 import com.frc107.scouting.R;
-import com.frc107.scouting.utils.PermissionUtils;
-import com.frc107.scouting.utils.StringUtils;
-import com.frc107.scouting.utils.ViewUtils;
-import com.frc107.scouting.ui.BaseActivity;
-import com.frc107.scouting.ui.questionWrappers.RadioWrapper;
-import com.frc107.scouting.ui.questionWrappers.TextWrapper;
+import com.frc107.scouting.core.utils.PermissionUtils;
+import com.frc107.scouting.core.utils.StringUtils;
+import com.frc107.scouting.core.utils.ViewUtils;
+import com.frc107.scouting.core.ui.BaseActivity;
+import com.frc107.scouting.core.ui.questionWrappers.RadioWrapper;
+import com.frc107.scouting.core.ui.questionWrappers.TextWrapper;
 
 import java.io.File;
 

@@ -2,14 +2,14 @@ package com.frc107.scouting;
 
 import android.util.Log;
 
-import com.frc107.scouting.file.FileDefinition;
-import com.frc107.scouting.form.column.IntColumn;
-import com.frc107.scouting.form.column.StringColumn;
-import com.frc107.scouting.form.Table;
-import com.frc107.scouting.form.eTable;
+import com.frc107.scouting.core.file.FileDefinition;
+import com.frc107.scouting.core.table.column.IntColumn;
+import com.frc107.scouting.core.table.column.StringColumn;
+import com.frc107.scouting.core.table.Table;
+import com.frc107.scouting.core.table.eTableType;
 import com.frc107.scouting.match.MatchColumnIDs;
 import com.frc107.scouting.pit.PitIDs;
-import com.frc107.scouting.file.FileService;
+import com.frc107.scouting.core.file.FileService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class Scouting {
     private Table pitTable;
     private Table matchTable;
 
-    public Table getTable(eTable table) {
+    public Table getTable(eTableType table) {
         switch (table) {
             case PIT:
                 return pitTable;
@@ -109,7 +109,7 @@ public class Scouting {
         fileService.clearFileDefinitions();
         fileService.loadFileDefinitions();
 
-        FileDefinition fileDef = fileService.getMostRecentFileDefinition(eTable.PIT, userInitials);
+        FileDefinition fileDef = fileService.getMostRecentFileDefinition(eTableType.PIT, userInitials);
         if (fileDef != null) {
             String fileData;
             try {

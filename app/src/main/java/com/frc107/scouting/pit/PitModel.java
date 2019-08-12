@@ -6,16 +6,16 @@ import android.util.SparseIntArray;
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.ScoutingStrings;
-import com.frc107.scouting.form.Table;
-import com.frc107.scouting.form.eTable;
-import com.frc107.scouting.file.FileService;
-import com.frc107.scouting.utils.StringUtils;
+import com.frc107.scouting.core.table.Table;
+import com.frc107.scouting.core.table.eTableType;
+import com.frc107.scouting.core.file.FileService;
+import com.frc107.scouting.core.utils.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
 
 class PitModel {
-    private static final eTable TABLE = eTable.PIT;
+    private static final eTableType TABLE = eTableType.PIT;
 
     private Integer teamNumber;
     private Integer sandstormOperation;

@@ -11,8 +11,8 @@ import com.frc107.scouting.R;
 import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.match.cycle.CyclesData;
 import com.frc107.scouting.match.sandstorm.SandstormData;
-import com.frc107.scouting.ui.BaseActivity;
-import com.frc107.scouting.ui.questionWrappers.RadioWrapper;
+import com.frc107.scouting.core.ui.BaseActivity;
+import com.frc107.scouting.core.ui.questionWrappers.RadioWrapper;
 
 public class EndgameActivity extends BaseActivity {
     private RadioWrapper habitatWrapper;
