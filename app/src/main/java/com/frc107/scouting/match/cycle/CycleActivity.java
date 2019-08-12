@@ -141,6 +141,7 @@ public class CycleActivity extends BaseActivity {
             return;
         }
 
+        model.finishCycle();
         openEndgameActivity();
     }
 

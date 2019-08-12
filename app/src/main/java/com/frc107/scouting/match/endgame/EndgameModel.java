@@ -66,7 +66,7 @@ public class EndgameModel extends ViewModel {
         String initials = Scouting.getInstance().getUserInitials();
 
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < cyclesData.getCycleNum(); i++) {
+        for (int i = 0; i < cyclesData.getCycleAmount(); i++) {
             int cycleNum = i + 1;
             int pickupLocation = cyclesData.getPickupLocation(i);
             int itemPickedUp = cyclesData.getItemPickedUp(i);

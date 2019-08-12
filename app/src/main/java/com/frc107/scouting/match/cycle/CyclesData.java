@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CyclesData implements Parcelable {
-    private int cycleNum = 1;
+    private int cycleAmount = 0;
 
     private List<Integer> pickupLocationList = new ArrayList<>();
     private List<Integer> itemPickedUpList = new ArrayList<>();
@@ -17,8 +17,8 @@ public class CyclesData implements Parcelable {
 
     CyclesData() { }
 
-    public int getCycleNum() {
-        return cycleNum;
+    public int getCycleAmount() {
+        return cycleAmount;
     }
 
     public int getPickupLocation(int index) {
@@ -47,7 +47,7 @@ public class CyclesData implements Parcelable {
         locationPlacedList.add(locationPlaced);
         defenseList.add(defense);
         onlyDefenseList.add(onlyDefense);
-        cycleNum++;
+        cycleAmount++;
     }
 
     public CyclesData(Parcel in) {
@@ -58,7 +58,7 @@ public class CyclesData implements Parcelable {
         // That said, if it crashes here when trying to readInt, then you have a bug when creating the parcel.
         // Go fix it.
 
-        cycleNum = in.readInt();
+        cycleAmount = in.readInt();
 
         in.readList(pickupLocationList, Integer.class.getClassLoader());
         in.readList(itemPickedUpList, Integer.class.getClassLoader());
@@ -69,7 +69,7 @@ public class CyclesData implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(cycleNum);
+        dest.writeInt(cycleAmount);
 
         dest.writeList(pickupLocationList);
         dest.writeList(itemPickedUpList);

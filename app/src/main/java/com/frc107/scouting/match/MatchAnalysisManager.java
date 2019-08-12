@@ -5,6 +5,11 @@ import android.util.SparseArray;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.analysis.attribute.IAnalysisManager;
 import com.frc107.scouting.form.eTable;
+import com.frc107.scouting.match.cycle.CycleAnswers;
+import com.frc107.scouting.match.endgame.EndgameAnswers;
+import com.frc107.scouting.match.sandstorm.SandstormActivity;
+import com.frc107.scouting.match.sandstorm.SandstormAnswers;
+import com.frc107.scouting.match.sandstorm.SandstormIDs;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -38,36 +43,6 @@ public class MatchAnalysisManager implements IAnalysisManager {
     private static final int OPR = 9;
     private static final int DPR = 10;
 
-    public static final int SANDSTORM_HAB_ONE = 0;
-    public static final int SANDSTORM_HAB_TWO = 1;
-    public static final int SANDSTORM_CARGO = 1;
-    public static final int SANDSTORM_PANEL = 2;
-    public static final int SANDSTORM_NO_STARTING_PIECE = 0;
-    public static final int SANDSTORM_TOP_ROCKET = 3;
-    public static final int SANDSTORM_MIDDLE_ROCKET = 2;
-    public static final int SANDSTORM_BOTTOM_ROCKET = 1;
-    public static final int SANDSTORM_CARGO_SHIP = 0;
-    public static final int SANDSTORM_FLOOR = 4;
-    public static final int SANDSTORM_NOTHING_PLACED = 5;
-    public static final int CYCLE_PORT_PICKUP = 0;
-    public static final int CYCLE_FLOOR_PICKUP = 1;
-    public static final int CYCLE_STARTED_WITH_ITEM = 2;
-    public static final int CYCLE_CARGO = 0;
-    public static final int CYCLE_PANEL = 1;
-    public static final int CYCLE_TOP_ROCKET = 3;
-    public static final int CYCLE_MIDDLE_ROCKET = 2;
-    public static final int CYCLE_BOTTOM_ROCKET = 1;
-    public static final int CYCLE_CARGO_SHIP = 0;
-    public static final int CYCLE_FLOOR = 4;
-    public static final int CYCLE_NOTHING_PLACED = 5;
-    public static final int ENDGAME_HAB_ONE = 1;
-    public static final int ENDGAME_HAB_TWO = 2;
-    public static final int ENDGAME_HAB_THREE = 3;
-    public static final int ENDGAME_HAB_NONE = 0;
-    public static final int ENDGAME_DEFENSE_EFFECTIVE = 1;
-    public static final int ENDGAME_DEFENSE_INEFFECTIVE = 2;
-    public static final int ENDGAME_DEFENSE_NONE = 0;
-
     private SparseArray<TeamDetails> teamDetailsSparseArray = new SparseArray<>();
     private ArrayList<Integer> teamNumberList = new ArrayList<>();
 
@@ -97,12 +72,12 @@ public class MatchAnalysisManager implements IAnalysisManager {
 
         if (!teamDetails.hasMatch(matchNumber)) {
             // Sandstorm game pieces
-            if (startingPlacedLocation != SANDSTORM_FLOOR && startingPlacedLocation != SANDSTORM_NOTHING_PLACED) {
+            if (startingPlacedLocation != SandstormAnswers.FLOOR && startingPlacedLocation != SandstormAnswers.NOT_PLACED) {
                 switch (startingItem) {
-                    case SANDSTORM_CARGO:
+                    case SandstormAnswers.CARGO:
                         teamDetails.incrementCargoNum();
                         break;
-                    case SANDSTORM_PANEL:
+                    case SandstormAnswers.HATCH_PANEL:
                         teamDetails.incrementHatchNum();
                         break;
                 }
@@ -110,11 +85,11 @@ public class MatchAnalysisManager implements IAnalysisManager {
 
             // Match defense
             switch (defense) {
-                case ENDGAME_DEFENSE_EFFECTIVE:
+                case EndgameAnswers.EFFECTIVE_DEFENSE:
                     teamDetails.incrementDefenseNum();
                     teamDetails.incrementEffectiveDefenseNum();
                     break;
-                case ENDGAME_DEFENSE_INEFFECTIVE:
+                case EndgameAnswers.INEFFECTIVE_DEFENSE:
                     teamDetails.incrementDefenseNum();
                     break;
             }
@@ -122,12 +97,12 @@ public class MatchAnalysisManager implements IAnalysisManager {
         }
 
         // Cycle game pieces
-        if (cyclePlacedLocation != CYCLE_FLOOR && cyclePlacedLocation != CYCLE_NOTHING_PLACED) {
+        if (cyclePlacedLocation != CycleAnswers.FLOOR && cyclePlacedLocation != CycleAnswers.NOT_PLACED) {
             switch (itemPickedUp) {
-                case CYCLE_CARGO:
+                case CycleAnswers.CARGO:
                     teamDetails.incrementCargoNum();
                     break;
-                case CYCLE_PANEL:
+                case CycleAnswers.HATCH_PANEL:
                     teamDetails.incrementHatchNum();
                     break;
             }
