@@ -56,10 +56,7 @@ public class CycleModel extends ViewModel {
         if (!answerIsEmpty(itemPickedUp))
             return false;
 
-        if (!answerIsEmpty(locationPlaced))
-            return false;
-
-        return true;
+        return answerIsEmpty(locationPlaced);
     }
 
     int getUnfinishedQuestionId() {

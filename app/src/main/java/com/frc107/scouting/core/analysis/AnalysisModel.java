@@ -113,25 +113,4 @@ public class AnalysisModel extends ViewModel {
     String[] getAttributeNames() {
         return attributeManager.getAttributeNames();
     }
-
-    public class AnalysisElement {
-        private String teamNumber;
-        private double attribute;
-
-        AnalysisElement(String teamNumber, double attribute) {
-            if (teamNumber == null)
-                throw new IllegalArgumentException("Team number cannot be null");
-
-            this.teamNumber = teamNumber;
-            this.attribute = attribute;
-        }
-
-        String getTeamNumber() {
-            return teamNumber;
-        }
-
-        public double getAttribute() {
-            return attribute;
-        }
-    }
 }

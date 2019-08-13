@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.frc107.scouting.R;
 import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.match.endgame.EndgameActivity;
+import com.frc107.scouting.match.sandstorm.SandstormAnswers;
 import com.frc107.scouting.match.sandstorm.SandstormData;
 import com.frc107.scouting.match.sandstorm.SandstormIDs;
 import com.frc107.scouting.core.ui.BaseActivity;
@@ -52,8 +53,8 @@ public class CycleActivity extends BaseActivity {
             refreshForAllCycleDefense(isChecked);
         });
 
-        boolean startedWithoutAPiece = sandstormData.getStartingGamePiece() == SandstormIDs.NO_PIECE_OPTION;
-        boolean placedPiece = sandstormData.getPlacedLocation() != SandstormIDs.NOT_PLACED_OPTION;
+        boolean startedWithoutAPiece = sandstormData.getStartingGamePiece() == SandstormAnswers.NO_PIECE;
+        boolean placedPiece = sandstormData.getPlacedLocation() != SandstormAnswers.NOT_PLACED;
 
         if (startedWithoutAPiece || placedPiece)
             disableStartedWithItem();

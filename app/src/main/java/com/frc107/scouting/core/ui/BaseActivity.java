@@ -21,7 +21,6 @@ import com.frc107.scouting.MainActivity;
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.ScoutingStrings;
-import com.frc107.scouting.core.admin.AdminActivity;
 import com.frc107.scouting.core.utils.callbacks.ICallback;
 import com.frc107.scouting.core.send.SendFileActivity;
 import com.frc107.scouting.core.utils.PermissionUtils;
@@ -66,10 +65,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.main_activity:
                 startActivity(new Intent(this, MainActivity.class));
-                finishIfNeeded();
-                return true;
-            case R.id.admin_activity:
-                startActivity(new Intent(this, AdminActivity.class));
                 finishIfNeeded();
                 return true;
             case R.id.send_data:

@@ -3,8 +3,6 @@
         android:title="@string/return_home" />
     <item android:id="@+id/send_data"
         android:title="@string/send_data"/>
-    <item android:id="@+id/admin_activity"
-        android:title="@string/goToAdmin"/>
     <item android:id="@+id/end_shift"
         android:title="@string/end_shift"/>
 </menu>

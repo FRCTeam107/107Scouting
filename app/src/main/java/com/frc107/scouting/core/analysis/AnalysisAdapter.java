@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.frc107.scouting.core.analysis.AnalysisModel.AnalysisElement;
-
 import com.frc107.scouting.R;
 
 import java.util.ArrayList;
