@@ -265,7 +265,8 @@ public class FileService {
      */
     private File createAndWriteToNewScoutingFile(eTableType tableType, Calendar date, String initials, String data, boolean concat) throws IOException {
         String fileName = getNewFileName(tableType, date, initials, concat);
-        data = tableType.getHeader() + ScoutingStrings.NEW_LINE + data;
+        String header = Scouting.getInstance().getTable(tableType).getHeader();
+        data = header + ScoutingStrings.NEW_LINE + data;
         return createAndWriteToNewFileCore(scoutingDirectory, fileName, data);
     }
     public File createAndWriteToNewFileCore(File directory, String fileName, String data) throws IOException {
@@ -295,14 +296,16 @@ public class FileService {
         return prefix + FILE_NAME_DELIMITER + initials + FILE_NAME_DELIMITER + timeMessage + ".csv";
     }
 
-    public File concatenateFiles(eTableType target, File... filesToConcatenate) throws IOException {
-        if (target == null)
+    public File concatenateFiles(eTableType targetTableType, File... filesToConcatenate) throws IOException {
+        if (targetTableType == null)
             throw new IllegalArgumentException("Cannot concatenate files to a null eTableType.");
 
         String newLine = ScoutingStrings.NEW_LINE;
 
         StringBuilder builder = new StringBuilder();
-        builder.append(target.getHeader());
+
+        String header = Scouting.getInstance().getTable(targetTableType).getHeader();
+        builder.append(header);
         builder.append(newLine);
 
         for (File file : filesToConcatenate) {
@@ -319,14 +322,14 @@ public class FileService {
 
         Calendar date = Calendar.getInstance();
         String initials = Scouting.getInstance().getUserInitials();
-        String fileName = getNewFileName(target, date, initials, true);
+        String fileName = getNewFileName(targetTableType, date, initials, true);
 
         String data = builder.toString();
 
         // We call createAndWriteToNewFileCore instead of saveScoutingData because we always want a new file for concatenation.
         File file = createAndWriteToNewFileCore(scoutingDirectory, fileName, data);
 
-        addFileDefinition(target, file, date, initials, true);
+        addFileDefinition(targetTableType, file, date, initials, true);
 
         return file;
     }

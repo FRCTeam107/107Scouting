@@ -3,21 +3,19 @@ package com.frc107.scouting;
 import android.util.Log;
 
 import com.frc107.scouting.core.file.FileDefinition;
-import com.frc107.scouting.core.table.column.IntColumn;
-import com.frc107.scouting.core.table.column.StringColumn;
+import com.frc107.scouting.core.file.FileService;
 import com.frc107.scouting.core.table.Table;
+import com.frc107.scouting.core.table.column.Column;
+import com.frc107.scouting.core.table.column.eColumnType;
 import com.frc107.scouting.core.table.eTableType;
 import com.frc107.scouting.match.MatchColumnIDs;
 import com.frc107.scouting.pit.PitIDs;
-import com.frc107.scouting.core.file.FileService;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Scouting {
-    public static final boolean SAVE_ANSWER_NAMES_AS_ANSWERS_FOR_RADIO_QUESTIONS = false;
-
     private static Scouting scouting = new Scouting();
     public static Scouting getInstance() {
         return scouting;
@@ -38,72 +36,46 @@ public class Scouting {
         }
     }
 
-    private static final String COL_PIT_TEAM_NUM = "pit_team_number";
-    private static final String COL_PIT_SANDSTORM_OP = "pit_sandstorm_op";
-    private static final String COL_PIT_SANDSTORM_PREF = "pit_sandstorm_preference";
-    private static final String COL_PIT_SANDSTORM_HIGHEST_ROCKET_LEVEL = "pit_sandstorm_highest_rocket_level";
-    private static final String COL_PIT_HIGHEST_HABITAT = "pit_highest_habitat";
-    private static final String COL_PIT_HABITAT_TIME = "pit_habitat_time";
-    private static final String COL_PIT_PROGRAMMING_LANG = "pit_programming_language";
-    private static final String COL_PIT_BONUS = "pit_bonus";
-    private static final String COL_PIT_COMMENTS = "pit_comments";
-
-    private String pitHeader;
-    private String matchHeader;
-
     private Scouting() {
-        pitTable = new Table("PitAnswers",
-                new IntColumn(PitIDs.TEAM_NUM, COL_PIT_TEAM_NUM),
-                new IntColumn(PitIDs.SANDSTORM_OP, COL_PIT_SANDSTORM_OP),
-                new IntColumn(PitIDs.SANDSTORM_PREF, COL_PIT_SANDSTORM_PREF),
-                new IntColumn(PitIDs.SANDSTORM_HIGHEST_ROCKET_LEVEL, COL_PIT_SANDSTORM_HIGHEST_ROCKET_LEVEL),
-                new IntColumn(PitIDs.HIGHEST_HAB, COL_PIT_HIGHEST_HABITAT),
-                new StringColumn(PitIDs.HAB_TIME, COL_PIT_HABITAT_TIME),
-                new StringColumn(PitIDs.PROGRAMMING_LANG, COL_PIT_PROGRAMMING_LANG),
-                new StringColumn(PitIDs.BONUS, COL_PIT_BONUS),
-                new StringColumn(PitIDs.COMMENTS, COL_PIT_COMMENTS));
-
-        pitHeader = pitTable.getHeader();
-
+        pitTable = new Table("Pit",
+                new Column(PitIDs.TEAM_NUM, "Team number", eColumnType.INT),
+                new Column(PitIDs.SANDSTORM_OP, "Sandstorm op", eColumnType.INT),
+                new Column(PitIDs.SANDSTORM_PREF, "Sandstorm preference", eColumnType.INT),
+                new Column(PitIDs.SANDSTORM_HIGHEST_ROCKET_LEVEL, "Sandstorm highest rocket level", eColumnType.INT),
+                new Column(PitIDs.HIGHEST_HAB, "Highest habitat", eColumnType.INT),
+                new Column(PitIDs.HAB_TIME, "Habitat climb time", eColumnType.STRING),
+                new Column(PitIDs.PROGRAMMING_LANG, "Programming language", eColumnType.STRING),
+                new Column(PitIDs.BONUS, "Bonus question", eColumnType.STRING),
+                new Column(PitIDs.COMMENTS, "Comments", eColumnType.STRING));
         tables.add(pitTable);
 
         matchTable = new Table("Match",
-                new IntColumn(MatchColumnIDs.MATCH_NUM, "Match number"),
-                new IntColumn(MatchColumnIDs.TEAM_NUM, "Team number"),
-                new IntColumn(MatchColumnIDs.STARTING_LOCATION, "Starting location"),
-                new IntColumn(MatchColumnIDs.STARTING_ITEM, "Starting item"),
-                new IntColumn(MatchColumnIDs.STARTING_ITEM_PLACED, "Starting item placed"),
-                new IntColumn(MatchColumnIDs.CROSSED_BASELINE, "Crossed baseline"),
-                new IntColumn(MatchColumnIDs.CYCLE_NUM, "Cycle number"),
-                new IntColumn(MatchColumnIDs.PICKUP_LOCATION, "Pick up location"),
-                new IntColumn(MatchColumnIDs.ITEM_PICKED_UP, "Item picked up"),
-                new IntColumn(MatchColumnIDs.ITEM_PLACED, "Item placed"),
-                new IntColumn(MatchColumnIDs.DEFENSE, "Defense"),
-                new IntColumn(MatchColumnIDs.HAB_LEVEL, "Hab level"),
-                new IntColumn(MatchColumnIDs.ALL_MATCH, "All match"),
-                new IntColumn(MatchColumnIDs.MATCH_DEFENSE, "Match defense"),
-                new IntColumn(MatchColumnIDs.FOULS, "Fouls"),
-                new IntColumn(MatchColumnIDs.MAX_CYCLES, "Max Cycles"),
-                new StringColumn(MatchColumnIDs.SCOUTER_INITIALS, "Scouter Initials"),
-                new StringColumn(MatchColumnIDs.OPR, "OPR"),
-                new StringColumn(MatchColumnIDs.DPR, "DPR"));
-
-        matchHeader = matchTable.getHeader();
-
+                new Column(MatchColumnIDs.MATCH_NUM, "Match number", eColumnType.INT),
+                new Column(MatchColumnIDs.TEAM_NUM, "Team number", eColumnType.INT),
+                new Column(MatchColumnIDs.STARTING_LOCATION, "Starting location", eColumnType.INT),
+                new Column(MatchColumnIDs.STARTING_ITEM, "Starting item", eColumnType.INT),
+                new Column(MatchColumnIDs.STARTING_ITEM_PLACED, "Starting item placed", eColumnType.INT),
+                new Column(MatchColumnIDs.CROSSED_BASELINE, "Crossed baseline", eColumnType.INT),
+                new Column(MatchColumnIDs.CYCLE_NUM, "Cycle number", eColumnType.INT),
+                new Column(MatchColumnIDs.PICKUP_LOCATION, "Pick up location", eColumnType.INT),
+                new Column(MatchColumnIDs.ITEM_PICKED_UP, "Item picked up", eColumnType.INT),
+                new Column(MatchColumnIDs.ITEM_PLACED, "Item placed", eColumnType.INT),
+                new Column(MatchColumnIDs.DEFENSE, "Defense", eColumnType.INT),
+                new Column(MatchColumnIDs.HAB_LEVEL, "Hab level", eColumnType.INT),
+                new Column(MatchColumnIDs.ALL_MATCH, "All match", eColumnType.INT),
+                new Column(MatchColumnIDs.MATCH_DEFENSE, "Match defense", eColumnType.INT),
+                new Column(MatchColumnIDs.FOULS, "Fouls", eColumnType.INT),
+                new Column(MatchColumnIDs.MAX_CYCLES, "Max Cycles", eColumnType.INT),
+                new Column(MatchColumnIDs.SCOUTER_INITIALS, "Scouter Initials", eColumnType.STRING));
         tables.add(matchTable);
 
-        reloadData();
+        reloadFileData();
     }
 
-    public String getPitHeader() {
-        return pitHeader;
-    }
-
-    public String getMatchHeader() {
-        return matchHeader;
-    }
-
-    private void reloadData() {
+    /**
+     * Reload the file data. Call this when you create or delete files.
+     */
+    public void reloadFileData() {
         pitTable.clear();
 
         fileService.clearFileDefinitions();
@@ -135,6 +107,7 @@ public class Scouting {
     }
 
     private String userInitials;
+
     public void setUserInitials(String userInitials) {
         this.userInitials = userInitials;
     }
@@ -143,10 +116,22 @@ public class Scouting {
         return userInitials;
     }
 
+    private Integer matchNumber;
+
+    public void setMatchNumber(Integer matchNumber) {
+        this.matchNumber = matchNumber;
+    }
+
+    public Integer getMatchNumber() {
+        return matchNumber;
+    }
+
     private String eventKey;
+
     public void setEventKey(String eventKey) {
         this.eventKey = eventKey;
     }
+
     public String getEventKey() {
         return eventKey;
     }

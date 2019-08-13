@@ -33,6 +33,10 @@ public class SandstormActivity extends BaseActivity {
         model = ViewModelProviders.of(this).get(SandstormModel.class);
 
         matchNumberWrapper = new TextWrapper(this, SandstormIDs.MATCH_NUM, model::setMatchNumber);
+        Integer matchNumber = model.getMatchNumber();
+        if (matchNumber != null)
+            matchNumberWrapper.getEditText().setText(matchNumber.toString());
+
         teamNumberWrapper = new TextWrapper(this, SandstormIDs.TEAM_NUM, model::setTeamNumber);
 
         startingLocationWrapper = new RadioWrapper(this, SandstormIDs.STARTING_LOCATION, model::setStartingLocation);
@@ -79,6 +83,8 @@ public class SandstormActivity extends BaseActivity {
             focusOnView(id);
             return;
         }
+
+        model.finish();
 
         SandstormData data = model.getData();
         Intent intent = new Intent(this, CycleActivity.class);

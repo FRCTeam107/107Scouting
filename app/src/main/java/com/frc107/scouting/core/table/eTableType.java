@@ -41,17 +41,6 @@ public enum eTableType {
         }
     }
 
-    public String getHeader() {
-        switch (this) {
-            case PIT:
-                return Scouting.getInstance().getPitHeader();
-            case MATCH:
-                return Scouting.getInstance().getMatchHeader();
-            default:
-                return null;
-        }
-    }
-
     @Override
     public String toString() {
         switch (this) {

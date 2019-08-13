@@ -2,6 +2,7 @@ package com.frc107.scouting.match.sandstorm;
 
 import androidx.lifecycle.ViewModel;
 
+import com.frc107.scouting.Scouting;
 import com.frc107.scouting.core.utils.StringUtils;
 
 public class SandstormModel extends ViewModel {
@@ -10,14 +11,21 @@ public class SandstormModel extends ViewModel {
     void setMatchNumber(String matchNumberString) {
         if (StringUtils.isEmptyOrNull(matchNumberString)) {
             data.setMatchNumber(-1);
+            Scouting.getInstance().setMatchNumber(null);
             return;
         }
 
         try {
-            data.setMatchNumber(Integer.parseInt(matchNumberString));
+            int num = Integer.parseInt(matchNumberString);
+            data.setMatchNumber(num);
+            Scouting.getInstance().setMatchNumber(num);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Cannot parse \"" + matchNumberString + "\" into an integer");
         }
+    }
+
+    Integer getMatchNumber() {
+        return Scouting.getInstance().getMatchNumber();
     }
 
     void setTeamNumber(String teamNumberString) {
@@ -74,5 +82,9 @@ public class SandstormModel extends ViewModel {
 
     SandstormData getData() {
         return data;
+    }
+
+    void finish() {
+        Scouting.getInstance().setMatchNumber(data.getMatchNumber() + 1);
     }
 }

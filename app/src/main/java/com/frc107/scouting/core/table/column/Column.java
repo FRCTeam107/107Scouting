@@ -2,15 +2,15 @@ package com.frc107.scouting.core.table.column;
 
 import androidx.annotation.NonNull;
 
-public class Column<T> {
+public class Column {
     private int id;
     private String name;
-    private Class<T> typeClass; // Used for typechecking
+    private Class typeClass; // Used for typechecking
 
-    public Column(int id, String name, Class<T> typeClass) {
+    public Column(int id, String name, eColumnType columnType) {
         this.id = id;
         this.name = name;
-        this.typeClass = typeClass;
+        typeClass = columnType.getClassType();
     }
 
     public int getId() {
@@ -21,7 +21,7 @@ public class Column<T> {
         return name;
     }
 
-    public Class<T> getTypeClass() {
+    public Class getTypeClass() {
         return typeClass;
     }
 

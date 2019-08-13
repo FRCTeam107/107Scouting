@@ -22,6 +22,11 @@ public class Table {
     private List<String> columnNames = new ArrayList<>();
     private List<Row> rows = new ArrayList<>();
 
+    /**
+     * Create a new Table.
+     * @param name The name of the table.
+     * @param columnsToAdd A collection of columns. Make sure these each have different IDs and names.
+     */
     public Table(String name, Column... columnsToAdd) {
         this.name = name;
 
@@ -59,38 +64,39 @@ public class Table {
     }
 
     /**
-     * This is used to enter in a whole row at once. Make sure your object types match the order of
-     * the idColumnMap as well as the types of each relevant column.
-     *
-     * If I had 3 idColumnMap A{String} B{Boolean} C{Integer}, then I might call enterValues with
-     * the arguments:
-     *      enterValues("I am a string", 5, true);
-     * @param values
+     * Enter in a whole row at once.
+     * @param values A collection of values to enter in a new row. Make sure there's a value for
+     *               every column in the same order as the columns were defined.
+     * @return The String value of the row's elements.
      */
     public String enterNewRow(Object... values) {
-        if (values.length != columns.size())//idColumnMap.size())
+        if (values.length != columns.size())
             throw new IllegalArgumentException("Cannot pass in a different amount of values than there are idColumnMap!\nValue count: " + values.length + "\nColumn count: " + idColumnMap.size());
 
         Row row = new Row(values);
         rows.add(row);
 
-        return getRowAsString(rows.size() - 1);
+        return row.toString();
     }
 
     /**
-     * Be light with what you do with forEachRow. Since it runs every single row (of which there can be thousands),
-     * this can be expensive.
+     * Import data from a String into this table.
+     * @param data Your input. This can be as many lines as you want, as long as each line contains
+     *             every column in this table with the same names and order.
+     * @param forEachRow A callback to run for every single Row created from lines in the data.
+     *                   Be light with what you do with forEachRow. Since it runs every single
+     *                   row (of which there can be thousands), this can be expensive.
+     * @return True if successful, false if not.
      */
     public boolean importData(String data, ICallbackWithParam<Row> forEachRow) {
         String[] lines = data.split(ScoutingStrings.NEW_LINE);
-        String[] columnNames = lines[0].split(",");
-        if (columnNames.length != columns.size())
+        String[] columnNamesInData = lines[0].split(",");
+        if (columnNamesInData.length > columns.size())
             return false; // The imported data has a different amount of columns than we do.
 
         // Alright, to start off, we'll go through the first line: the header.
-
-        for (int i = 0; i < columnNames.length; i++) {
-            String colName = columnNames[i];
+        for (int i = 0; i < columns.size(); i++) {
+            String colName = columnNamesInData[i];
             if (!this.columnNames.contains(colName))
                 return false; // The imported data contains a column that we don't have. Abort.
         }
@@ -102,7 +108,7 @@ public class Table {
             if (line.isEmpty())
                 continue;
 
-            Row row = parseRow(line);
+            Row row = getRowFromString(line);
             rows.add(row);
 
             forEachRow.call(row);
@@ -111,9 +117,14 @@ public class Table {
         return true;
     }
 
-    private Row parseRow(String line) {
+    /**
+     * Get a Row object from a String of values separated by commas.
+     * @param data Your input, formatted like: "1,2,3,banana"
+     * @return A Row object containing the values from your input.
+     */
+    private Row getRowFromString(String data) {
         Object[] values = new Object[columns.size()];
-        String[] parts = line.split(",");
+        String[] parts = data.split(",");
         for (int j = 0; j < parts.length; j++) {
             Column column = columns.get(j);
             Class typeClass = column.getTypeClass();
@@ -133,28 +144,27 @@ public class Table {
         return new Row(values);
     }
 
+    /**
+     * Get the String value of a row and all its elements.
+     * @param rowIndex The vertical index of the row.
+     * @return A String of elements separated by commas.
+     */
+    private String getStringFromRow(int rowIndex) {
+        Row row = rows.get(rowIndex);
+        return row.toString();
+    }
+
     public void clear() {
         rows.clear();
     }
 
-    private String getRowAsString(int rowIndex) {
-        Row row = rows.get(rowIndex);
-
-        // I would use String.join(",", values) but that's only supported in API level 26 and up
-
-        // FormatStringUtils.addDelimiter does something almost identical to this, but I rewrote it
-        // here since I'm working off of an Object[] and need to call toString.
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < columns.size(); i++) {
-            builder.append(row.getValue(i).toString());
-
-            if (i < columns.size() - 1)
-                builder.append(',');
-        }
-        return builder.toString();
-    }
-
-    public Object getColumnValueAtRow(int columnId, int rowIndex) {
+    /**
+     * Get a value at a certain position.
+     * @param columnId The ID of the column. Not the position/index, but the ID.
+     * @param rowIndex The vertical index of the row.
+     * @return An Object, which you need to cast or parse to whatever data you expect.
+     */
+    public Object getValueAtColumnAndRow(int columnId, int rowIndex) {
         int colIndex = colIdIndexMap.get(columnId);
         Row row = rows.get(rowIndex);
         return row.getValue(colIndex);
