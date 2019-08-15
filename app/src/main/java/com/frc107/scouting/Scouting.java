@@ -81,7 +81,7 @@ public class Scouting {
         fileService.clearFileDefinitions();
         fileService.loadFileDefinitions();
 
-        FileDefinition fileDef = fileService.getMostRecentFileDefinition(eTableType.PIT, userInitials);
+        FileDefinition fileDef = fileService.getMostRecentFileDefinition(eTableType.PIT, false, userInitials);
         if (fileDef != null) {
             String fileData;
             try {

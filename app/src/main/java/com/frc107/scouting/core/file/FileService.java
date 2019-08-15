@@ -157,7 +157,7 @@ public class FileService {
     }
 
     public void saveScoutingData(eTableType tableType, String initials, String data) throws IOException {
-        FileDefinition mostRecentFile = getMostRecentFileDefinition(tableType, initials);
+        FileDefinition mostRecentFile = getMostRecentFileDefinition(tableType, false, initials);
         Calendar date = Calendar.getInstance();
         if (mostRecentFile == null) {
             // there is no FileDefinition for this eFileType and initials; create a new file.
@@ -175,26 +175,18 @@ public class FileService {
         }
     }
 
-    public FileDefinition getMostRecentFileDefinition(eTableType tableType, String initials) {
-        List<FileDefinition> definitions = fileDefinitions;
+    public FileDefinition getMostRecentFileDefinition(eTableType tableType, boolean concatenated, String initials) {
+        List<FileDefinition> definitions = getFileDefinitionsOfType(tableType, concatenated);
         Collections.sort(definitions, (o1, o2) -> o2.getDateCreated().compareTo(o1.getDateCreated()));
 
-        FileDefinition mostRecentDefinition = null;
-        for (FileDefinition fileDefinition : definitions) {
-            if (fileDefinition.getTableType() != tableType ||
-                !fileDefinition.getInitials().equals(initials))
-                continue;
-
-            mostRecentDefinition = fileDefinition;
-        }
-
+        FileDefinition mostRecentDefinition = definitions.get(definitions.size() - 1);
         return mostRecentDefinition;
     }
 
-    public List<FileDefinition> getFileDefinitionsOfType(eTableType tableType, boolean includeConcat) {
+    public List<FileDefinition> getFileDefinitionsOfType(eTableType tableType, boolean concatenated) {
         List<FileDefinition> fileDefs = new ArrayList<>();
         for (FileDefinition fileDef : fileDefinitions) {
-            if (fileDef.isConcat() != includeConcat)
+            if (fileDef.isConcatenated() != concatenated)
                 continue;
 
             if (fileDef.getTableType() == tableType)

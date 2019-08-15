@@ -41,6 +41,6 @@ public class LoadDataTask extends AsyncTask<IAnalysisManager, Void, Void> {
         }
 
         Table table = Scouting.getInstance().getTable(attributeManager.getTableType());
-        table.importData(data, row -> attributeManager.makeCalculationsFromRows(row.getValues()));
+        table.importData(data, row -> attributeManager.handleRow(row.getValues()));
     }
 }

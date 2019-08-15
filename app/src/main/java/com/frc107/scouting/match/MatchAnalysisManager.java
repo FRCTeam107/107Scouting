@@ -4,12 +4,14 @@ import android.util.SparseArray;
 
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.core.analysis.IAnalysisManager;
+import com.frc107.scouting.core.file.FileDefinition;
 import com.frc107.scouting.core.table.eTableType;
 import com.frc107.scouting.match.cycle.CycleAnswers;
 import com.frc107.scouting.match.endgame.EndgameAnswers;
 import com.frc107.scouting.match.sandstorm.SandstormAnswers;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -45,7 +47,7 @@ public class MatchAnalysisManager implements IAnalysisManager {
     private ArrayList<Integer> teamNumberList = new ArrayList<>();
 
     @Override
-    public void makeCalculationsFromRows(Object[] rowValues) {
+    public void handleRow(Object[] rowValues) {
         int matchNumber = (int) rowValues[COL_MATCH_NUM];
         int teamNumber = (int) rowValues[COL_TEAM_NUM];
         int startingItem = (int) rowValues[COL_STARTING_ITEM];
@@ -69,32 +71,44 @@ public class MatchAnalysisManager implements IAnalysisManager {
         teamDetails.incrementCycleNum();
 
         if (!teamDetails.hasMatch(matchNumber)) {
-            // Sandstorm game pieces
-            if (startingPlacedLocation != SandstormAnswers.FLOOR && startingPlacedLocation != SandstormAnswers.NOT_PLACED) {
-                switch (startingItem) {
-                    case SandstormAnswers.CARGO:
-                        teamDetails.incrementCargoNum();
-                        break;
-                    case SandstormAnswers.HATCH_PANEL:
-                        teamDetails.incrementHatchNum();
-                        break;
-                }
-            }
-
-            // Match defense
-            switch (defense) {
-                case EndgameAnswers.EFFECTIVE_DEFENSE:
-                    teamDetails.incrementDefenseNum();
-                    teamDetails.incrementEffectiveDefenseNum();
-                    break;
-                case EndgameAnswers.INEFFECTIVE_DEFENSE:
-                    teamDetails.incrementDefenseNum();
-                    break;
-            }
+            handleSandstormGamePiece(teamDetails, startingPlacedLocation, startingItem);
+            handleMatchDefense(teamDetails, defense);
             teamDetails.addMatch(matchNumber);
         }
 
-        // Cycle game pieces
+        handleCycleGamePieces(teamDetails, cyclePlacedLocation, itemPickedUp);
+        handleHabLevels(teamDetails, habLevel);
+        handleCargoShipAndRocketLevels(teamDetails, startingPlacedLocation, cyclePlacedLocation);
+    }
+
+    private void handleSandstormGamePiece(TeamDetails teamDetails, int startingPlacedLocation, int startingItem) {
+        if (startingPlacedLocation != SandstormAnswers.FLOOR && startingPlacedLocation != SandstormAnswers.NOT_PLACED) {
+            switch (startingItem) {
+                case SandstormAnswers.CARGO:
+                    teamDetails.incrementCargoNum();
+                    break;
+                case SandstormAnswers.HATCH_PANEL:
+                    teamDetails.incrementHatchNum();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    private void handleMatchDefense(TeamDetails teamDetails, int defense) {
+        switch (defense) {
+            case EndgameAnswers.EFFECTIVE_DEFENSE:
+                teamDetails.incrementDefenseNum();
+                teamDetails.incrementEffectiveDefenseNum();
+                break;
+            case EndgameAnswers.INEFFECTIVE_DEFENSE:
+                teamDetails.incrementDefenseNum();
+                break;
+            default:
+                break;
+        }
+    }
+    private void handleCycleGamePieces(TeamDetails teamDetails, int cyclePlacedLocation, int itemPickedUp) {
         if (cyclePlacedLocation != CycleAnswers.FLOOR && cyclePlacedLocation != CycleAnswers.NOT_PLACED) {
             switch (itemPickedUp) {
                 case CycleAnswers.CARGO:
@@ -103,10 +117,12 @@ public class MatchAnalysisManager implements IAnalysisManager {
                 case CycleAnswers.HATCH_PANEL:
                     teamDetails.incrementHatchNum();
                     break;
+                default:
+                    break;
             }
         }
-
-        // Habitat levels
+    }
+    private void handleHabLevels(TeamDetails teamDetails, int habLevel) {
         switch (habLevel) {
             case EndgameAnswers.HAB_ONE:
                 teamDetails.incrementHabOneAmount();
@@ -117,9 +133,11 @@ public class MatchAnalysisManager implements IAnalysisManager {
             case EndgameAnswers.HAB_THREE:
                 teamDetails.incrementHabThreeAmount();
                 break;
+            default:
+                break;
         }
-
-        // Rocket levels
+    }
+    private void handleCargoShipAndRocketLevels(TeamDetails teamDetails, int startingPlacedLocation, int cyclePlacedLocation) {
         switch (startingPlacedLocation) {
             case SandstormAnswers.BOTTOM_ROCKET:
                 teamDetails.incrementRocketOneAmount();
@@ -133,7 +151,10 @@ public class MatchAnalysisManager implements IAnalysisManager {
             case SandstormAnswers.CARGO_SHIP:
                 teamDetails.incrementCargoShipAmount();
                 break;
+            default:
+                break;
         }
+
         switch (cyclePlacedLocation) {
             case CycleAnswers.BOTTOM_ROCKET:
                 teamDetails.incrementRocketOneAmount();
@@ -147,12 +168,16 @@ public class MatchAnalysisManager implements IAnalysisManager {
             case CycleAnswers.CARGO_SHIP:
                 teamDetails.incrementCargoShipAmount();
                 break;
+            default:
+                break;
         }
     }
 
     @Override
     public File getFile() {
-        return Scouting.FILE_SERVICE.getFile("ConcatenatedMatch.csv");
+        // File testFile = Scouting.FILE_SERVICE.getFile("ConcatenatedMatch.csv");
+        FileDefinition fileDef = Scouting.FILE_SERVICE.getMostRecentFileDefinition(eTableType.MATCH, true, Scouting.getInstance().getUserInitials());
+        return fileDef.getFile();
     }
 
     private int attributeIndex;

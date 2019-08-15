@@ -36,7 +36,7 @@ public class FileDefinition {
         return tableType;
     }
 
-    public boolean isConcat() {
+    public boolean isConcatenated() {
         return isConcat;
     }
 
