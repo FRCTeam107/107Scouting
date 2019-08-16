@@ -32,7 +32,7 @@ public class AnalysisActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         /*
-         * todo
+         * todo todo todo do this now
          *
          * ask user what table to analyze, and then what file
          *
