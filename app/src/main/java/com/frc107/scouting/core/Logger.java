@@ -30,9 +30,7 @@ public abstract class Logger {
                 Log.d(ScoutingStrings.SCOUTING_TAG, "Error while creating log file!");
                 Log.d(ScoutingStrings.SCOUTING_TAG, e.getLocalizedMessage());
             }
-        }
-        else
-        {
+        }  else {
             fileService.writeLineToEndOfFile(logFile, messageWithTime);
         }
     }

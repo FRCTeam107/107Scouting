@@ -78,8 +78,6 @@ public class Table {
         Row row = new Row(values);
         rows.add(row);
 
-        String rowInfo = row.toString();
-        Logger.log("\"" + rowInfo + "\" was written to table \"" + name + "\".");
         return row;
     }
 
@@ -113,6 +111,11 @@ public class Table {
                 continue;
 
             Object[] objects = getObjectsFromLine(line);
+            if (objects == null) { // There was an error parsing the line into an object array.
+                Logger.log("Could not import data. Error while parsing line \"" + line + "\"");
+                return false;
+            }
+
             Row row = enterNewRow(objects);
             rows.add(row);
 
@@ -143,7 +146,12 @@ public class Table {
             Object value = null;
 
             if (typeClass.equals(Integer.class)) {
-                value = Integer.parseInt(parts[j]);
+                try {
+                    value = Integer.parseInt(parts[j]);
+                } catch (NumberFormatException e) {
+                    Logger.log(e.getLocalizedMessage());
+                    return null;
+                }
             }
 
             if (typeClass.equals(String.class)) {

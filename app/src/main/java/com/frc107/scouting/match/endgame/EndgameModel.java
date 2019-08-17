@@ -64,7 +64,33 @@ public class EndgameModel extends ViewModel {
         int maxCycles = 567;
         String initials = Scouting.getInstance().getUserInitials();
 
+        int defenseAllMatchInt = defenseAllMatch ? 1 : 0;
+        int foulsInt = fouls ? 1 : 0;
+
         StringBuilder builder = new StringBuilder();
+
+        Row sandstormRow = matchTable.enterNewRow(
+                matchNumber,
+                teamNumber,
+                startingLocation,
+                startingGamePiece,
+                placedLocation,
+                crossedBaseline,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                habLevel,
+                defenseAllMatchInt,
+                defenseRating,
+                foulsInt,
+                maxCycles,
+                initials);
+
+        builder.append(sandstormRow.toString());
+        builder.append(ScoutingStrings.NEW_LINE);
+
         for (int i = 0; i < cyclesData.getCycleAmount(); i++) {
             int cycleNum = i + 1;
             int pickupLocation = cyclesData.getPickupLocation(i);
@@ -72,7 +98,7 @@ public class EndgameModel extends ViewModel {
             int locationPlaced = cyclesData.getLocationPlaced(i);
             int defense = cyclesData.getDefense(i) ? 1 : 0;
 
-            Row row = matchTable.enterNewRow(
+            Row cycleRow = matchTable.enterNewRow(
                     matchNumber,
                     teamNumber,
                     startingLocation,
@@ -85,13 +111,13 @@ public class EndgameModel extends ViewModel {
                     locationPlaced,
                     defense,
                     habLevel,
-                    defenseAllMatch,
+                    defenseAllMatchInt,
                     defenseRating,
-                    fouls,
+                    foulsInt,
                     maxCycles,
                     initials);
 
-            builder.append(row.toString());
+            builder.append(cycleRow.toString());
             builder.append(ScoutingStrings.NEW_LINE);
         }
 

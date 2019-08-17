@@ -178,6 +178,9 @@ public class FileService {
 
     public FileDefinition getMostRecentFileDefinition(eTableType tableType, boolean concatenated, String initials) {
         List<FileDefinition> definitions = getFileDefinitionsOfType(tableType, concatenated);
+        if (definitions.isEmpty())
+            return null;
+
         Collections.sort(definitions, (o1, o2) -> o2.getDateCreated().compareTo(o1.getDateCreated()));
 
         FileDefinition mostRecentDefinition = definitions.get(definitions.size() - 1);

@@ -1,11 +1,14 @@
 package com.frc107.scouting.core.analysis;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.frc107.scouting.MainActivity;
 import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.core.file.SelectFileForAnalysisActivity;
+import com.frc107.scouting.core.table.eTableType;
 import com.frc107.scouting.core.ui.BaseActivity;
 
 import android.view.View;
@@ -37,13 +40,6 @@ public class AnalysisActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        /*
-         * todo todo todo do this now
-         *
-         * ask user what table to analyze, then open file picker
-         */
-
         setContentView(R.layout.activity_attribute_analysis);
 
         teamNumberSpinner = findViewById(R.id.team_spinner);
@@ -52,7 +48,28 @@ public class AnalysisActivity extends BaseActivity {
         model = ViewModelProviders.of(this).get(AnalysisModel.class);
         model.setCallbacks(this::onDataLoaded);
 
+        if (model.hasDataBeenLoaded()) {
+            initializeUI();
+            return;
+        }
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setTitle("Choose a table");
+
+        String[] options = new String[eTableType.values().length];
+        eTableType[] tableTypes = eTableType.values();
+        for (int i = 0; i < tableTypes.length; i++) {
+            options[i] = tableTypes[i].toString();
+        }
+
+        alertBuilder.setItems(options, (dialog, which) -> openFileSelectionActivity(tableTypes[which]));
+        alertBuilder.setOnCancelListener(dialog -> finish());
+        alertBuilder.show();
+    }
+
+    private void openFileSelectionActivity(eTableType tableType) {
         Intent intent = new Intent(this, SelectFileForAnalysisActivity.class);
+        intent.putExtra(ScoutingStrings.TABLE_EXTRA_KEY, tableType);
         startActivityForResult(intent, SELECT_FILE_INTENT_CODE);
     }
 
@@ -101,7 +118,6 @@ public class AnalysisActivity extends BaseActivity {
             public void onNothingSelected(AdapterView<?> parent) { }
         });
 
-        // todo: this should be eventually converted to a recyclerview
         ListView elementListView = findViewById(R.id.elementListView);
         elementListView.setSelectionAfterHeaderView();
         elementListView.setVisibility(View.VISIBLE);
@@ -121,10 +137,18 @@ public class AnalysisActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode != SELECT_FILE_INTENT_CODE || resultCode != RESULT_OK)
+        if (requestCode != SELECT_FILE_INTENT_CODE || resultCode != RESULT_OK) {
+            finish();
             return;
+        }
 
         String path = data.getStringExtra(ScoutingStrings.FILE_SELECTION_EXTRA_KEY);
+        if (path == null) {
+            showMessage("No files to analyze.", Toast.LENGTH_LONG);
+            finish();
+            return;
+        }
+
         model.setFilePath(path);
 
         if (!model.hasDataBeenLoaded()) {
