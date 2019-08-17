@@ -30,7 +30,6 @@ public class RadioWrapper {
     }
 
     public void clear() {
-        // todo: make sure this calls the listener
         radioGroup.clearCheck();
     }
 }

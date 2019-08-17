@@ -1,8 +1,11 @@
 package com.frc107.scouting.match;
 
+import android.util.Log;
 import android.util.SparseArray;
 
 import com.frc107.scouting.Scouting;
+import com.frc107.scouting.ScoutingStrings;
+import com.frc107.scouting.core.Logger;
 import com.frc107.scouting.core.analysis.IAnalysisManager;
 import com.frc107.scouting.core.file.FileDefinition;
 import com.frc107.scouting.core.table.eTableType;
@@ -47,17 +50,32 @@ public class MatchAnalysisManager implements IAnalysisManager {
     private ArrayList<Integer> teamNumberList = new ArrayList<>();
 
     @Override
-    public void handleRow(Object[] rowValues) {
-        int matchNumber = (int) rowValues[COL_MATCH_NUM];
-        int teamNumber = (int) rowValues[COL_TEAM_NUM];
-        int startingItem = (int) rowValues[COL_STARTING_ITEM];
-        int startingPlacedLocation = (int) rowValues[COL_STARTING_PLACED_LOCATION];
-        int itemPickedUp = (int) rowValues[COL_ITEM_PICKED_UP];
-        int cyclePlacedLocation = (int) rowValues[COL_ITEM_PLACED_LOCATION];
-        int defense = (int) rowValues[COL_DEFENSE];
-        int habLevel = (int) rowValues[COL_HAB];
-        double opr = Double.parseDouble((String) rowValues[COL_OPR]);
-        double dpr = Double.parseDouble((String) rowValues[COL_DPR]);
+    public boolean handleRow(Object[] rowValues) {
+        int matchNumber;
+        int teamNumber;
+        int startingItem;
+        int startingPlacedLocation;
+        int itemPickedUp;
+        int cyclePlacedLocation;
+        int defense;
+        int habLevel;
+        //double opr;
+        //double dpr;
+        try {
+            matchNumber = (int) rowValues[COL_MATCH_NUM];
+            teamNumber = (int) rowValues[COL_TEAM_NUM];
+            startingItem = (int) rowValues[COL_STARTING_ITEM];
+            startingPlacedLocation = (int) rowValues[COL_STARTING_PLACED_LOCATION];
+            itemPickedUp = (int) rowValues[COL_ITEM_PICKED_UP];
+            cyclePlacedLocation = (int) rowValues[COL_ITEM_PLACED_LOCATION];
+            defense = (int) rowValues[COL_DEFENSE];
+            habLevel = (int) rowValues[COL_HAB];
+            //opr = Double.parseDouble((String) rowValues[COL_OPR]);
+            //dpr = Double.parseDouble((String) rowValues[COL_DPR]);
+        } catch (IndexOutOfBoundsException e) {
+            Logger.log(e.getLocalizedMessage());
+            return false;
+        }
 
         TeamDetails teamDetails = teamDetailsSparseArray.get(teamNumber);
         if (teamDetails == null) {
@@ -66,8 +84,8 @@ public class MatchAnalysisManager implements IAnalysisManager {
             teamDetails = teamDetailsSparseArray.get(teamNumber);
         }
 
-        teamDetails.setOPR(opr);
-        teamDetails.setDPR(dpr);
+        //teamDetails.setOPR(opr);
+        //teamDetails.setDPR(dpr);
         teamDetails.incrementCycleNum();
 
         if (!teamDetails.hasMatch(matchNumber)) {
@@ -79,6 +97,8 @@ public class MatchAnalysisManager implements IAnalysisManager {
         handleCycleGamePieces(teamDetails, cyclePlacedLocation, itemPickedUp);
         handleHabLevels(teamDetails, habLevel);
         handleCargoShipAndRocketLevels(teamDetails, startingPlacedLocation, cyclePlacedLocation);
+
+        return true;
     }
 
     private void handleSandstormGamePiece(TeamDetails teamDetails, int startingPlacedLocation, int startingItem) {
@@ -176,7 +196,7 @@ public class MatchAnalysisManager implements IAnalysisManager {
     @Override
     public File getFile() {
         // File testFile = Scouting.FILE_SERVICE.getFile("ConcatenatedMatch.csv");
-        FileDefinition fileDef = Scouting.FILE_SERVICE.getMostRecentFileDefinition(eTableType.MATCH, true, Scouting.getInstance().getUserInitials());
+        FileDefinition fileDef = Scouting.getFileService().getMostRecentFileDefinition(eTableType.MATCH, true, Scouting.getInstance().getUserInitials());
         return fileDef.getFile();
     }
 

@@ -55,8 +55,6 @@ public class FileArrayAdapter extends RecyclerView.Adapter<FileArrayAdapter.File
         private TextView fileTypeView;
         private TextView creatorInitialsView;
         private TextView dateTextView;
-        private FileDefinition fileDefinition; // todo: delet this
-        private int position;
 
         FileViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,9 +64,6 @@ public class FileArrayAdapter extends RecyclerView.Adapter<FileArrayAdapter.File
         }
 
         void bind(FileDefinition fileDefinition, int position) {
-            this.fileDefinition = fileDefinition;
-            this.position = position;
-
             fileTypeView.setText(fileDefinition.getType());
             creatorInitialsView.setText(fileDefinition.getInitials());
 

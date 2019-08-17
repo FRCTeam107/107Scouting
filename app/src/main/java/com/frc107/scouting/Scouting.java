@@ -1,7 +1,6 @@
 package com.frc107.scouting;
 
-import android.util.Log;
-
+import com.frc107.scouting.core.Logger;
 import com.frc107.scouting.core.file.FileDefinition;
 import com.frc107.scouting.core.file.FileService;
 import com.frc107.scouting.core.table.Table;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Scouting {
-    private static Scouting scouting = new Scouting();
+    private static Scouting scouting;
     public static Scouting getInstance() {
         return scouting;
     }
@@ -25,18 +24,13 @@ public class Scouting {
     private Table pitTable;
     private Table matchTable;
 
-    public Table getTable(eTableType table) {
-        switch (table) {
-            case PIT:
-                return pitTable;
-            case MATCH:
-                return matchTable;
-            default:
-                return null;
-        }
+    static {
+        scouting = new Scouting();
+        scouting.initializeTables();
+        scouting.reloadFileData();
     }
 
-    private Scouting() {
+    private void initializeTables() {
         pitTable = new Table("Pit",
                 new Column(PitIDs.TEAM_NUM, "Team number", eColumnType.INT),
                 new Column(PitIDs.SANDSTORM_OP, "Sandstorm op", eColumnType.INT),
@@ -68,8 +62,17 @@ public class Scouting {
                 new Column(MatchColumnIDs.MAX_CYCLES, "Max Cycles", eColumnType.INT),
                 new Column(MatchColumnIDs.SCOUTER_INITIALS, "Scouter Initials", eColumnType.STRING));
         tables.add(matchTable);
+    }
 
-        reloadFileData();
+    public Table getTable(eTableType table) {
+        switch (table) {
+            case PIT:
+                return pitTable;
+            case MATCH:
+                return matchTable;
+            default:
+                return null;
+        }
     }
 
     /**
@@ -87,10 +90,10 @@ public class Scouting {
             try {
                 fileData = fileService.getFileData(fileDef.getFile());
             } catch (IOException e) {
-                Log.d(ScoutingStrings.SCOUTING_TAG, e.getLocalizedMessage());
+                Logger.log(e.getLocalizedMessage());
                 return;
             }
-            pitTable.importData(fileData, row -> {});
+            pitTable.importData(fileData, row -> true);
         }
     }
 
@@ -98,12 +101,10 @@ public class Scouting {
         return tables;
     }
 
-    public static final FileService FILE_SERVICE = getInstance().getFileService();
-
     private FileService fileService = new FileService();
 
-    public FileService getFileService() {
-        return fileService;
+    public static FileService getFileService() {
+        return getInstance().fileService;
     }
 
     private String userInitials;

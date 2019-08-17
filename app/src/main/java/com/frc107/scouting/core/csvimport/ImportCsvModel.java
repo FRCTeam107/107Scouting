@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.ScoutingStrings;
+import com.frc107.scouting.core.file.FileService;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,8 +13,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 class ImportCsvModel extends ViewModel {
+    private static FileService fileService = Scouting.getFileService();
+
     boolean doesFileExist(String name) {
-        return Scouting.FILE_SERVICE.doesFileExist(name);
+        return fileService.doesFileExist(name);
     }
 
     void copyFile(InputStream inputStream, String name) throws IOException {
@@ -28,10 +31,10 @@ class ImportCsvModel extends ViewModel {
             }
         }
 
-        File targetFile = new File(Scouting.FILE_SERVICE.getScoutingDirectory(), name);
+        File targetFile = new File(fileService.getScoutingDirectory(), name);
         if (targetFile.exists())
             throw new IOException("File already exists! Path: " + targetFile.getPath());
 
-        Scouting.FILE_SERVICE.createAndWriteToNewFileCore(targetFile.getParentFile(), targetFile.getName(), builder.toString());
+        fileService.createAndWriteToNewFileCore(targetFile.getParentFile(), targetFile.getName(), builder.toString());
     }
 }

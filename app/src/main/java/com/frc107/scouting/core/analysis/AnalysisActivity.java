@@ -1,7 +1,11 @@
 package com.frc107.scouting.core.analysis;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.frc107.scouting.MainActivity;
+import com.frc107.scouting.ScoutingStrings;
+import com.frc107.scouting.core.file.SelectFileForAnalysisActivity;
 import com.frc107.scouting.core.ui.BaseActivity;
 
 import android.view.View;
@@ -11,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.frc107.scouting.R;
@@ -27,6 +32,8 @@ public class AnalysisActivity extends BaseActivity {
     private AnalysisModel model;
     private ArrayList<String> teamNumbers;
 
+    private static final int SELECT_FILE_INTENT_CODE = 8213; // no significance to the number, just a random number that doesn't collide with other possible intent/activity result codes.
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +41,7 @@ public class AnalysisActivity extends BaseActivity {
         /*
          * todo todo todo do this now
          *
-         * ask user what table to analyze, and then what file
-         *
-         * load data once an option has been chosen in the popup
+         * ask user what table to analyze, then open file picker
          */
 
         setContentView(R.layout.activity_attribute_analysis);
@@ -45,22 +50,18 @@ public class AnalysisActivity extends BaseActivity {
         attributeSpinner = findViewById(R.id.attribute_spinner);
 
         model = ViewModelProviders.of(this).get(AnalysisModel.class);
-        model.setCallbacks(this::onDataLoaded, this::onDataLoadError);
+        model.setCallbacks(this::onDataLoaded);
 
-        if (!model.hasDataBeenLoaded()) {
-            model.loadData();
-        } else {
-            initializeUI();
-            updateUI();
+        Intent intent = new Intent(this, SelectFileForAnalysisActivity.class);
+        startActivityForResult(intent, SELECT_FILE_INTENT_CODE);
+    }
+
+    private void onDataLoaded(Boolean result) {
+        if (Boolean.FALSE.equals(result)) {
+            showMessage("Error while loading data. Go talk to the programmers.", Toast.LENGTH_LONG);
+            finish();
         }
-    }
 
-    private void onDataLoadError(String error) {
-        showMessage(error, Toast.LENGTH_LONG);
-        finish();
-    }
-
-    private void onDataLoaded() {
         initializeUI();
     }
 
@@ -115,5 +116,22 @@ public class AnalysisActivity extends BaseActivity {
 
         listAdapter.notifyDataSetChanged();
         listAdapter.sort((element1, element2) -> Double.compare(element2.getAttribute(), element1.getAttribute()));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != SELECT_FILE_INTENT_CODE || resultCode != RESULT_OK)
+            return;
+
+        String path = data.getStringExtra(ScoutingStrings.FILE_SELECTION_EXTRA_KEY);
+        model.setFilePath(path);
+
+        if (!model.hasDataBeenLoaded()) {
+            model.loadData();
+        } else {
+            initializeUI();
+            updateUI();
+        }
     }
 }

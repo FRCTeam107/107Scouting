@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.frc107.scouting.R;
+import com.frc107.scouting.core.Logger;
 import com.frc107.scouting.core.ui.BaseActivity;
 import com.frc107.scouting.ScoutingStrings;
 
@@ -40,7 +41,7 @@ public class ImportCsvActivity extends BaseActivity {
             model.copyFile(inputStream, name);
         } catch (IOException e) {
             showMessage(e.getLocalizedMessage(), Toast.LENGTH_LONG);
-            Log.d(ScoutingStrings.SCOUTING_TAG, e.getLocalizedMessage());
+            Logger.log(e.getLocalizedMessage());
             return;
         }
 

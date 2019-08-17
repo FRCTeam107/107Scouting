@@ -45,7 +45,6 @@ public class TextWrapper {
     }
 
     public void clear() {
-        // todo: make sure this calls the listener
         editText.setText("");
     }
 }

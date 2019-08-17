@@ -2,47 +2,36 @@ package com.frc107.scouting.core.analysis;
 
 import androidx.lifecycle.ViewModel;
 
-import com.frc107.scouting.core.thebluealliance.LoadDataTask;
-import com.frc107.scouting.core.utils.callbacks.ICallback;
 import com.frc107.scouting.core.utils.callbacks.ICallbackWithParam;
 import com.frc107.scouting.match.MatchAnalysisManager;
 
 import java.util.ArrayList;
 
 public class AnalysisModel extends ViewModel {
-    private ArrayList<AnalysisElement> elements;
+    private String filePath;
+    private ArrayList<AnalysisElement> elements = new ArrayList<>();
 
     private int currentAttributeTypeIndex = -1;
     private int currentTeamNumberIndex = -1;
 
     private IAnalysisManager attributeManager = new MatchAnalysisManager();
-    private ICallback onDataLoaded;
-    private ICallbackWithParam<String> onError;
+    private ICallbackWithParam<Boolean> onDataLoaded;
 
-    AnalysisModel() {
-        elements = new ArrayList<>();
-    }
-
-    void setCallbacks(ICallback onDataLoaded, ICallbackWithParam<String> onError) {
+    void setCallbacks(ICallbackWithParam<Boolean> onDataLoaded) {
         this.onDataLoaded = onDataLoaded;
-        this.onError = onError;
     }
 
     void loadData() {
-        new LoadDataTask(this::onDataLoaded, this::onDataLoadError).execute(attributeManager);
+        new LoadDataTask(this::onDataLoaded, attributeManager, filePath).execute();
     }
 
     private boolean hasDataBeenLoaded;
 
-    private void onDataLoaded() {
+    private void onDataLoaded(Boolean result) {
         attributeManager.makeFinalCalculations();
         teamNumbers = attributeManager.getTeamNumbers(); // Set the team numbers so we don't crash
         hasDataBeenLoaded = true;
-        onDataLoaded.call(); // This should be the only call. Do not call this again.
-    }
-
-    private void onDataLoadError(String error) {
-        onError.call(error);
+        onDataLoaded.call(result); // This should be the only call. Do not call this again.
     }
 
     boolean hasDataBeenLoaded() {
@@ -112,5 +101,9 @@ public class AnalysisModel extends ViewModel {
 
     String[] getAttributeNames() {
         return attributeManager.getAttributeNames();
+    }
+
+    void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

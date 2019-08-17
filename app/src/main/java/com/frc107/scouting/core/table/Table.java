@@ -1,8 +1,10 @@
 package com.frc107.scouting.core.table;
 
 import com.frc107.scouting.ScoutingStrings;
+import com.frc107.scouting.core.Logger;
 import com.frc107.scouting.core.utils.callbacks.ICallbackWithParam;
 import com.frc107.scouting.core.table.column.Column;
+import com.frc107.scouting.core.utils.callbacks.ICallbackWithParamAndResult;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,16 +69,18 @@ public class Table {
      * Enter in a whole row at once.
      * @param values A collection of values to enter in a new row. Make sure there's a value for
      *               every column in the same order as the columns were defined.
-     * @return The String value of the row's elements.
+     * @return The new row.
      */
-    public String enterNewRow(Object... values) {
+    public Row enterNewRow(Object... values) {
         if (values.length != columns.size())
             throw new IllegalArgumentException("Cannot pass in a different amount of values than there are idColumnMap!\nValue count: " + values.length + "\nColumn count: " + idColumnMap.size());
 
         Row row = new Row(values);
         rows.add(row);
 
-        return row.toString();
+        String rowInfo = row.toString();
+        Logger.log("\"" + rowInfo + "\" was written to table \"" + name + "\".");
+        return row;
     }
 
     /**
@@ -88,17 +92,17 @@ public class Table {
      *                   row (of which there can be thousands), this can be expensive.
      * @return True if successful, false if not.
      */
-    public boolean importData(String data, ICallbackWithParam<Row> forEachRow) {
+    public boolean importData(String data, ICallbackWithParamAndResult<Row, Boolean> forEachRow) {
         String[] lines = data.split(ScoutingStrings.NEW_LINE);
         String[] columnNamesInData = lines[0].split(",");
-        if (columnNamesInData.length > columns.size())
-            return false; // The imported data has a different amount of columns than we do.
 
         // Alright, to start off, we'll go through the first line: the header.
         for (int i = 0; i < columns.size(); i++) {
             String colName = columnNamesInData[i];
-            if (!this.columnNames.contains(colName))
+            if (!this.columnNames.contains(colName)) {
+                Logger.log("Could not import data. Column \"" + colName + "\" is not contained in this table.");
                 return false; // The imported data contains a column that we don't have. Abort.
+            }
         }
 
         // Now that we've gotten the first line (header) out of the way, let's look at the actual
@@ -108,24 +112,31 @@ public class Table {
             if (line.isEmpty())
                 continue;
 
-            Row row = getRowFromString(line);
+            Object[] objects = getObjectsFromLine(line);
+            Row row = enterNewRow(objects);
             rows.add(row);
 
-            forEachRow.call(row);
+            boolean successfulRow = forEachRow.call(row);
+            if (!successfulRow) {
+                clear();
+                Logger.log("Could not import data. Operation halted by callback parameter \"forEachRow\".");
+                return false; // The callback needed to stop the import.
+            }
         }
 
+        Logger.log("Successfully imported data into table \"" + name + "\".");
         return true;
     }
 
     /**
      * Get a Row object from a String of values separated by commas.
-     * @param data Your input, formatted like: "1,2,3,banana"
-     * @return A Row object containing the values from your input.
+     * @param line Your input, formatted like: "1,2,3,banana"
+     * @return An array of Object containing the parsed values from your input.
      */
-    private Row getRowFromString(String data) {
+    private Object[] getObjectsFromLine(String line) {
         Object[] values = new Object[columns.size()];
-        String[] parts = data.split(",");
-        for (int j = 0; j < parts.length; j++) {
+        String[] parts = line.split(",");
+        for (int j = 0; j < values.length; j++) {
             Column column = columns.get(j);
             Class typeClass = column.getTypeClass();
 
@@ -141,7 +152,7 @@ public class Table {
 
             values[j] = value;
         }
-        return new Row(values);
+        return values;
     }
 
     /**

@@ -6,6 +6,8 @@ import android.util.SparseIntArray;
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.ScoutingStrings;
+import com.frc107.scouting.core.Logger;
+import com.frc107.scouting.core.table.Row;
 import com.frc107.scouting.core.table.Table;
 import com.frc107.scouting.core.table.eTableType;
 import com.frc107.scouting.core.file.FileService;
@@ -120,7 +122,7 @@ class PitModel {
 
     boolean save() {
         Table table = Scouting.getInstance().getTable(TABLE);
-        String entry = table.enterNewRow(
+        Row row = table.enterNewRow(
                 teamNumber,
                 sandstormOperation,
                 sandstormPreference,
@@ -131,12 +133,12 @@ class PitModel {
                 bonus,
                 comments);
 
-        FileService fileService = Scouting.getInstance().getFileService();
+        FileService fileService = Scouting.getFileService();
         try {
-            fileService.saveScoutingData(TABLE, Scouting.getInstance().getUserInitials(), entry);
+            fileService.saveScoutingData(TABLE, Scouting.getInstance().getUserInitials(), row.toString());
             return true;
         } catch (IOException e) {
-            Log.d(ScoutingStrings.SCOUTING_TAG, e.getLocalizedMessage());
+            Logger.log(e.getLocalizedMessage());
             return false;
         }
     }
@@ -147,7 +149,7 @@ class PitModel {
         if (teamNumber == null)
             throw new IllegalStateException("Team number must not be null or empty");
 
-        File file = Scouting.FILE_SERVICE.createPhotoFile(teamNumber.toString());
+        File file = Scouting.getFileService().createPhotoFile(teamNumber.toString());
         if (file != null && file.exists()) {
             hasCreatedPhotoFile = true;
             photoFileName = file.getName();
@@ -160,6 +162,6 @@ class PitModel {
         if (!hasCreatedPhotoFile)
             throw new IllegalStateException("Photo file has not been created yet!");
 
-        return Scouting.FILE_SERVICE.compressPhoto(photoFileName);
+        return Scouting.getFileService().compressPhoto(photoFileName);
     }
 }

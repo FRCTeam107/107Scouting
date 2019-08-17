@@ -194,7 +194,7 @@
     <string name="forms">Forms</string>
     <string name="analysis">Analysis</string>
     <string name="team_analysis">Team Analysis</string>
-    <string name="attribute_analysis">Attribute Analysis</string>
+    <string name="attribute_analysis">Analysis</string>
     <string name="bluetooth">Bluetooth</string>
     <string name="send_match_data">Send Match Data</string>
     <string name="send_pit_data">Send Pit Data</string>

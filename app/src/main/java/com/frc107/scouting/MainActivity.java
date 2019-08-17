@@ -112,7 +112,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         intent.setType("image/jpeg");
         intent.setPackage("com.android.bluetooth");
 
-        ArrayList<Uri> uriList = (ArrayList<Uri>) Scouting.FILE_SERVICE.getPhotoUriList();
+        ArrayList<Uri> uriList = (ArrayList<Uri>) Scouting.getFileService().getPhotoUriList();
         if (uriList.isEmpty()) {
             Toast.makeText(this, "No photos to send.", Toast.LENGTH_SHORT).show();
         } else {

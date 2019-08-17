@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.ScoutingStrings;
+import com.frc107.scouting.core.table.Row;
 import com.frc107.scouting.core.table.Table;
 import com.frc107.scouting.core.table.eTableType;
 import com.frc107.scouting.match.cycle.CyclesData;
@@ -58,11 +59,9 @@ public class EndgameModel extends ViewModel {
         int startingLocation = sandstormData.getStartingLocation();
         int startingGamePiece = sandstormData.getStartingGamePiece();
         int placedLocation = sandstormData.getPlacedLocation();
-        boolean crossedBaseline = sandstormData.getCrossedBaseline();
+        int crossedBaseline = sandstormData.getCrossedBaseline() ? 1 : 0;
 
         int maxCycles = 567;
-        double opr = 123.456;
-        double dpr = 654.321;
         String initials = Scouting.getInstance().getUserInitials();
 
         StringBuilder builder = new StringBuilder();
@@ -71,34 +70,33 @@ public class EndgameModel extends ViewModel {
             int pickupLocation = cyclesData.getPickupLocation(i);
             int itemPickedUp = cyclesData.getItemPickedUp(i);
             int locationPlaced = cyclesData.getLocationPlaced(i);
-            boolean defense = cyclesData.getDefense(i);
+            int defense = cyclesData.getDefense(i) ? 1 : 0;
 
-            String row = matchTable.enterNewRow(matchNumber,
-                                                teamNumber,
-                                                startingLocation,
-                                                startingGamePiece,
-                                                placedLocation,
-                                                crossedBaseline,
-                                                cycleNum,
-                                                pickupLocation,
-                                                itemPickedUp,
-                                                locationPlaced,
-                                                defense,
-                                                habLevel,
-                                                defenseAllMatch,
-                                                defenseRating,
-                                                fouls,
-                                                maxCycles,
-                                                initials,
-                                                opr,
-                                                dpr);
+            Row row = matchTable.enterNewRow(
+                    matchNumber,
+                    teamNumber,
+                    startingLocation,
+                    startingGamePiece,
+                    placedLocation,
+                    crossedBaseline,
+                    cycleNum,
+                    pickupLocation,
+                    itemPickedUp,
+                    locationPlaced,
+                    defense,
+                    habLevel,
+                    defenseAllMatch,
+                    defenseRating,
+                    fouls,
+                    maxCycles,
+                    initials);
 
-            builder.append(row);
+            builder.append(row.toString());
             builder.append(ScoutingStrings.NEW_LINE);
         }
 
         try {
-            Scouting.FILE_SERVICE.saveScoutingData(eTableType.MATCH, initials, builder.toString());
+            Scouting.getFileService().saveScoutingData(eTableType.MATCH, initials, builder.toString());
         } catch (IOException e) {
             Log.e(ScoutingStrings.SCOUTING_TAG, e.getLocalizedMessage());
             return false;

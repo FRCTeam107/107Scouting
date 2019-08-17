@@ -42,7 +42,7 @@ public class ConcatModel extends ViewModel {
         availableFileDefs.clear();
 
         // Since we're concatenating files, we don't want to be able to concatenate files that are concatenations.
-        availableFileDefs.addAll(Scouting.FILE_SERVICE.getFileDefinitionsOfType(tableType, false));
+        availableFileDefs.addAll(Scouting.getFileService().getFileDefinitionsOfType(tableType, false));
         availableFileNames.clear();
 
         selectedFileNames.clear();
@@ -116,7 +116,7 @@ public class ConcatModel extends ViewModel {
         }
 
         try {
-            File file = Scouting.FILE_SERVICE.concatenateFiles(tableType, files);
+            File file = Scouting.getFileService().concatenateFiles(tableType, files);
             return "Concatenated to " + file.getName();
         } catch (IOException e) {
             return e.getLocalizedMessage();

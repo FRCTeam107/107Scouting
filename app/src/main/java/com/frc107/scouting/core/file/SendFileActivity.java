@@ -11,7 +11,7 @@ public class SendFileActivity extends SelectFileActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        List<FileDefinition> fileDefinitions = Scouting.FILE_SERVICE.getFileDefinitions();
+        List<FileDefinition> fileDefinitions = Scouting.getFileService().getFileDefinitions();
         initialize(fileDefinitions, fileDef -> sendFile(fileDef.getFile()));
     }
 }

@@ -42,7 +42,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Scouting.FILE_SERVICE.reloadFileDefinitions();
+        Scouting.getFileService().reloadFileDefinitions();
     }
 
     @Override

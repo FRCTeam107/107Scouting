@@ -9,8 +9,9 @@ public interface IAnalysisManager {
      * Instead of looping through each row yourself, just perform your operations in this method.
      * This runs once for every single row of data.
      * @param rowValues All of the values in the row.
+     * @return If it was successful.
      */
-    void handleRow(Object[] rowValues);
+    boolean handleRow(Object[] rowValues);
 
     /**
      * Use this method to define what file is associated with this kind of analysis.

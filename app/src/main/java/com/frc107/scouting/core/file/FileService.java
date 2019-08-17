@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.ScoutingStrings;
+import com.frc107.scouting.core.Logger;
 import com.frc107.scouting.core.table.eTableType;
 import com.frc107.scouting.core.utils.StringUtils;
 
@@ -117,7 +118,7 @@ public class FileService {
             minute = Integer.parseInt(timeParts[1]);
             second = Integer.parseInt(timeParts[2]);
         } catch (NumberFormatException e) {
-            Log.d(ScoutingStrings.SCOUTING_TAG, e.getLocalizedMessage());
+            Logger.log(e.getLocalizedMessage());
         }
 
         Calendar date = Calendar.getInstance();
@@ -143,7 +144,7 @@ public class FileService {
         return file;
     }
 
-    private static String getCurrentTimeMessage(Calendar calendar) {
+    private static String getTimeMessage(Calendar calendar) {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DATE);
@@ -181,6 +182,15 @@ public class FileService {
 
         FileDefinition mostRecentDefinition = definitions.get(definitions.size() - 1);
         return mostRecentDefinition;
+    }
+
+    public List<FileDefinition> getFileDefinitionsOfType(eTableType tableType) {
+        List<FileDefinition> fileDefs = new ArrayList<>();
+        for (FileDefinition fileDef : fileDefinitions) {
+            if (fileDef.getTableType() == tableType)
+                fileDefs.add(fileDef);
+        }
+        return fileDefs;
     }
 
     public List<FileDefinition> getFileDefinitionsOfType(eTableType tableType, boolean concatenated) {
@@ -224,7 +234,7 @@ public class FileService {
         return builder.toString();
     }
 
-    private boolean writeLineToEndOfFile(File file, String data) {
+    public boolean writeLineToEndOfFile(File file, String data) {
         if (file == null)
             throw new IllegalArgumentException("Cannot write to null file!");
 
@@ -249,11 +259,12 @@ public class FileService {
     }
 
     /**
-     * Write data to a new file. This method automatically adds the needed header to the top of the data, so don't worry about that.
+     * Create a new scouting file and write data to it. This method automatically adds the needed header to the top of the data, so don't worry about that.
      * @param tableType The type of data that you are writing.
      * @param initials User initials.
      * @param data Your data.
-     * @return
+     * @return Your new file.
+     * @throws IOException If there is an error.
      */
     private File createAndWriteToNewScoutingFile(eTableType tableType, Calendar date, String initials, String data, boolean concat) throws IOException {
         String fileName = getNewFileName(tableType, date, initials, concat);
@@ -261,6 +272,15 @@ public class FileService {
         data = header + ScoutingStrings.NEW_LINE + data;
         return createAndWriteToNewFileCore(scoutingDirectory, fileName, data);
     }
+
+    /**
+     * Write data to a new file.
+     * @param directory The directory in which to place your file.
+     * @param fileName Your file name.
+     * @param data The data you want saved.
+     * @return Your new file.
+     * @throws IOException If there is an error.
+     */
     public File createAndWriteToNewFileCore(File directory, String fileName, String data) throws IOException {
         File file = new File(directory, fileName);
         if (file.exists())
@@ -284,7 +304,7 @@ public class FileService {
 
     private String getNewFileName(eTableType tableType, Calendar calendar, String initials, boolean concat) {
         String prefix = tableType.getPrefix(concat);
-        String timeMessage = getCurrentTimeMessage(calendar);
+        String timeMessage = getTimeMessage(calendar);
         return prefix + FILE_NAME_DELIMITER + initials + FILE_NAME_DELIMITER + timeMessage + ".csv";
     }
 
@@ -310,7 +330,6 @@ public class FileService {
                 builder.append(newLine);
             }
         }
-
 
         Calendar date = Calendar.getInstance();
         String initials = Scouting.getInstance().getUserInitials();
@@ -347,11 +366,11 @@ public class FileService {
         try {
             boolean success = file.createNewFile();
             if (!success) {
-                Log.d(ScoutingStrings.SCOUTING_TAG, "Photo file already exists! Path: \"" + file.getAbsolutePath() + "\"");
+                Logger.log("Photo file already exists! Path: \"" + file.getAbsolutePath() + "\"");
                 return null;
             }
         } catch (IOException e) {
-            Log.d(ScoutingStrings.SCOUTING_TAG, e.getMessage());
+            Logger.log(e.getMessage());
             return null;
         }
 
@@ -376,7 +395,7 @@ public class FileService {
              FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
             if (bitmap == null) {
-                Log.d(ScoutingStrings.SCOUTING_TAG, "Bitmap is null");
+                Logger.log("Bitmap is null");
                 return false;
             }
 
@@ -390,7 +409,7 @@ public class FileService {
             fileOutputStream.write(byteArrayOutputStream.toByteArray());
             return true;
         } catch (IOException e) {
-            Log.d(ScoutingStrings.SCOUTING_TAG, e.getMessage());
+            Logger.log(e.getMessage());
         }
         return false;
     }

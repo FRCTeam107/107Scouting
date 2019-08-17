@@ -28,17 +28,17 @@ public class SelectFileActivity extends BaseActivity {
         model.initialize(fileDefinitions);
 
         layoutManager = new LinearLayoutManager(this);
+        recyclerView = findViewById(R.id.send_file_recycler_view);
         recyclerView.setLayoutManager(layoutManager);
         DividerItemDecoration decoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
         recyclerView.addItemDecoration(decoration);
-        recyclerView = findViewById(R.id.send_file_recycler_view);
-        recyclerView.setAdapter(adapter);
 
         adapter = new FileArrayAdapter(this, fileDefinitions);
         adapter.setOnItemClickListener(position -> {
             onFileSelected.call(model.getFile(position));
             finish();
         });
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
