@@ -35,7 +35,10 @@ public class CycleActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cycle);
 
+        // Grab the sandstorm data that we were given.
         sandstormData = getIntent().getParcelableExtra(ScoutingStrings.SANDSTORM_DATA_EXTRA_KEY);
+
+        // Display the team number at the top of the screen.
         getSupportActionBar().setTitle("Team: " + sandstormData.getTeamNumber());
 
         model = ViewModelProviders.of(this).get(CycleModel.class);
@@ -50,12 +53,14 @@ public class CycleActivity extends BaseActivity {
         allCycleDefenseCheckBox = findViewById(CycleIDs.ONLY_DEFENSE);
         allCycleDefenseCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             model.setDefenseAllCycle(isChecked);
+
+            // The status of this checkbox effects other buttons, so refresh the necessary UI elements.
             refreshForAllCycleDefense(isChecked);
         });
 
+        // Make sure the buttons available align with what was picked in sandstorm.
         boolean startedWithoutAPiece = sandstormData.getStartingGamePiece() == SandstormAnswers.NO_PIECE;
         boolean placedPiece = sandstormData.getPlacedLocation() != SandstormAnswers.NOT_PLACED;
-
         if (startedWithoutAPiece || placedPiece)
             disableStartedWithItem();
         else

@@ -23,15 +23,14 @@ public abstract class Logger {
         String timeDateMessage = simpleDateFormat.format(new Date());
         String messageWithTime = timeDateMessage + ":\t" + message;
 
-        if (!logFile.exists()) {
-            try {
+        try {
+            if (!logFile.exists()) {
                 logFile = fileService.createAndWriteToNewFileCore(fileService.getScoutingDirectory(), FILE_NAME, messageWithTime);
-            } catch (IOException e) {
-                Log.d(ScoutingStrings.SCOUTING_TAG, "Error while creating log file!");
-                Log.d(ScoutingStrings.SCOUTING_TAG, e.getLocalizedMessage());
+            } else {
+                fileService.writeDataToEndOfFile(logFile, messageWithTime);
             }
-        }  else {
-            fileService.writeLineToEndOfFile(logFile, messageWithTime);
+        } catch (IOException e) {
+            Log.e(ScoutingStrings.SCOUTING_TAG, e.getLocalizedMessage());
         }
     }
 }

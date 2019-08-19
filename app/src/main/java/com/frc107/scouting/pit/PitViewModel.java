@@ -3,6 +3,7 @@ package com.frc107.scouting.pit;
 import androidx.lifecycle.ViewModel;
 
 import java.io.File;
+import java.io.IOException;
 
 public class PitViewModel extends ViewModel {
     private PitModel model;
@@ -55,11 +56,11 @@ public class PitViewModel extends ViewModel {
         return model.getUnfinishedQuestionId();
     }
 
-    File createPhotoFile() {
+    File createPhotoFile() throws IOException  {
         return model.createPhotoFile();
     }
 
-    public boolean compressPhoto() {
-        return model.compressPhoto();
+    void compressPhoto() throws IOException {
+        model.compressPhoto();
     }
 }

@@ -85,6 +85,7 @@ public class SandstormModel extends ViewModel {
     }
 
     void finish() {
+        // Increment the stored match number so that we can auto-fill the match number for every match.
         Scouting.getInstance().setMatchNumber(data.getMatchNumber() + 1);
     }
 }

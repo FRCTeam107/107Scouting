@@ -16,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -54,6 +55,9 @@ public class FileService {
         fileDefinitions = new ArrayList<>();
     }
 
+    /**
+     * Clear the loaded file definitions and load again. Call this if you do something like moving files to the scouting directory.
+     */
     public void reloadFileDefinitions() {
         clearFileDefinitions();
         loadFileDefinitions();
@@ -77,6 +81,11 @@ public class FileService {
         fileDefinitions.clear();
     }
 
+    /**
+     * Create a FileDefinition from a File.
+     * @param file The input file.
+     * @return A new FileDefinition containing data from your File parameter.
+     */
     private FileDefinition getDefinitionFromFile(File file) {
         String name = file.getName();
 
@@ -136,14 +145,20 @@ public class FileService {
         return getScoutingDirectory().listFiles();
     }
 
+    /**
+     * Get a file of a specific name.
+     * @param name The filename, excluding the path.
+     * @return A File.
+     */
     public File getFile(String name) {
-        File file = new File(getScoutingDirectory(), name);
-        if (!file.exists())
-            throw new IllegalArgumentException("No file with name \"" + name + "\" was found.");
-
-        return file;
+        return new File(getScoutingDirectory(), name);
     }
 
+    /**
+     * Get a formatted message based on an inputted Calendar.
+     * @param calendar The current time.
+     * @return A message containing the data from the calendar.
+     */
     private static String getTimeMessage(Calendar calendar) {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -157,6 +172,14 @@ public class FileService {
         return year + "-" + month + "-" + day + FILE_NAME_DELIMITER + hour + "-" + minute + "-" + second;
     }
 
+    /**
+     * Save scouting data.
+     * This will either save to the most recent file with the same table type and initials, or create a brand new one.
+     * @param tableType The type of table that your data is part of.
+     * @param initials User initials.
+     * @param data Your data.
+     * @throws IOException When there is an error creating a new file or writing data.
+     */
     public void saveScoutingData(eTableType tableType, String initials, String data) throws IOException {
         FileDefinition mostRecentFile = getMostRecentFileDefinition(tableType, false, initials);
         Calendar date = Calendar.getInstance();
@@ -172,21 +195,32 @@ public class FileService {
             addFileDefinition(tableType, file, date, initials, false);
         } else {
             // all is well and good, the file exists; write to the existing file.
-            writeLineToEndOfFile(mostRecentFile.getFile(), data);
+            writeDataToEndOfFile(mostRecentFile.getFile(), data);
         }
     }
 
+    /**
+     * Get the most recently created file definition matching specific parameters.
+     * @param tableType The desired eTableType.
+     * @param concatenated Do you want concatenated or non-concatenated files?
+     * @param initials The desired initials.
+     * @return The most recent FileDefinition, or null if there are none.
+     */
     public FileDefinition getMostRecentFileDefinition(eTableType tableType, boolean concatenated, String initials) {
-        List<FileDefinition> definitions = getFileDefinitionsOfType(tableType, concatenated);
+        List<FileDefinition> definitions = getFileDefinitionsOfType(tableType, concatenated, initials);
         if (definitions.isEmpty())
             return null;
 
         Collections.sort(definitions, (o1, o2) -> o2.getDateCreated().compareTo(o1.getDateCreated()));
 
-        FileDefinition mostRecentDefinition = definitions.get(definitions.size() - 1);
-        return mostRecentDefinition;
+        return definitions.get(definitions.size() - 1);
     }
 
+    /**
+     * Get all the file definitions matching a specific table type.
+     * @param tableType The desired eTableType.
+     * @return A List of FileDefinition.
+     */
     public List<FileDefinition> getFileDefinitionsOfType(eTableType tableType) {
         List<FileDefinition> fileDefs = new ArrayList<>();
         for (FileDefinition fileDef : fileDefinitions) {
@@ -196,27 +230,79 @@ public class FileService {
         return fileDefs;
     }
 
-    public List<FileDefinition> getFileDefinitionsOfType(eTableType tableType, boolean concatenated) {
+    /**
+     * Get all the file definitions matching specific parameters.
+     * @param tableType The desired eTableType.
+     * @param initials The desired initials.
+     * @return A List of FileDefinition.
+     */
+    public List<FileDefinition> getFileDefinitionsOfType(eTableType tableType, String initials) {
         List<FileDefinition> fileDefs = new ArrayList<>();
         for (FileDefinition fileDef : fileDefinitions) {
-            if (fileDef.isConcatenated() != concatenated)
-                continue;
-
-            if (fileDef.getTableType() == tableType)
+            if (fileDef.getTableType() == tableType &&
+                fileDef.getInitials().equals(initials))
                 fileDefs.add(fileDef);
         }
         return fileDefs;
     }
 
-    public List<FileDefinition> getFileDefinitions() {
-        return new ArrayList<>(fileDefinitions);
+    /**
+     * Get all the file definitions matching specific parameters.
+     * @param tableType The desired eTableType.
+     * @param concatenated Do you want concatenated or non-concatenated files?
+     * @return A List of FileDefinition.
+     */
+    public List<FileDefinition> getFileDefinitionsOfType(eTableType tableType, boolean concatenated) {
+        List<FileDefinition> fileDefs = new ArrayList<>();
+        for (FileDefinition fileDef : fileDefinitions) {
+            if (fileDef.getTableType() == tableType &&
+                fileDef.isConcatenated() == concatenated)
+                fileDefs.add(fileDef);
+        }
+        return fileDefs;
     }
 
+    /**
+     * Get all the file definitions matching specific parameters.
+     * @param tableType The desired eTableType.
+     * @param concatenated Do you want concatenated or non-concatenated files?
+     * @param initials The desired initials.
+     * @return A List of FileDefinition.
+     */
+    public List<FileDefinition> getFileDefinitionsOfType(eTableType tableType, boolean concatenated, String initials) {
+        List<FileDefinition> fileDefs = new ArrayList<>();
+        for (FileDefinition fileDef : fileDefinitions) {
+            if (fileDef.getTableType() == tableType &&
+                fileDef.getInitials().equals(initials) &&
+                fileDef.isConcatenated() == concatenated)
+                fileDefs.add(fileDef);
+        }
+        return fileDefs;
+    }
+
+    public List<FileDefinition> getAllFileDefinitions() {
+        return Collections.unmodifiableList(fileDefinitions);
+    }
+
+    /**
+     * Add a new file definition.
+     * @param tableType An eTableType.
+     * @param file The File object this FileDefinition will associate with.
+     * @param date A Calendar object.
+     * @param initials User initials.
+     * @param isConcat Is this a concatenated file?
+     */
     private void addFileDefinition(eTableType tableType, File file, Calendar date, String initials, boolean isConcat) {
         FileDefinition fileDef = new FileDefinition(tableType, file, date, initials, isConcat);
         fileDefinitions.add(fileDef);
     }
 
+    /**
+     * Get all the data in a file.
+     * @param file The File to read.
+     * @return A String containing the data.
+     * @throws IOException If there was an error reading the file.
+     */
     public String getFileData(File file) throws IOException {
         if (file == null)
             throw new IllegalArgumentException("Parameter \"file\" cannot be null.");
@@ -237,27 +323,29 @@ public class FileService {
         return builder.toString();
     }
 
-    public boolean writeLineToEndOfFile(File file, String data) {
+    /**
+     * Write data to the end of a file.
+     * @param file The file to write to.
+     * @param data The data to write.
+     * @throws IOException If there was an error while writing data.
+     */
+    public void writeDataToEndOfFile(File file, String data) throws IOException {
         if (file == null)
             throw new IllegalArgumentException("Cannot write to null file!");
 
-        if (StringUtils.isEmptyOrNull(data))
-            return true;
-
         String state = Environment.getExternalStorageState();
         if (!state.equals(Environment.MEDIA_MOUNTED)) {
-            Log.e(ScoutingStrings.SCOUTING_TAG, "External storage not mounted!");
-            return false;
+            Logger.log("External storage not mounted, cannot save data!");
+            throw new IllegalStateException("Cannot save data, external storage is not mounted!");
         }
+
+        if (StringUtils.isEmptyOrNull(data))
+            return;
 
         data = ScoutingStrings.NEW_LINE + data;
         try (FileOutputStream fileOutputStream = new FileOutputStream(file, true)) {
             fileOutputStream.write(data.getBytes());
             fileOutputStream.flush();
-            return true;
-        } catch (IOException e) {
-            Log.e(ScoutingStrings.SCOUTING_TAG, e.getMessage());
-            return false;
         }
     }
 
@@ -305,12 +393,27 @@ public class FileService {
         return file;
     }
 
+    /**
+     * Get a formatted file name. This adds .csv to the end, so don't worry about that.
+     * @param tableType Your eTableType.
+     * @param calendar A Calendar representing the date of creation.
+     * @param initials User initials.
+     * @param concat Is this a concatenated file?
+     * @return The file name.
+     */
     private String getNewFileName(eTableType tableType, Calendar calendar, String initials, boolean concat) {
         String prefix = tableType.getPrefix(concat);
         String timeMessage = getTimeMessage(calendar);
         return prefix + FILE_NAME_DELIMITER + initials + FILE_NAME_DELIMITER + timeMessage + ".csv";
     }
 
+    /**
+     * Concatenate a collection of files.
+     * @param targetTableType The eTableType to concatenate the data as.
+     * @param filesToConcatenate The files you want to concatenate.
+     * @return The file created.
+     * @throws IOException If there was an error reading or writing data.
+     */
     public File concatenateFiles(eTableType targetTableType, File... filesToConcatenate) throws IOException {
         if (targetTableType == null)
             throw new IllegalArgumentException("Cannot concatenate files to a null eTableType.");
@@ -348,12 +451,22 @@ public class FileService {
         return file;
     }
 
+    /**
+     * Checks if a file exists in the main scouting directory.
+     * @param name The name of your file.
+     * @return True if it exists, false if not.
+     */
     public boolean doesFileExist(String name) {
-        return new File(scoutingDirectory, name).exists();
+        return getFile(name).exists();
     }
 
     // region Photo
-    public File createPhotoFile(String teamNumber) {
+    /**
+     * Creates a photo file with the name "{team number}.jpg".
+     * @param teamNumber The team number.
+     * @return The photo file.
+     */
+    public File createPhotoFile(String teamNumber) throws IOException {
         if (teamNumber == null)
             throw new IllegalArgumentException("Team number cannot be null");
 
@@ -366,32 +479,24 @@ public class FileService {
             num++;
         }
 
-        try {
-            boolean success = file.createNewFile();
-            if (!success) {
-                Logger.log("Photo file already exists! Path: \"" + file.getAbsolutePath() + "\"");
-                return null;
-            }
-        } catch (IOException e) {
-            Logger.log(e.getMessage());
+        boolean success = file.createNewFile();
+        if (!success) {
+            Logger.log("Photo file already exists! Path: \"" + file.getAbsolutePath() + "\"");
             return null;
         }
 
         return file;
     }
 
-    public File getPhoto(String teamNumber) {
-        File photo = new File(photoDirectory, teamNumber + ".jpg");
-        if (!photo.exists())
-            throw new IllegalArgumentException("No photo with name \"" + teamNumber + ".jpg\" was found.");
-
-        return photo;
-    }
-
-    public boolean compressPhoto(String fileName) {
+    /**
+     * Compress a photo file so that Bluetooth transfers will be faster.
+     * @param fileName The file name of the photo.
+     * @throws IOException If there was an error compressing or writing the file.
+     */
+    public void compressPhoto(String fileName) throws IOException {
         File file = new File(photoDirectory, fileName);
         if (!file.exists())
-            return false;
+            throw new FileNotFoundException("File at \"" + file.getPath() + "\" does not exist.");
 
         try (FileInputStream fileInputStream = new FileInputStream(file);
              ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -399,10 +504,10 @@ public class FileService {
             Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
             if (bitmap == null) {
                 Logger.log("Bitmap is null");
-                return false;
+                throw new IllegalStateException("Bitmap cannot be null!");
             }
 
-            // Based on recent tests, it's no longer needed to rotate the photo.
+            // todo: Based on recent tests, it's no longer needed to rotate the photo. Someone should probably test this on more devices, though.
             /*Matrix matrix = new Matrix();
             matrix.postRotate(90);
             Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);*/
@@ -410,13 +515,12 @@ public class FileService {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
 
             fileOutputStream.write(byteArrayOutputStream.toByteArray());
-            return true;
-        } catch (IOException e) {
-            Logger.log(e.getMessage());
         }
-        return false;
     }
 
+    /**
+     * @return A List of Uri objects for each saved photo file.
+     */
     public List<Uri> getPhotoUriList() {
         ArrayList<Uri> uriList = new ArrayList<>();
         File[] photos = photoDirectory.listFiles();

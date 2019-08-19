@@ -145,7 +145,7 @@ class PitModel {
 
     private String photoFileName;
     private boolean hasCreatedPhotoFile;
-    File createPhotoFile() {
+    File createPhotoFile() throws IOException {
         if (teamNumber == null)
             throw new IllegalStateException("Team number must not be null or empty");
 
@@ -158,10 +158,10 @@ class PitModel {
         return file;
     }
 
-    boolean compressPhoto() {
+    void compressPhoto() throws IOException {
         if (!hasCreatedPhotoFile)
             throw new IllegalStateException("Photo file has not been created yet!");
 
-        return Scouting.getFileService().compressPhoto(photoFileName);
+        Scouting.getFileService().compressPhoto(photoFileName);
     }
 }

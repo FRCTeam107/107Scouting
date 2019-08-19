@@ -33,6 +33,8 @@ public class SandstormActivity extends BaseActivity {
         model = ViewModelProviders.of(this).get(SandstormModel.class);
 
         matchNumberWrapper = new TextWrapper(this, SandstormIDs.MATCH_NUM, model::setMatchNumber);
+
+        // We want to be able to auto-increment the match number, so here we grab the current match number if there is one.
         Integer matchNumber = model.getMatchNumber();
         if (matchNumber != null)
             matchNumberWrapper.getEditText().setText(matchNumber.toString());
@@ -78,20 +80,23 @@ public class SandstormActivity extends BaseActivity {
         if (!PermissionUtils.verifyWritePermissions(this))
             return;
 
+        // Make sure we don't miss any unfinished questions.
         int id = model.getUnfinishedQuestionId();
         if (id != -1) {
             focusOnView(id);
             return;
         }
 
+        // Tell the model to finalize.
         model.finish();
 
+        // Go to the cycle screen with attached sandstorm data.
         SandstormData data = model.getData();
         Intent intent = new Intent(this, CycleActivity.class);
         intent.putExtra(ScoutingStrings.SANDSTORM_DATA_EXTRA_KEY, data);
         startActivity(intent);
 
-        model.clear();
+        // Clear the answers for reuse.
         clearAnswers();
     }
 

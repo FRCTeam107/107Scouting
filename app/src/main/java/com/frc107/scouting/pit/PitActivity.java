@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.frc107.scouting.BuildConfig;
 import com.frc107.scouting.R;
+import com.frc107.scouting.core.Logger;
 import com.frc107.scouting.core.utils.PermissionUtils;
 import com.frc107.scouting.core.utils.StringUtils;
 import com.frc107.scouting.core.utils.ViewUtils;
@@ -18,6 +19,7 @@ import com.frc107.scouting.core.ui.questionWrappers.RadioWrapper;
 import com.frc107.scouting.core.ui.questionWrappers.TextWrapper;
 
 import java.io.File;
+import java.io.IOException;
 
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -128,7 +130,15 @@ public class PitActivity extends BaseActivity {
             return;
         }
 
-        File photoFile = viewModel.createPhotoFile();
+        File photoFile;
+        try {
+            photoFile = viewModel.createPhotoFile();
+        } catch (IOException e) {
+            Logger.log(e.getLocalizedMessage());
+            showMessage("Failure while trying to create image file.", Toast.LENGTH_LONG);
+            return;
+        }
+
         Uri outputUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", photoFile);
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -143,10 +153,13 @@ public class PitActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK) {
-            if (!viewModel.compressPhoto())
-                Toast.makeText(this, "Failure while compressing photo.", Toast.LENGTH_SHORT).show();
-            else
+            try {
+                viewModel.compressPhoto();
                 Toast.makeText(this, "Successfully took photo!", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                Toast.makeText(this, "Failure while compressing photo.", Toast.LENGTH_SHORT).show();
+                Logger.log(e.getLocalizedMessage());
+            }
         }
     }
 }
