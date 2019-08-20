@@ -12,6 +12,12 @@ public class TextWrapper {
     private TextWatcher textWatcher;
     private ICallbackWithParam<String> setter;
 
+    /**
+     * Create a wrapper for an EditText that helps make some of the listener stuff easier.
+     * @param context The current context.
+     * @param id The EditTexts view id.
+     * @param setter A callback to run when the value changes.
+     */
     public TextWrapper(Activity context, int id, ICallbackWithParam<String> setter) {
         editText = context.findViewById(id);
 
@@ -38,6 +44,9 @@ public class TextWrapper {
         return editText;
     }
 
+    /**
+     * Call this in onDestroy.
+     */
     public void cleanUp() {
         editText.removeTextChangedListener(textWatcher);
         editText = null;

@@ -76,7 +76,7 @@ public class Scouting {
     }
 
     /**
-     * Reload the file data. Call this when you create or delete files.
+     * Reload the file data. Call this when you create or delete files, or if you move scouting files to the Scouting directory.
      */
     public void reloadFileData() {
         pitTable.clear();

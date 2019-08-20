@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.frc107.scouting.ScoutingStrings;
+import com.frc107.scouting.core.Logger;
 import com.frc107.scouting.core.utils.callbacks.ICallbackWithParam;
 
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class OPRTask extends AsyncTask<String, Void, OPR> {
             String oprData = tba.downloadOPRData(eventKey[0]);
             return tba.parseOPRs(oprData);
         } catch (IOException e) {
-            Log.e(ScoutingStrings.SCOUTING_TAG, e.getLocalizedMessage());
+            Logger.log(e.getLocalizedMessage());
             return null;
         }
     }

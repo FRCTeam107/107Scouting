@@ -1,10 +1,8 @@
 package com.frc107.scouting.match;
 
-import android.util.Log;
 import android.util.SparseArray;
 
 import com.frc107.scouting.Scouting;
-import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.core.Logger;
 import com.frc107.scouting.core.analysis.IAnalysisManager;
 import com.frc107.scouting.core.file.FileDefinition;
@@ -14,7 +12,6 @@ import com.frc107.scouting.match.endgame.EndgameAnswers;
 import com.frc107.scouting.match.sandstorm.SandstormAnswers;
 
 import java.io.File;
-import java.io.FileDescriptor;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -30,8 +27,6 @@ public class MatchAnalysisManager implements IAnalysisManager {
     private static final int COL_ITEM_PLACED_LOCATION = 9;
     private static final int COL_DEFENSE = 13;
     private static final int COL_HAB = 11;
-    private static final int COL_OPR = 17;
-    private static final int COL_DPR = 18;
 
     // Attribute indices
     private static final int AVG_CARGO = 0;
@@ -43,8 +38,6 @@ public class MatchAnalysisManager implements IAnalysisManager {
     private static final int HAB_2_AMOUNT = 6;
     private static final int HAB_3_AMOUNT = 7;
     private static final int SUCCESSFUL_DEFENSE_AMOUNT = 8;
-    private static final int OPR = 9;
-    private static final int DPR = 10;
 
     private SparseArray<TeamDetails> teamDetailsSparseArray = new SparseArray<>();
     private ArrayList<Integer> teamNumberList = new ArrayList<>();
@@ -59,8 +52,6 @@ public class MatchAnalysisManager implements IAnalysisManager {
         int cyclePlacedLocation;
         int defense;
         int habLevel;
-        //double opr;
-        //double dpr;
         try {
             matchNumber = (int) rowValues[COL_MATCH_NUM];
             teamNumber = (int) rowValues[COL_TEAM_NUM];
@@ -70,8 +61,6 @@ public class MatchAnalysisManager implements IAnalysisManager {
             cyclePlacedLocation = (int) rowValues[COL_ITEM_PLACED_LOCATION];
             defense = (int) rowValues[COL_DEFENSE];
             habLevel = (int) rowValues[COL_HAB];
-            //opr = Double.parseDouble((String) rowValues[COL_OPR]);
-            //dpr = Double.parseDouble((String) rowValues[COL_DPR]);
         } catch (IndexOutOfBoundsException e) {
             Logger.log(e.getLocalizedMessage());
             return false;
@@ -83,11 +72,7 @@ public class MatchAnalysisManager implements IAnalysisManager {
             teamNumberList.add(teamNumber);
             teamDetails = teamDetailsSparseArray.get(teamNumber);
         }
-
-        //teamDetails.setOPR(opr);
-        //teamDetails.setDPR(dpr);
-        teamDetails.incrementCycleNum();
-
+        
         if (!teamDetails.hasMatch(matchNumber)) {
             handleSandstormGamePiece(teamDetails, startingPlacedLocation, startingItem);
             handleMatchDefense(teamDetails, defense);
@@ -116,16 +101,8 @@ public class MatchAnalysisManager implements IAnalysisManager {
         }
     }
     private void handleMatchDefense(TeamDetails teamDetails, int defense) {
-        switch (defense) {
-            case EndgameAnswers.EFFECTIVE_DEFENSE:
-                teamDetails.incrementDefenseNum();
-                teamDetails.incrementEffectiveDefenseNum();
-                break;
-            case EndgameAnswers.INEFFECTIVE_DEFENSE:
-                teamDetails.incrementDefenseNum();
-                break;
-            default:
-                break;
+        if (defense == EndgameAnswers.EFFECTIVE_DEFENSE) {
+            teamDetails.incrementEffectiveDefenseNum();
         }
     }
     private void handleCycleGamePieces(TeamDetails teamDetails, int cyclePlacedLocation, int itemPickedUp) {
@@ -144,9 +121,6 @@ public class MatchAnalysisManager implements IAnalysisManager {
     }
     private void handleHabLevels(TeamDetails teamDetails, int habLevel) {
         switch (habLevel) {
-            case EndgameAnswers.HAB_ONE:
-                teamDetails.incrementHabOneAmount();
-                break;
             case EndgameAnswers.HAB_TWO:
                 teamDetails.incrementHabTwoAmount();
                 break;
@@ -195,7 +169,6 @@ public class MatchAnalysisManager implements IAnalysisManager {
 
     @Override
     public File getFile() {
-        // File testFile = Scouting.FILE_SERVICE.getFile("ConcatenatedMatch.csv");
         FileDefinition fileDef = Scouting.getFileService().getMostRecentFileDefinition(eTableType.MATCH, true, Scouting.getInstance().getUserInitials());
         return fileDef.getFile();
     }
@@ -239,14 +212,8 @@ public class MatchAnalysisManager implements IAnalysisManager {
             case SUCCESSFUL_DEFENSE_AMOUNT:
                 attribute = teamDetails.getEffectiveDefenseNum();
                 break;
-            case OPR:
-                attribute = teamDetails.getOPR();
-                break;
-            case DPR:
-                attribute = teamDetails.getDPR();
-                break;
             default:
-                attribute = 999999;
+                attribute = 999; // If we end up at a different index than the ones above, there's a problem somewhere, so I return a large number to point it out.
                 break;
         }
         return attribute;
@@ -296,109 +263,89 @@ public class MatchAnalysisManager implements IAnalysisManager {
 
     private class TeamDetails {
         private ArrayList<Integer> matchNums = new ArrayList<>();
-        private int teamNumber;
-        private double opr;
-        private double dpr;
         private int cargoNum;
         private double averageCargo;
         private int hatchNum;
         private double averageHatchPanels;
-        private int defenseCount;
         private int effectiveDefenseNum;
         private double averageCargoShip;
         private int cargoShipNum;
-        private double averageRocket1, averageRocket2, averageRocket3;
-        private int rocket1Num, rocket2Num, rocket3Num;
-        private int hab1Num, hab2Num, hab3Num;
-        private int cycleNum;
+        private double averageRocket1;
+        private double averageRocket2;
+        private double averageRocket3;
+        private int rocket1Num;
+        private int rocket2Num;
+        private int rocket3Num;
+        private int hab2Num;
+        private int hab3Num;
 
-        public int getTeamNumber() {
-            return teamNumber;
-        }
-        public void setTeamNumber(int teamNumber) {
-            this.teamNumber = teamNumber;
-        }
-
-        public void incrementCargoNum() {
+        void incrementCargoNum() {
             cargoNum++;
         }
-        public double getAverageCargo() {
+        double getAverageCargo() {
             return averageCargo;
         }
 
-        public void incrementHatchNum() {
+        void incrementHatchNum() {
             hatchNum++;
         }
-        public double getAverageHatchPanels() {
+        double getAverageHatchPanels() {
             return averageHatchPanels;
         }
 
-        public int getDefenseCount() {
-            return defenseCount;
-        }
-        public void incrementDefenseNum() {
-            defenseCount++;
-        }
-        public int getEffectiveDefenseNum() {
+        int getEffectiveDefenseNum() {
             return effectiveDefenseNum;
         }
-        public void incrementEffectiveDefenseNum() {
+        void incrementEffectiveDefenseNum() {
             effectiveDefenseNum++;
         }
 
-        public void incrementRocketOneAmount() {
+        void incrementRocketOneAmount() {
             rocket1Num++;
         }
-        public void incrementRocketTwoAmount() {
+        void incrementRocketTwoAmount() {
             rocket2Num++;
         }
-        public void incrementRocketThreeAmount() {
+        void incrementRocketThreeAmount() {
             rocket3Num++;
         }
 
-        public void incrementHabOneAmount() {
-            hab1Num++;
-        }
-        public void incrementHabTwoAmount() {
+        void incrementHabTwoAmount() {
             hab2Num++;
         }
-        public void incrementHabThreeAmount() {
+        void incrementHabThreeAmount() {
             hab3Num++;
         }
 
-        public double getAverageCargoShip() {
+        double getAverageCargoShip() {
             return averageCargoShip;
         }
 
-        public void incrementCargoShipAmount() {
+        void incrementCargoShipAmount() {
             cargoShipNum++;
         }
 
-        public double getAverageRocket1() {
+        double getAverageRocket1() {
             return averageRocket1;
         }
 
-        public double getAverageRocket2() {
+        double getAverageRocket2() {
             return averageRocket2;
         }
 
-        public double getAverageRocket3() {
+        double getAverageRocket3() {
             return averageRocket3;
         }
 
-        public int getHab2Num() {
+        int getHab2Num() {
             return hab2Num;
         }
 
-        public int getHab3Num() {
+        int getHab3Num() {
             return hab3Num;
         }
 
-        public void incrementCycleNum() {
-            cycleNum++;
-        }
-
-        public void calculateAverages() {
+        void calculateAverages() {
             averageCargo = getAveragePerMatch(cargoNum);
             averageHatchPanels = getAveragePerMatch(hatchNum);
             averageCargoShip = getAveragePerMatch(cargoShipNum);
@@ -413,27 +360,11 @@ public class MatchAnalysisManager implements IAnalysisManager {
             return bd.doubleValue();
         }
 
-        public void addMatch(int matchNum) {
+        void addMatch(int matchNum) {
             matchNums.add(matchNum);
         }
-        public boolean hasMatch(int matchNum) {
+        boolean hasMatch(int matchNum) {
             return matchNums.contains(matchNum);
-        }
-
-        public void setOPR(double opr) {
-            this.opr = opr;
-        }
-
-        public double getOPR() {
-            return opr;
-        }
-
-        public void setDPR(double dpr) {
-            this.dpr = dpr;
-        }
-
-        public double getDPR() {
-            return dpr;
         }
     }
 }

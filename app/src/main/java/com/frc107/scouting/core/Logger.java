@@ -16,6 +16,10 @@ public abstract class Logger {
     private static final String FILE_NAME = "log.txt";
     private static File logFile = new File(fileService.getScoutingDirectory(), FILE_NAME);
 
+    /**
+     * Call this to log something both to the console as well as to the log file.
+     * @param message A message to log.
+     */
     public static void log(String message) {
         Log.d(ScoutingStrings.SCOUTING_TAG, message);
 

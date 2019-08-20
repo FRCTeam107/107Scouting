@@ -9,6 +9,12 @@ public class RadioWrapper {
     private RadioGroup radioGroup;
     private ICallbackWithParam<Integer> setter;
 
+    /**
+     * Creates a wrapper for a RadioGroup that helps make some of the listener stuff easier.
+     * @param context The current context.
+     * @param id The RadioGroups view id.
+     * @param setter A callback to run when the value changes.
+     */
     public RadioWrapper(Activity context, int id, ICallbackWithParam<Integer> setter) {
         radioGroup = context.findViewById(id);
 
@@ -24,6 +30,9 @@ public class RadioWrapper {
         return radioGroup;
     }
 
+    /**
+     * Call this in onDestroy.
+     */
     public void cleanUp() {
         radioGroup.setOnCheckedChangeListener(null);
         radioGroup = null;

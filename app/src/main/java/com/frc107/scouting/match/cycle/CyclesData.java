@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CyclesData implements Parcelable {
+    /**
+     * This class holds the backing data for Cycle.
+     *
+     * Use Parcelable to create a class whose instances can be transferred from activity to activity.
+     */
+
     private int cycleAmount = 0;
 
     private List<Integer> pickupLocationList = new ArrayList<>();

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -84,6 +85,7 @@ public class SandstormActivity extends BaseActivity {
         int id = model.getUnfinishedQuestionId();
         if (id != -1) {
             focusOnView(id);
+            showMessage("Unanswered questions.", Toast.LENGTH_LONG);
             return;
         }
 

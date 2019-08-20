@@ -46,16 +46,16 @@ public class PitActivity extends BaseActivity {
 
         viewModel = ViewModelProviders.of(this).get(PitViewModel.class);
 
-        sandstormOpWrapper = new RadioWrapper(this, R.id.pit_sandstorm_op, viewModel::setSandstormOperation);
-        sandstormPrefWrapper = new RadioWrapper(this, R.id.pit_sandstorm_preference, viewModel::setSandstormPreference);
-        highestRocketLevelWrapper = new RadioWrapper(this, R.id.pit_sandstorm_highest_rocket_level, viewModel::setSandstormHighestRocketLevel);
-        highestHabLevelWrapper = new RadioWrapper(this, R.id.pit_highest_habitat, viewModel::setHighestHabitat);
+        sandstormOpWrapper = new RadioWrapper(this, PitIDs.SANDSTORM_OP, viewModel::setSandstormOperation);
+        sandstormPrefWrapper = new RadioWrapper(this, PitIDs.SANDSTORM_PREF, viewModel::setSandstormPreference);
+        highestRocketLevelWrapper = new RadioWrapper(this, PitIDs.SANDSTORM_HIGHEST_ROCKET_LEVEL, viewModel::setSandstormHighestRocketLevel);
+        highestHabLevelWrapper = new RadioWrapper(this, PitIDs.HIGHEST_HAB, viewModel::setHighestHabitat);
 
-        programmingLangWrapper = new TextWrapper(this, R.id.edittext_pit_programming_language,               viewModel::setProgrammingLanguage);
-        teamNumWrapper = new TextWrapper(this, R.id.pit_team_number,                                viewModel::setTeamNumber);
-        habTimeWrapper = new TextWrapper(this, R.id.edittext_pit_habitat_time,                               viewModel::setHabitatTime);
-        arcadeGameWrapper = new TextWrapper(this, R.id.edittext_pit_bonus,                                   viewModel::setBonus);
-        commentsWrapper = new TextWrapper(this, R.id.edittext_pit_comments,                                  viewModel::setComments);
+        programmingLangWrapper = new TextWrapper(this, PitIDs.PROGRAMMING_LANG, viewModel::setProgrammingLanguage);
+        teamNumWrapper = new TextWrapper(this, PitIDs.TEAM_NUM, viewModel::setTeamNumber);
+        habTimeWrapper = new TextWrapper(this, PitIDs.HAB_TIME, viewModel::setHabitatTime);
+        arcadeGameWrapper = new TextWrapper(this, PitIDs.BONUS, viewModel::setBonus);
+        commentsWrapper = new TextWrapper(this, PitIDs.COMMENTS, viewModel::setComments);
 
         checkForPermissions();
     }
@@ -84,6 +84,7 @@ public class PitActivity extends BaseActivity {
         int id = viewModel.getUnfinishedQuestionId();
         if (id != -1) {
             focusOnView(id);
+            showMessage("Unanswered questions.", Toast.LENGTH_LONG);
             return;
         }
 

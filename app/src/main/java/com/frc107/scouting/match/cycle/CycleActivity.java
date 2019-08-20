@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -163,6 +164,7 @@ public class CycleActivity extends BaseActivity {
         int id = model.getUnfinishedQuestionId();
         if (id != -1) {
             focusOnView(id);
+            showMessage("Unanswered questions.", Toast.LENGTH_LONG);
             return;
         }
 

@@ -4,6 +4,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class SandstormData implements Parcelable {
+    /**
+     * This class holds the backing data for Sandstorm.
+     *
+     * Use Parcelable to create a class whose instances can be transferred from activity to activity.
+     */
+
     private int matchNumber = -1;
     private int teamNumber = -1;
     private int startingLocation = -1;
