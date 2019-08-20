@@ -1,4 +1,4 @@
-package com.frc107.scouting.core.ui.questionWrappers;
+package com.frc107.scouting.core.ui.questionwrappers;
 
 import android.app.Activity;
 import android.widget.RadioGroup;

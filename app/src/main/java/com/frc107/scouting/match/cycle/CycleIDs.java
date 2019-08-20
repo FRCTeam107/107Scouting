@@ -3,6 +3,8 @@ package com.frc107.scouting.match.cycle;
 import com.frc107.scouting.R;
 
 public class CycleIDs {
+    private CycleIDs() {}
+
     public static final int PICKUP_LOCATION =           R.id.rb_cycle_pickup_location;
     public static final int PORT_OPTION =               R.id.rb_cycle_port_pickup_location;
     public static final int FLOOR_OPTION =              R.id.rb_cycle_floor_pickup_location;

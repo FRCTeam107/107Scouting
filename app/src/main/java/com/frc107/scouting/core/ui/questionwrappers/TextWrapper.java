@@ -1,4 +1,4 @@
-package com.frc107.scouting.core.ui.questionWrappers;
+package com.frc107.scouting.core.ui.questionwrappers;
 
 import android.app.Activity;
 import android.text.Editable;
@@ -31,8 +31,12 @@ public class TextWrapper {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 setter.call(s.toString());
             }
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            public void afterTextChanged(Editable s) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // We don't care.
+            }
+            public void afterTextChanged(Editable s) {
+                // We don't care.
+            }
         };
     }
 

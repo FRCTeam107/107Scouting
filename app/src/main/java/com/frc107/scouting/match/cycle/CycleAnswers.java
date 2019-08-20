@@ -3,6 +3,8 @@ package com.frc107.scouting.match.cycle;
 import android.util.SparseIntArray;
 
 public class CycleAnswers {
+    private CycleAnswers() {}
+
     public static final int PORT =                  0;
     public static final int FLOOR =                 1;
     public static final int STARTED_WITH_ITEM =     2;

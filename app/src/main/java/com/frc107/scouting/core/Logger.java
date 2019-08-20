@@ -12,6 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public abstract class Logger {
+    private Logger() {}
+
     private static FileService fileService = Scouting.getFileService();
     private static final String FILE_NAME = "log.txt";
     private static File logFile = new File(fileService.getScoutingDirectory(), FILE_NAME);

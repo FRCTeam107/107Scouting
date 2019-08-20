@@ -3,6 +3,8 @@ package com.frc107.scouting.match.endgame;
 import android.util.SparseIntArray;
 
 public class EndgameAnswers {
+    private EndgameAnswers() {}
+
     public static final int HAB_ONE = 1;
     public static final int HAB_TWO = 2;
     public static final int HAB_THREE = 3;

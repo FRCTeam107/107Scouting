@@ -3,6 +3,8 @@ package com.frc107.scouting.match.sandstorm;
 import android.util.SparseIntArray;
 
 public class SandstormAnswers {
+    private SandstormAnswers() {}
+
     public static final int HAB_ONE =       0;
     public static final int HAB_TWO =       1;
 

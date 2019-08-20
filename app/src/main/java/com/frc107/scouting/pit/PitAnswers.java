@@ -5,6 +5,8 @@ import android.util.SparseIntArray;
 import com.frc107.scouting.R;
 
 public class PitAnswers {
+    private PitAnswers() {}
+
     public static final int VISION_SYSTEM = 0;
     public static final int CAMERA_DRIVING = 1;
     public static final int BLIND_DRIVING = 2;

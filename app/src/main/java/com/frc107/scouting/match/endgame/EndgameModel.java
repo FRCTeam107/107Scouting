@@ -1,11 +1,10 @@
 package com.frc107.scouting.match.endgame;
 
-import android.util.Log;
-
 import androidx.lifecycle.ViewModel;
 
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.ScoutingStrings;
+import com.frc107.scouting.core.Logger;
 import com.frc107.scouting.core.table.Row;
 import com.frc107.scouting.core.table.Table;
 import com.frc107.scouting.core.table.eTableType;
@@ -42,13 +41,6 @@ public class EndgameModel extends ViewModel {
 
     void setFouls(boolean fouls) {
         this.fouls = fouls;
-    }
-
-    void clear() {
-        habLevel = -1;
-        defenseRating = -1;
-        defenseAllMatch = false;
-        fouls = false;
     }
 
     boolean save() {
@@ -124,7 +116,7 @@ public class EndgameModel extends ViewModel {
         try {
             Scouting.getFileService().saveScoutingData(eTableType.MATCH, initials, builder.toString());
         } catch (IOException e) {
-            Log.e(ScoutingStrings.SCOUTING_TAG, e.getLocalizedMessage());
+            Logger.log(e.getLocalizedMessage());
             return false;
         }
 

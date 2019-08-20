@@ -1,11 +1,9 @@
 package com.frc107.scouting.core.analysis;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.frc107.scouting.MainActivity;
 import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.core.file.SelectFileForAnalysisActivity;
 import com.frc107.scouting.core.table.eTableType;
@@ -33,7 +31,6 @@ public class AnalysisActivity extends BaseActivity {
     private Spinner attributeSpinner;
 
     private AnalysisModel model;
-    private ArrayList<String> teamNumbers;
 
     private static final int SELECT_FILE_INTENT_CODE = 8213; // no significance to the number, just a random number that doesn't collide with other possible intent/activity result codes.
 
@@ -96,10 +93,12 @@ public class AnalysisActivity extends BaseActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
+            public void onNothingSelected(AdapterView<?> parent) {
+                // We don't care if nothing was selected because nothing changed.
+            }
         });
 
-        teamNumbers = new ArrayList<>();
+        ArrayList<String> teamNumbers = new ArrayList<>();
         teamNumbers.add("All");
         teamNumbers.addAll(Arrays.asList(model.getTeamNumbers()));
 
@@ -115,7 +114,9 @@ public class AnalysisActivity extends BaseActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
+            public void onNothingSelected(AdapterView<?> parent) {
+                // We don't care if nothing was selected because nothing has changed.
+            }
         });
 
         ListView elementListView = findViewById(R.id.elementListView);

@@ -3,6 +3,8 @@ package com.frc107.scouting.match.endgame;
 import com.frc107.scouting.R;
 
 public class EndgameIDs {
+    private EndgameIDs() {}
+
     public static final int HAB_LEVEL_QUESTION = R.id.rg_endgame_hab_level;
     public static final int HAB_ONE_OPTION = R.id.rb_endgame_hab_one;
     public static final int HAB_TWO_OPTION = R.id.rb_endgame_hab_two;

@@ -20,20 +20,17 @@ import java.util.List;
  */
 public class SelectFileActivity extends BaseActivity {
     private SelectFileModel model;
-    private LinearLayoutManager layoutManager;
-    private RecyclerView recyclerView;
-    private FileArrayAdapter adapter;
 
     protected void initialize(List<FileDefinition> fileDefinitions, ICallbackWithParam<FileDefinition> onFileSelected) {
         model.initialize(fileDefinitions);
 
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView = findViewById(R.id.send_file_recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        RecyclerView recyclerView = findViewById(R.id.send_file_recycler_view);
         recyclerView.setLayoutManager(layoutManager);
         DividerItemDecoration decoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
         recyclerView.addItemDecoration(decoration);
 
-        adapter = new FileArrayAdapter(this, fileDefinitions);
+        FileArrayAdapter adapter = new FileArrayAdapter(this, fileDefinitions);
         adapter.setOnItemClickListener(position -> {
             onFileSelected.call(model.getFile(position));
             finish();

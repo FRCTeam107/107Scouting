@@ -1,9 +1,7 @@
 package com.frc107.scouting.core.thebluealliance;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.core.Logger;
 import com.frc107.scouting.core.utils.callbacks.ICallbackWithParam;
 

@@ -1,6 +1,8 @@
 package com.frc107.scouting.match;
 
 public class MatchColumnIDs {
+    private MatchColumnIDs() {}
+
     public static final int MATCH_NUM = 0;
     public static final int TEAM_NUM = 1;
     public static final int STARTING_LOCATION = 2;

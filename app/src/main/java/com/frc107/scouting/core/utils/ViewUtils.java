@@ -10,6 +10,8 @@ import android.widget.Toast;
 import com.frc107.scouting.ScoutingStrings;
 
 public class ViewUtils {
+    private ViewUtils() {}
+
     public static boolean requestFocus(View v, Activity activity){
         if(v.requestFocus()){
             activity.getWindow().setSoftInputMode((WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE));

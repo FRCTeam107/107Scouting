@@ -3,7 +3,6 @@ package com.frc107.scouting.core.file;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.core.file.selectfile.SelectFileActivity;

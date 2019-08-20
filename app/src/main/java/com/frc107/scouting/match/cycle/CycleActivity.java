@@ -12,14 +12,12 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.frc107.scouting.R;
 import com.frc107.scouting.ScoutingStrings;
+import com.frc107.scouting.core.ui.BaseActivity;
+import com.frc107.scouting.core.ui.questionwrappers.RadioWrapper;
+import com.frc107.scouting.core.utils.ViewUtils;
 import com.frc107.scouting.match.endgame.EndgameActivity;
 import com.frc107.scouting.match.sandstorm.SandstormAnswers;
 import com.frc107.scouting.match.sandstorm.SandstormData;
-import com.frc107.scouting.match.sandstorm.SandstormIDs;
-import com.frc107.scouting.core.ui.BaseActivity;
-import com.frc107.scouting.core.ui.questionWrappers.RadioWrapper;
-import com.frc107.scouting.core.utils.PermissionUtils;
-import com.frc107.scouting.core.utils.ViewUtils;
 
 public class CycleActivity extends BaseActivity {
     private RadioWrapper pickupLocationWrapper;

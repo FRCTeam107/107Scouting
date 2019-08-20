@@ -4,7 +4,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProviders;
@@ -12,7 +11,6 @@ import androidx.lifecycle.ViewModelProviders;
 import com.frc107.scouting.R;
 import com.frc107.scouting.core.Logger;
 import com.frc107.scouting.core.ui.BaseActivity;
-import com.frc107.scouting.ScoutingStrings;
 
 import java.io.IOException;
 import java.io.InputStream;

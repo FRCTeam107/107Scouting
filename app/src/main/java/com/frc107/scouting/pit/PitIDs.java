@@ -3,6 +3,8 @@ package com.frc107.scouting.pit;
 import com.frc107.scouting.R;
 
 public class PitIDs {
+    private PitIDs() {}
+
     public static final int TEAM_NUM = R.id.pit_team_number;
     public static final int SANDSTORM_OP = R.id.pit_sandstorm_op;
     public static final int SANDSTORM_PREF = R.id.pit_sandstorm_preference;

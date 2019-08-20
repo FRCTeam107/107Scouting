@@ -2,7 +2,6 @@ package com.frc107.scouting.core.table;
 
 import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.core.Logger;
-import com.frc107.scouting.core.utils.callbacks.ICallbackWithParam;
 import com.frc107.scouting.core.table.column.Column;
 import com.frc107.scouting.core.utils.callbacks.ICallbackWithParamAndResult;
 
@@ -111,7 +110,7 @@ public class Table {
                 continue;
 
             Object[] objects = getObjectsFromLine(line);
-            if (objects == null) { // There was an error parsing the line into an object array.
+            if (objects.length == 0) { // There was an error parsing the line into an object array.
                 Logger.log("Could not import data. Error while parsing line \"" + line + "\"");
                 return false;
             }
@@ -150,7 +149,7 @@ public class Table {
                     value = Integer.parseInt(parts[j]);
                 } catch (NumberFormatException e) {
                     Logger.log(e.getLocalizedMessage());
-                    return null;
+                    return new Object[0];
                 }
             }
 

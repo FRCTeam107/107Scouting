@@ -3,6 +3,8 @@ package com.frc107.scouting.match.sandstorm;
 import com.frc107.scouting.R;
 
 public class SandstormIDs {
+    private SandstormIDs() {}
+
     public static final int MATCH_NUM =             R.id.edittext_sandstorm_match_num;
     public static final int TEAM_NUM =              R.id.edittext_sandstorm_team_num;
 

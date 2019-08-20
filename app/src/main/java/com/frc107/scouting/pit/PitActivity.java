@@ -15,8 +15,8 @@ import com.frc107.scouting.core.utils.PermissionUtils;
 import com.frc107.scouting.core.utils.StringUtils;
 import com.frc107.scouting.core.utils.ViewUtils;
 import com.frc107.scouting.core.ui.BaseActivity;
-import com.frc107.scouting.core.ui.questionWrappers.RadioWrapper;
-import com.frc107.scouting.core.ui.questionWrappers.TextWrapper;
+import com.frc107.scouting.core.ui.questionwrappers.RadioWrapper;
+import com.frc107.scouting.core.ui.questionwrappers.TextWrapper;
 
 import java.io.File;
 import java.io.IOException;

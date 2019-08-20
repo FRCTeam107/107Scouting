@@ -16,25 +16,24 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+
 import com.frc107.scouting.BuildConfig;
 import com.frc107.scouting.MainActivity;
 import com.frc107.scouting.R;
 import com.frc107.scouting.Scouting;
 import com.frc107.scouting.ScoutingStrings;
 import com.frc107.scouting.core.file.SendFileActivity;
-import com.frc107.scouting.core.utils.callbacks.ICallback;
-import com.frc107.scouting.core.file.selectfile.SelectFileActivity;
 import com.frc107.scouting.core.utils.PermissionUtils;
 import com.frc107.scouting.core.utils.StringUtils;
 import com.frc107.scouting.core.utils.ViewUtils;
+import com.frc107.scouting.core.utils.callbacks.ICallback;
 
 import java.io.File;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
@@ -72,7 +71,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                 tryToGoToSendDataScreen();
                 return true;
             case R.id.end_shift:
-                showInitialsDialog(() -> { });
+                showInitialsDialog(() -> {
+                });
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -95,7 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 cameraPermission != PackageManager.PERMISSION_GRANTED ||
                 readPermission != PackageManager.PERMISSION_GRANTED ||
                 internetPermission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {
+            ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.CAMERA,
@@ -120,7 +120,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             return;
         }
 
-        if(PermissionUtils.checkForPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        if (PermissionUtils.checkForPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
             intent.setPackage("com.android.bluetooth");
@@ -151,7 +151,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         final EditText editText = new EditText(this);
 
         // Limit the input to just letters.
-        editText.setFilters(new InputFilter[] { letterFilter });
+        editText.setFilters(new InputFilter[]{letterFilter});
         editText.setSingleLine();
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
 

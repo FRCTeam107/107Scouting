@@ -20,11 +20,7 @@ import com.frc107.scouting.core.ui.FileArrayAdapter;
 import com.frc107.scouting.core.utils.StringUtils;
 
 public class ConcatActivity extends BaseActivity {
-    private Spinner fileTypeSpinner;
-    private ArrayAdapter<String> fileTypeAdapter;
-    private RecyclerView availableFilesRecyclerView;
     private FileArrayAdapter availableFilesAdapter;
-    private RecyclerView selectedFilesRecyclerView;
     private FileArrayAdapter selectedFilesAdapter;
     private Button concatButton;
 
@@ -34,15 +30,15 @@ public class ConcatActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_concat);
-        fileTypeSpinner = findViewById(R.id.file_type_spinner);
-        availableFilesRecyclerView = findViewById(R.id.available_files_recycler_view);
-        selectedFilesRecyclerView = findViewById(R.id.selected_files_recycler_view);
+        Spinner fileTypeSpinner = findViewById(R.id.file_type_spinner);
+        RecyclerView availableFilesRecyclerView = findViewById(R.id.available_files_recycler_view);
+        RecyclerView selectedFilesRecyclerView = findViewById(R.id.selected_files_recycler_view);
         concatButton = findViewById(R.id.concat_button);
 
         model = ViewModelProviders.of(this).get(ConcatModel.class);
         model.initialize(this::refresh);
 
-        fileTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, model.getConcatOptions());
+        ArrayAdapter<String> fileTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, model.getConcatOptions());
         fileTypeSpinner.setAdapter(fileTypeAdapter);
         fileTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -51,7 +47,9 @@ public class ConcatActivity extends BaseActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
+            public void onNothingSelected(AdapterView<?> parent) {
+                // We don't care if nothing was selected because nothing changed.
+            }
         });
 
         availableFilesAdapter = new FileArrayAdapter(this, model.getAvailableFileDefs());

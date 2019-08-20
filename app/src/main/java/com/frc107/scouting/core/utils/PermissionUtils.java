@@ -9,6 +9,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 public class PermissionUtils {
+    private PermissionUtils() {}
+
     public static boolean checkForPermission(Activity activity, String type) {
         int permission = ContextCompat.checkSelfPermission(activity, type);
         if (permission != PackageManager.PERMISSION_GRANTED) {

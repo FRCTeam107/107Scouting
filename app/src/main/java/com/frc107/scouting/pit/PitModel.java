@@ -109,11 +109,12 @@ class PitModel {
         FileService fileService = Scouting.getFileService();
         try {
             fileService.saveScoutingData(TABLE, Scouting.getInstance().getUserInitials(), row.toString());
-            return true;
         } catch (IOException e) {
             Logger.log(e.getLocalizedMessage());
             return false;
         }
+
+        return true;
     }
 
     private String photoFileName;

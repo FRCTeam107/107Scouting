@@ -1,7 +1,5 @@
 package com.frc107.scouting.core.table;
 
-import com.frc107.scouting.Scouting;
-
 /**
  * This is where you'll define your own table types.
  *

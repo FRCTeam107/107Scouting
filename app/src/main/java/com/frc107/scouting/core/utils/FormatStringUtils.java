@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 
 public class FormatStringUtils {
+    private FormatStringUtils() {}
 
     public static String addDelimiter(ArrayList<CharSequence> strings, String delimiter) {
 
