@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Scoutinator</string>
+    <string name="app_name">Vanguard</string>
 
     <string name="sendData">Send Data</string>
     <string name="submitInitials">Submit</string>
@@ -97,7 +97,7 @@
 
     <string name="teamNumberHeading">Team Number</string>
 
-    <!--PitAnswers Scouting Strings-->
+    <!--PitAnswers Vanguard Strings-->
     <string name="pitTeamNumber">Team Number</string>
 
     <string name="pitSandstormOperation">Sandstorm Operation</string>
@@ -190,7 +190,6 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
-    <string name="title_activity_main">Scoutinator</string>
     <string name="forms">Forms</string>
     <string name="analysis">Analysis</string>
     <string name="team_analysis">Team Analysis</string>

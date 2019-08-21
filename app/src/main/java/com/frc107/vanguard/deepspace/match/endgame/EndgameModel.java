@@ -1,0 +1,135 @@
+package com.frc107.vanguard.deepspace.match.endgame;
+
+import androidx.lifecycle.ViewModel;
+
+import com.frc107.vanguard.Vanguard;
+import com.frc107.vanguard.core.VanguardStrings;
+import com.frc107.vanguard.core.Logger;
+import com.frc107.vanguard.core.table.Row;
+import com.frc107.vanguard.core.table.Table;
+import com.frc107.vanguard.eTableType;
+import com.frc107.vanguard.deepspace.match.cycle.CyclesData;
+import com.frc107.vanguard.deepspace.match.sandstorm.SandstormData;
+
+import java.io.IOException;
+
+public class EndgameModel extends ViewModel {
+    private SandstormData sandstormData;
+    private CyclesData cyclesData;
+
+    void setSandstormAndCyclesData(SandstormData sandstormData, CyclesData cyclesData) {
+        this.sandstormData = sandstormData;
+        this.cyclesData = cyclesData;
+    }
+
+    private int habLevel = -1;
+    private int defenseRating = -1;
+    private boolean defenseAllMatch;
+    private boolean fouls;
+
+    void setHabLevel(int habLevelId) {
+        habLevel = EndgameAnswers.getAnswerFromId(habLevelId);
+    }
+
+    void setDefenseRating(int defenseRatingId) {
+        defenseRating = EndgameAnswers.getAnswerFromId(defenseRatingId);
+    }
+
+    void setDefenseAllMatch(boolean defenseAllMatch) {
+        this.defenseAllMatch = defenseAllMatch;
+    }
+
+    void setFouls(boolean fouls) {
+        this.fouls = fouls;
+    }
+
+    boolean save() {
+        Table matchTable = Vanguard.getInstance().getTable(eTableType.MATCH);
+
+        int matchNumber = sandstormData.getMatchNumber();
+        int teamNumber = sandstormData.getTeamNumber();
+        int startingLocation = sandstormData.getStartingLocation();
+        int startingGamePiece = sandstormData.getStartingGamePiece();
+        int placedLocation = sandstormData.getPlacedLocation();
+        int crossedBaseline = sandstormData.getCrossedBaseline() ? 1 : 0;
+
+        int maxCycles = 567;
+        String initials = Vanguard.getInstance().getUserInitials();
+
+        int defenseAllMatchInt = defenseAllMatch ? 1 : 0;
+        int foulsInt = fouls ? 1 : 0;
+
+        StringBuilder builder = new StringBuilder();
+
+        Row sandstormRow = matchTable.enterNewRow(
+                matchNumber,
+                teamNumber,
+                startingLocation,
+                startingGamePiece,
+                placedLocation,
+                crossedBaseline,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                habLevel,
+                defenseAllMatchInt,
+                defenseRating,
+                foulsInt,
+                maxCycles,
+                initials);
+
+        builder.append(sandstormRow.toString());
+        builder.append(VanguardStrings.NEW_LINE);
+
+        for (int i = 0; i < cyclesData.getCycleAmount(); i++) {
+            int cycleNum = i + 1;
+            int pickupLocation = cyclesData.getPickupLocation(i);
+            int itemPickedUp = cyclesData.getItemPickedUp(i);
+            int locationPlaced = cyclesData.getLocationPlaced(i);
+            int defense = cyclesData.getDefense(i) ? 1 : 0;
+
+            Row cycleRow = matchTable.enterNewRow(
+                    matchNumber,
+                    teamNumber,
+                    startingLocation,
+                    startingGamePiece,
+                    placedLocation,
+                    crossedBaseline,
+                    cycleNum,
+                    pickupLocation,
+                    itemPickedUp,
+                    locationPlaced,
+                    defense,
+                    habLevel,
+                    defenseAllMatchInt,
+                    defenseRating,
+                    foulsInt,
+                    maxCycles,
+                    initials);
+
+            builder.append(cycleRow.toString());
+            builder.append(VanguardStrings.NEW_LINE);
+        }
+
+        try {
+            Vanguard.getFileService().saveScoutingData(eTableType.MATCH, initials, builder.toString());
+        } catch (IOException e) {
+            Logger.log(e.getLocalizedMessage());
+            return false;
+        }
+
+        return true;
+    }
+
+    int getUnfinishedQuestionId() {
+        if (habLevel == -1)
+            return EndgameIDs.HAB_LEVEL_QUESTION;
+
+        if (defenseRating == -1)
+            return EndgameIDs.DEFENSE_RATING_QUESTION;
+
+        return -1;
+    }
+}
