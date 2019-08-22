@@ -41,7 +41,7 @@ public class AnalysisActivity extends BaseActivity {
         attributeSpinner = findViewById(R.id.attribute_spinner);
 
         model = ViewModelProviders.of(this).get(AnalysisModel.class);
-        model.setCallbacks(this::onDataLoaded);
+        model.initialize(this::onDataLoaded);
 
         if (model.hasDataBeenLoaded()) {
             initializeUI();
@@ -151,7 +151,11 @@ public class AnalysisActivity extends BaseActivity {
         model.setFilePath(path);
 
         if (!model.hasDataBeenLoaded()) {
-            model.loadData();
+            boolean shouldContinue = model.tryToLoadData();
+            if (!shouldContinue) {
+                showMessage("Analysis has not been properly configured.", Toast.LENGTH_LONG);
+                finish();
+            }
         } else {
             initializeUI();
             updateUI();

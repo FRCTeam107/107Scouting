@@ -2,8 +2,8 @@ package com.frc107.vanguard.core.analysis;
 
 import androidx.lifecycle.ViewModel;
 
+import com.frc107.vanguard.Vanguard;
 import com.frc107.vanguard.core.utils.callbacks.ICallbackWithParam;
-import com.frc107.vanguard.deepspace.match.MatchAnalysisManager;
 
 import java.util.ArrayList;
 
@@ -14,22 +14,27 @@ public class AnalysisModel extends ViewModel {
     private int currentAttributeTypeIndex = -1;
     private int currentTeamNumberIndex = -1;
 
-    private IAnalysisManager attributeManager = new MatchAnalysisManager();
+    private IAnalysisManager analysisManager;
     private ICallbackWithParam<Boolean> onDataLoaded;
 
-    void setCallbacks(ICallbackWithParam<Boolean> onDataLoaded) {
+    void initialize(ICallbackWithParam<Boolean> onDataLoaded) {
+        this.analysisManager = Vanguard.getInstance().getAnalysisManager();
         this.onDataLoaded = onDataLoaded;
     }
 
-    void loadData() {
-        new LoadDataTask(this::onDataLoaded, attributeManager, filePath).execute();
+    boolean tryToLoadData() {
+        if (analysisManager == null)
+            return false;
+
+        new LoadDataTask(this::onDataLoaded, analysisManager, filePath).execute();
+        return true;
     }
 
     private boolean hasDataBeenLoaded;
 
     private void onDataLoaded(Boolean result) {
-        attributeManager.makeFinalCalculations();
-        teamNumbers = attributeManager.getTeamNumbers(); // Set the team numbers so we don't crash
+        analysisManager.makeFinalCalculations();
+        teamNumbers = analysisManager.getTeamNumbers(); // Set the team numbers so we don't crash
         hasDataBeenLoaded = true;
         onDataLoaded.call(result); // This should be the only call. Do not call this again.
     }
@@ -43,9 +48,9 @@ public class AnalysisModel extends ViewModel {
     void setTeamNumberAndUpdateElements(int which) {
         currentTeamNumberIndex = which;
         if (which == ALL_TEAMS_INDEX) {
-            teamNumbers = attributeManager.getTeamNumbers();
+            teamNumbers = analysisManager.getTeamNumbers();
         } else {
-            int teamNumber = attributeManager.getTeamNumbers()[which - 1];
+            int teamNumber = analysisManager.getTeamNumbers()[which - 1];
             teamNumbers = new Integer[] { teamNumber };
         }
 
@@ -61,7 +66,7 @@ public class AnalysisModel extends ViewModel {
             return;
 
         currentAttributeTypeIndex = attributeIndex;
-        attributeManager.setAttribute(attributeIndex);
+        analysisManager.setAttribute(attributeIndex);
 
         updateElements();
     }
@@ -70,10 +75,10 @@ public class AnalysisModel extends ViewModel {
         elements.clear();
 
         if (teamNumbers == null)
-            teamNumbers = attributeManager.getTeamNumbers();
+            teamNumbers = analysisManager.getTeamNumbers();
 
         for (int teamNumber : teamNumbers) {
-            double attribute = attributeManager.getAttributeValueForTeam(teamNumber);
+            double attribute = analysisManager.getAttributeValueForTeam(teamNumber);
             elements.add(new AnalysisElement(teamNumber + "", attribute));
         }
     }
@@ -100,7 +105,7 @@ public class AnalysisModel extends ViewModel {
     }
 
     String[] getAttributeNames() {
-        return attributeManager.getAttributeNames();
+        return analysisManager.getAttributeNames();
     }
 
     void setFilePath(String filePath) {
