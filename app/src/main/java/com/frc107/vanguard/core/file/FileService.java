@@ -280,7 +280,7 @@ public class FileService {
     }
 
     public List<FileDefinition> getAllFileDefinitions() {
-        return Collections.unmodifiableList(fileDefinitions);
+        return new ArrayList<>(fileDefinitions);
     }
 
     /**
