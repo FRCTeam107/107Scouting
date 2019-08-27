@@ -34,12 +34,6 @@ public class SandstormActivity extends BaseActivity {
         model = ViewModelProviders.of(this).get(SandstormModel.class);
 
         matchNumberWrapper = new TextWrapper(this, SandstormIDs.MATCH_NUM, model::setMatchNumber);
-
-        // We want to be able to auto-increment the match number, so here we grab the current match number if there is one.
-        Integer matchNumber = model.getMatchNumber();
-        if (matchNumber != null)
-            matchNumberWrapper.getEditText().setText(matchNumber.toString());
-
         teamNumberWrapper = new TextWrapper(this, SandstormIDs.TEAM_NUM, model::setTeamNumber);
 
         startingLocationWrapper = new RadioWrapper(this, SandstormIDs.STARTING_LOCATION, model::setStartingLocation);
@@ -50,6 +44,15 @@ public class SandstormActivity extends BaseActivity {
         crossedBaselineCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> model.setCrossedBaseline(isChecked));
 
         checkForPermissions();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // We want to be able to auto-increment the match number, so here we grab the current match number if there is one.
+        Integer matchNumber = model.getMatchNumber();
+        if (matchNumber != null)
+            matchNumberWrapper.getEditText().setText(matchNumber.toString());
     }
 
     @Override
@@ -103,7 +106,7 @@ public class SandstormActivity extends BaseActivity {
     }
 
     private void clearAnswers() {
-        matchNumberWrapper.clear();
+        // We do not want to clear the match number edit text since we are incrementing it.
         teamNumberWrapper.clear();
         startingLocationWrapper.clear();
         startingGamePieceWrapper.clear();

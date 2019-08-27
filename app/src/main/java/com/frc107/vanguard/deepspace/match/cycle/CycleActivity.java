@@ -136,6 +136,7 @@ public class CycleActivity extends BaseActivity {
 
     public void tryToGoToEndgame(View view) {
         if (model.areAllQuestionsUnanswered()) {
+            finish();
             openEndgameActivity();
             return;
         }
@@ -147,8 +148,8 @@ public class CycleActivity extends BaseActivity {
         }
 
         model.finishCycle();
-        openEndgameActivity();
         finish();
+        openEndgameActivity();
     }
 
     private void openEndgameActivity() {
