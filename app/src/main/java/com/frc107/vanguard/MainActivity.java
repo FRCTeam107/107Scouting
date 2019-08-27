@@ -19,6 +19,9 @@ import com.frc107.vanguard.core.analysis.AnalysisActivity;
 import com.frc107.vanguard.core.concat.ConcatActivity;
 import com.frc107.vanguard.core.ui.BaseActivity;
 import com.frc107.vanguard.core.utils.PermissionUtils;
+import com.frc107.vanguard.core.utils.StringUtils;
+import com.frc107.vanguard.deepspace.match.sandstorm.SandstormActivity;
+import com.frc107.vanguard.deepspace.pit.PitActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -70,6 +73,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            case R.id.pit:
+                drawerLayout.closeDrawer(GravityCompat.START);
+                tryToGoToPit();
+                break;
+            case R.id.match:
+                drawerLayout.closeDrawer(GravityCompat.START);
+                tryToGoToMatch();
+                break;
             case R.id.concat:
                 drawerLayout.closeDrawer(GravityCompat.START);
                 startActivity(new Intent(this, ConcatActivity.class));
@@ -106,6 +117,30 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
             startActivity(Intent.createChooser(intent, "Share app"));
         }
+    }
+
+    public void onMainScreenTap(View view) {
+        tryToGoToMatch();
+    }
+
+    private void tryToGoToPit() {
+        String initials = Vanguard.getInstance().getUserInitials();
+        if (!StringUtils.isEmptyOrNull(initials)) {
+            startActivity(new Intent(this, PitActivity.class));
+            return;
+        }
+
+        showInitialsDialog(() -> startActivity(new Intent(this, PitActivity.class)));
+    }
+
+    private void tryToGoToMatch() {
+        String initials = Vanguard.getInstance().getUserInitials();
+        if (!StringUtils.isEmptyOrNull(initials)) {
+            startActivity(new Intent(this, SandstormActivity.class));
+            return;
+        }
+
+        showInitialsDialog(() -> startActivity(new Intent(this, SandstormActivity.class)));
     }
 
     public void tryToGoToSendDataScreen(View view) {

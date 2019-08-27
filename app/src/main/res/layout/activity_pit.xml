@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/pit_constraint_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/edge_margin"
+            android:layout_marginTop="@dimen/edge_margin"
+            android:layout_marginRight="@dimen/edge_margin"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/pit_team_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/pitTeamNumber"
+                android:inputType="number"
+                android:maxLength="5"
+                android:maxLines="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/pitSandstormOperationText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/between_margin"
+                android:text="@string/pitSandstormOperation"
+                android:textAlignment="center"
+                android:textSize="@dimen/label_text_size"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pit_team_number" />
+
+            <RadioGroup
+                android:id="@+id/pit_sandstorm_op"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/between_margin"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pitSandstormOperationText">
+
+                <RadioButton
+                    android:id="@+id/visionSystemSandstorm_Radiobtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/radiobutton_margin"
+                    android:layout_weight="1"
+                    android:text="@string/visionSystemSandstorm" />
+
+                <RadioButton
+                    android:id="@+id/cameraDrivingSandstorm_Radiobtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/radiobutton_margin"
+                    android:layout_weight="1"
+                    android:text="@string/cameraDrivingSandstorm" />
+
+                <RadioButton
+                    android:id="@+id/blindDrivingSandstorm_Radiobtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/radiobutton_margin"
+                    android:layout_weight="1"
+                    android:text="@string/blindDrivingSandstorm" />
+
+                <RadioButton
+                    android:id="@+id/noDrivingSandstorm_Radiobtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/radiobutton_margin"
+                    android:layout_weight="1"
+                    android:text="@string/noDrivingSandstorm" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/pitSandstormPreferenceText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/between_margin"
+                android:text="@string/pitSandstormPreference"
+                android:textAlignment="center"
+                android:textSize="@dimen/label_text_size"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pit_sandstorm_op" />
+
+            <RadioGroup
+                android:id="@+id/pit_sandstorm_preference"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/between_margin"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pitSandstormPreferenceText">
+
+                <RadioButton
+                    android:id="@+id/rocketshipPreferenceSandstorm_Radiobtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/radiobutton_margin"
+                    android:layout_weight="1"
+                    android:text="@string/rocketshipPreferenceSandstorm" />
+
+                <RadioButton
+                    android:id="@+id/cargoshipPreferenceSandstorm_Radiobtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/radiobutton_margin"
+                    android:layout_weight="1"
+                    android:text="@string/cargoshipPreferenceSandstorm" />
+
+                <RadioButton
+                    android:id="@+id/noPreferenceSandstorm_Radiobtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/radiobutton_margin"
+                    android:layout_weight="1"
+                    android:text="@string/noPreferenceSandstorm" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/pitRocketLevelSandstormText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/between_margin"
+                android:text="@string/pitRocketLevelSandstorm"
+                android:textAlignment="center"
+                android:textSize="@dimen/label_text_size"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pit_sandstorm_preference" />
+
+            <RadioGroup
+                android:id="@+id/pit_sandstorm_highest_rocket_level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/between_margin"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pitRocketLevelSandstormText">
+
+                <RadioButton
+                    android:id="@+id/topRocketLevelSandstorm_Radiobtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/radiobutton_margin"
+                    android:layout_weight="1"
+                    android:text="@string/topRocketLevelSandstorm" />
+
+                <RadioButton
+                    android:id="@+id/middleRocketLevelSandstorm_Radiobtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/radiobutton_margin"
+                    android:layout_weight="1"
+                    android:text="@string/middleRocketLevelSandstorm" />
+
+                <RadioButton
+                    android:id="@+id/bottomRocketLevelSandstorm_Radiobtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/radiobutton_margin"
+                    android:layout_weight="1"
+                    android:text="@string/bottomRocketLevelSandstorm" />
+
+                <RadioButton
+                    android:id="@+id/noRocketLevelSandstorm_Radiobtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/radiobutton_margin"
+                    android:layout_weight="1"
+                    android:text="@string/noRocketLevelSandstorm" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/pitHabitatLevelText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/between_margin"
+                android:text="@string/pitHabitatLevel"
+                android:textAlignment="center"
+                android:textSize="@dimen/label_text_size"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pit_sandstorm_highest_rocket_level" />
+
+            <RadioGroup
+                android:id="@+id/pit_highest_habitat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/between_margin"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pitHabitatLevelText">
+
+                <RadioButton
+                    android:id="@+id/topHabitatLevel_Radiobtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/radiobutton_margin"
+                    android:layout_weight="1"
+                    android:text="@string/topHabitatLevel" />
+
+                <RadioButton
+                    android:id="@+id/middleHabitatLevel_Radiobtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/radiobutton_margin"
+                    android:layout_weight="1"
+                    android:text="@string/middleHabitatLevel" />
+
+                <RadioButton
+                    android:id="@+id/rb_pit_bottom_hab"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/radiobutton_margin"
+                    android:layout_weight="1"
+                    android:text="@string/bottomHabitatLevel" />
+
+                <RadioButton
+                    android:id="@+id/rb_pit_no_hab"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/radiobutton_margin"
+                    android:layout_weight="1"
+                    android:text="@string/noHabitatLevel" />
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/edittext_pit_habitat_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/between_margin"
+                android:hint="@string/pitHabitatLevelTime"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pit_highest_habitat" />
+
+            <EditText
+                android:id="@+id/edittext_pit_programming_language"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/between_margin"
+                android:hint="@string/pitprogrammingLanguage"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edittext_pit_habitat_time" />
+
+            <EditText
+                android:id="@+id/edittext_pit_bonus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/between_margin"
+                android:hint="@string/pitBonusQuestion"
+                android:inputType="text"
+                android:maxLines="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edittext_pit_programming_language" />
+
+            <EditText
+                android:id="@+id/edittext_pit_comments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/between_margin"
+                android:hint="@string/pit_comments_Text"
+                android:inputType="text"
+                android:maxLines="1"
+                android:imeOptions="actionDone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edittext_pit_bonus" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bottom_spacer_size"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_pit_comments" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:focusable="true"
+        app:srcCompat="@drawable/ic_baseline_check_24px"
+        android:clickable="true"
+        android:onClick="savePitData" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="@dimen/fab_margin"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="openCamera"
+        app:srcCompat="@drawable/ic_baseline_camera_24px" />
+
+</FrameLayout>

@@ -11,26 +11,177 @@
     <string name="mainAuthor">Developed by FRC Team 107</string>
 
     <!--Sandstorm Strings-->
+    <string name="matchNumberHeading">Match Number</string>
+
+    <string name="startingPositionHeading">Starting Location</string>
+    <string name="habOneSandstorm">Hab One</string>
+    <string name="habTwoSandstorm">Hab Two</string>
+
+    <string name="sandstormStartingGamePiece">Starting Game Piece</string>
+    <string name="cargoSandstormStartingGamePiece">Cargo</string>
+    <string name="panelSandstormStartingGamePiece">Hatch Panel</string>
+    <string name="noSandstormStartingGamePiece">None</string>
+
+    <string name="sandstormItemPlacedHeading">Placed Location</string>
+    <string name="sandstormTopRocketItemPlaced">Top Rocket</string>
+    <string name="sandstormMiddleRocketItemPlaced">Middle Rocket</string>
+    <string name="sandstormBottomRocketItemPlaced">Bottom Rocket</string>
+    <string name="sandstormCargoshipItemPlaced">Cargo Ship</string>
+    <string name="sandstormFloorItemPlaced">Floor</string>
+    <string name="nothingPlacedItemPlaced">Not Placed</string>
+    <string name="sandstormBaseline_chkbxText">Crossed Baseline</string>
+
 
     <string name="saveButton">Save</string>
 
+    <string name="enterTeleopCycle">Enter Teleop Cycle</string>
+
+
+    <!--Auton Error Strings-->
+
+    <string name="teamNumberError">Enter in team number</string>
+    <string name="matchNumberError">Enter in match number</string>
+    <string name="startingLocationError">Enter starting location</string>
+
+    <!--Teleop Strings-->
+    <string name="pickupLocation">Pickup Location</string>
+    <string name="portPickupLocation">Port</string>
+    <string name="floorPickupLocation">Floor</string>
+    <string name="startedWithItem">Started With Item</string>
+
+    <string name="itemPickedUpLocationText">Item Picked Up</string>
+    <string name="cargoPickedUp">Cargo</string>
+    <string name="hatchPickedUp">Hatch Panel</string>
+
+    <string name="itemPlacedLocationText">Location Placed</string>
+    <string name="topRocketItemPlaced">Top Rocket</string>
+    <string name="middleRocketItemPlaced">Middle Rocket</string>
+    <string name="bottomRocketItemPlaced">Bottom Rocket</string>
+    <string name="cargoshipItemPlaced">Cargo Ship</string>
+    <string name="floorItemPlaced">Dropped</string>
+
+    <string name="defenseChkbxText">Defense</string>
+
+    <string name="allDefenseChkbxText">Only Defense</string>
+
+    <string name="goToCycleButton">Start Cycles</string>
+
+    <string name="nextCycleButton">Next Cycle</string>
+    <string name="clearCycleButton">Clear Cycle</string>
 
     <string name="scouterInitials">Scouter Initials</string>
 
 
+    <!--Teleop Error Strings-->
+
+    <!--End Game Strings-->
+    <string name="endGameHabitatLevelHeading">Habitat Level</string>
+    <string name="habOneEndGame">Level One</string>
+    <string name="habTwoEndGame">Level Two</string>
+    <string name="habThreeEndGame">Level Three</string>
+    <string name="habNoneEndGame">No Level</string>
+
+
+    <string name="endGameDefenseHeading">Defense</string>
+    <string name="endGameDefenseAllMatch_chkbxText">Defense All Match</string>
+    <string name="endGameDefenseAllMatch">All Match</string>
+    <string name="endGameDefenseEffective">Effective</string>
+    <string name="endGameDefenseIneffective">Ineffective</string>
+    <string name="endGameDefenseNone">None</string>
+    <string name="endGameFoulsChkbxText">Fouls</string>
+    <string name="endGameButton">Endgame</string>
+
+    <!--Menu Strings-->
+    <string name="matchScouting">Match</string>
+    <string name="pitScouting">Pit</string>
+
     <string name="teamNumberHeading">Team Number</string>
 
+    <!--PitAnswers Vanguard Strings-->
+    <string name="pitTeamNumber">Team Number</string>
+
+    <string name="pitSandstormOperation">Sandstorm Operation</string>
+    <string name="visionSystemSandstorm">Vision</string>
+    <string name="cameraDrivingSandstorm">Camera</string>
+    <string name="blindDrivingSandstorm">Blind</string>
+    <string name="noDrivingSandstorm">None</string>
+
+
+    <string name="pitSandstormPreference">Sandstorm Preference</string>
+    <string name="cargoshipPreferenceSandstorm">Cargo Ship</string>
+    <string name="rocketshipPreferenceSandstorm">Rocketship</string>
+    <string name="noPreferenceSandstorm">None</string>
+
+    <string name="pitRocketLevelSandstorm">Rocket Level Sandstorm</string>
+    <string name="topRocketLevelSandstorm">Top Rocket</string>
+    <string name="middleRocketLevelSandstorm">Middle Rocket</string>
+    <string name="bottomRocketLevelSandstorm">Bottom Rocket</string>
+    <string name="noRocketLevelSandstorm">None</string>
+
+    <string name="pitHabitatLevel">Habitat Level</string>
+    <string name="topHabitatLevel">Top</string>
+    <string name="middleHabitatLevel">Middle</string>
+    <string name="bottomHabitatLevel">Bottom</string>
+    <string name="noHabitatLevel">None</string>
+
+    <string name="pitHabitatLevelTime">Habitat Level Time</string>
+
+    <string name="pitprogrammingLanguage">Programming Language</string>
+    <string name="javaProgrammingLanguage">Java</string>
+    <string name="cppProgrammingLanguage">C++</string>
+    <string name="labviewProgrammingLanguage">LabVIEW</string>
+    <string name="otherProgrammingLanguage">Other</string>
+
+    <string name="pitBonusQuestion">What planet would they go to?</string>
+    <string name="pit_comments_Text">Comments</string>
+
+    <string name="savePitButton">Save</string>
+
+    <string name="takePhotoButton">Take Photo</string>
+
+    <string name="title_activity_duck">DuckActivity</string>
+
     <!--Send Data Strings-->
+    <string name="concatenateMatchData">Concatenate Match Data</string>
+    <string name="concatenatePitData">Concatenate Pit Data</string>
     <string name="sendRobotPhotos">Send Robot Photos</string>
+    <string name="sendPitData">Send Pit Data</string>
+    <string name="sendMatchData">Send Match Data</string>
+    <string name="sendConcatMatchData">Send Concatenated Match File</string>
+    <string name="sendConcatPitData">Send Concatenated Pit File</string>
 
     <!--Analysis Strings-->
     <string name="title_activity_analysis">AnalysisActivity</string>
+    <string name="teamAnalysisButton">Team Analysis</string>
+    <string name="attributeAnalysisButton">Attribute Analysis</string>
+    <string name="analysisAverageCargo">Average Cargo:</string>
+    <string name="analysisAverageHatchPanel">Average Hatch Panel:</string>
+    <string name="analysisDefenseCount">Defense Count:</string>
+    <string name="analysisEffectiveDefenseCount">Effective Defense Count:</string>
+    <string name="analysisHabOne">Hab Level 1:</string>
+    <string name="analysisHabTwo">Hab Level 2</string>
+    <string name="analysisHabThree">Hab Level 3:</string>
+    <string name="analysisRocketOne">Rocket Level 1:</string>
+    <string name="analysisRocketTwo">Rocket Level 2</string>
+    <string name="analysisRocketThree">Rocket Level 3:</string>
+    <string name="analysisEmptyValue">0</string>
+    <string name="analysisTeamNumber">Team Number:</string>
+    <string name="analysisChooseTeamNumber">Choose Team Number</string>
+    <string name="title_activity_attribute_analysis">AttributeAnalysisActivity</string>
+    <string name="analysisChooseAttribute">Choose Attribute</string>
     <string name="eventKeyHint">Event Key</string>
+    <string name="downloadOPRs">Download OPRs</string>
+    <string name="analysisOpr">OPR:</string>
+    <string name="analysisDPR">DPR:</string>
+    <string name="chooseChildDevicesButton">Choose Child Devices</string>
+    <string name="title_activity_bluetooth_set_master_device">BluetoothSetMasterDeviceActivity</string>
+    <string name="chooseMasterDeviceButton">Choose Master Device</string>
     <string name="title_activity_main_drawer">MainDrawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Vanguard</string>
+    <string name="nav_header_title">Scoutinator</string>
     <string name="nav_header_subtitle">Developed by FRC Team 107</string>
+    <string name="nav_header_desc">quack</string>
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">Home</string>
@@ -44,8 +195,13 @@
     <string name="team_analysis">Team Analysis</string>
     <string name="attribute_analysis">Analysis</string>
     <string name="bluetooth">Bluetooth</string>
+    <string name="send_match_data">Send Match Data</string>
+    <string name="send_pit_data">Send Pit Data</string>
+    <string name="send_concat_match_data">Send Concat. Match Data</string>
+    <string name="send_concat_pit_data">Send Concat. Pit Data</string>
     <string name="send_pit_photos">Send Pit Photos</string>
     <string name="settings">Settings</string>
+    <string name="pit">Pit</string>
     <string name="advanced">Advanced</string>
     <string name="title_open_csv_file">Open CSV File</string>
     <string name="end_shift">End Shift</string>
@@ -56,7 +212,7 @@
     <string name="file_type">File Type:</string>
     <string name="concatenate">Concatenate</string>
     <string name="creator_initials">Creator Initials:</string>
+    <string name="match">Match</string>
     <string name="date_created">Date Created:</string>
-    <string name="nav_header_image_description">quack</string>
 
 </resources>

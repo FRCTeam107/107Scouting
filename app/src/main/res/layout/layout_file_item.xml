@@ -47,7 +47,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="type"
+        android:text="@string/match"
         app:layout_constraintEnd_toStartOf="@+id/date_created_title_view"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/file_type_title_view"

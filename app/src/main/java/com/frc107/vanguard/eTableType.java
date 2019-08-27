@@ -20,7 +20,13 @@ package com.frc107.vanguard;
  * Finally I would update the 4 methods in this file to match the enum values that I just added.
  */
 public enum eTableType {
-    ; // Put your values before this semicolon.
+    PIT,
+    MATCH; // Put your values before this semicolon.
+
+    private static final String PIT_PREFIX = "Pit";
+    private static final String MATCH_PREFIX = "Match";
+    private static final String CONCAT_PIT_PREFIX = "ConcatPit";
+    private static final String CONCAT_MATCH_PREFIX = "ConcatMatch";
 
     /**
      * Get the file name prefix for an eTableType.
@@ -30,7 +36,14 @@ public enum eTableType {
      * @return The file name prefix for this eTableType.
      */
     public String getPrefix(boolean concat) {
-        return null;
+        switch (this) {
+            case PIT:
+                return concat ? CONCAT_PIT_PREFIX : PIT_PREFIX;
+            case MATCH:
+                return concat ? CONCAT_MATCH_PREFIX : MATCH_PREFIX;
+            default:
+                return null;
+        }
     }
 
     /**
@@ -40,7 +53,14 @@ public enum eTableType {
      */
     @Override
     public String toString() {
-        return null;
+        switch (this) {
+            case PIT:
+                return "Pit";
+            case MATCH:
+                return "Match";
+            default:
+                return "None";
+        }
     }
 
     /**
@@ -49,7 +69,14 @@ public enum eTableType {
      * @return The user-friendly concatenated name of the table.
      */
     public String toStringConcat() {
-        return null;
+        switch (this) {
+            case PIT:
+                return "Concatenated Pit";
+            case MATCH:
+                return "Concatenated Match";
+            default:
+                return "None";
+        }
     }
 
     /**
@@ -58,6 +85,15 @@ public enum eTableType {
      * @return The eTableType associated with the inputted table type.
      */
     public static eTableType getTableTypeFromPrefix(String prefix) {
-        return null;
+        switch (prefix) {
+            case PIT_PREFIX:
+            case CONCAT_PIT_PREFIX:
+                return PIT;
+            case MATCH_PREFIX:
+            case CONCAT_MATCH_PREFIX:
+                return MATCH;
+            default:
+                return null;
+        }
     }
 }
