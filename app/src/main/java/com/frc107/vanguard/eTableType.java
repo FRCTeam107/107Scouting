@@ -1,5 +1,7 @@
 package com.frc107.vanguard;
 
+import com.frc107.vanguard.core.NotImplementedException;
+
 /**
  * This is where you'll define your own table types.
  *
