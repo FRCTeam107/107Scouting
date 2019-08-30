@@ -1,5 +1,7 @@
 package com.frc107.vanguard;
 
+import com.frc107.vanguard.core.NotImplementedException;
+
 /**
  * This is where you'll define your own table types.
  *
@@ -30,7 +32,7 @@ public enum eTableType {
      * @return The file name prefix for this eTableType.
      */
     public String getPrefix(boolean concat) {
-        return null;
+        throw new NotImplementedException("getPrefix");
     }
 
     /**
@@ -40,7 +42,7 @@ public enum eTableType {
      */
     @Override
     public String toString() {
-        return null;
+        throw new NotImplementedException("toString");
     }
 
     /**
@@ -49,7 +51,7 @@ public enum eTableType {
      * @return The user-friendly concatenated name of the table.
      */
     public String toStringConcat() {
-        return null;
+        throw new NotImplementedException("toStringConcat");
     }
 
     /**
@@ -58,6 +60,6 @@ public enum eTableType {
      * @return The eTableType associated with the inputted table type.
      */
     public static eTableType getTableTypeFromPrefix(String prefix) {
-        return null;
+        throw new NotImplementedException("getTableTypeFromPrefix");
     }
 }
