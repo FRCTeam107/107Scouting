@@ -1,5 +1,6 @@
 package com.frc107.vanguard;
 
+import com.frc107.vanguard.core.NotImplementedException;
 import com.frc107.vanguard.core.analysis.IAnalysisManager;
 import com.frc107.vanguard.core.file.FileService;
 import com.frc107.vanguard.core.table.Table;
@@ -22,17 +23,18 @@ public class Vanguard {
 
     private Vanguard() {
         // Set up your tables and analysis manager here, as well as whatever else you want to set up at the start of the app.
+        throw new NotImplementedException("Vanguard constructor");
     }
 
     public Table getTable(eTableType table) {
         // Vanguard needs a way to identify tables, so implement this.
-        return null;
+        throw new NotImplementedException("getTable");
     }
 
     public IAnalysisManager getAnalysisManager() {
         // Return your analysis manager here.
         // TODO: allow multiple analysis managers so one could be able to analyze different table types.
-        return null;
+        throw new NotImplementedException("getAnalysisManager");
     }
 
     /**
