@@ -26,6 +26,12 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Use this class to perform file operations.
+ *
+ * The intent here is to, as much as possible, abstract the file writing and reading code so that
+ * you don't need to worry about how it works.
+ */
 public class FileService {
     /**
      * Valid file names created by this application are in the format:
@@ -64,6 +70,9 @@ public class FileService {
         loadFileDefinitions();
     }
 
+    /**
+     * Look through the files in the scouting directory and make sure that we have a FileDefinition for each of them.
+     */
     public void loadFileDefinitions() {
         File[] files = scoutingDirectory.listFiles();
         for (File file : files) {
@@ -78,6 +87,9 @@ public class FileService {
         }
     }
 
+    /**
+     * Wipe all the created FileDefinitions. This does not delete the files.
+     */
     public void clearFileDefinitions() {
         fileDefinitions.clear();
     }

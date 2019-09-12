@@ -56,6 +56,10 @@ public class Table {
         return name;
     }
 
+    /**
+     * Get a String to put at the top of a CSV file. This will be the names of the columns separated by commas.
+     * @return The CSV header.
+     */
     public String getHeader() {
         return header;
     }
