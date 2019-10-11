@@ -98,7 +98,7 @@ public class Vanguard {
             try {
                 fileData = fileService.getFileData(fileDef.getFile());
             } catch (IOException e) {
-                Logzger.log(e.getLocalizedMessage());
+                Logger.log(e.getLocalizedMessage());
                 return;
             }
             pitTable.importData(fileData, row -> true);
