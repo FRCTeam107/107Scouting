@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-class ImportCsvModel extends ViewModel {
+public class ImportCsvModel extends ViewModel {
     private static FileService fileService = Vanguard.getFileService();
 
     boolean doesFileExist(String name) {

@@ -63,7 +63,7 @@ public class FileService {
     }
 
     public void loadFileDefinitions() {
-        File[] files = scoutingDirectory.listFiles();
+         File[] files = scoutingDirectory.listFiles();
         for (File file : files) {
             if (file.isDirectory())
                 continue;
