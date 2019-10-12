@@ -155,7 +155,7 @@ public class PitActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK) {
             try {
-                viewModel.compressPhoto();
+                viewModel.compressPhoto(this);
                 Toast.makeText(this, "Successfully took photo!", Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 Toast.makeText(this, "Failure while compressing photo.", Toast.LENGTH_SHORT).show();

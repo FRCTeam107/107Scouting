@@ -1,7 +1,10 @@
 package com.frc107.vanguard.core.file;
 
+import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Environment;
 
@@ -63,7 +66,7 @@ public class FileService {
     }
 
     public void loadFileDefinitions() {
-         File[] files = scoutingDirectory.listFiles();
+        File[] files = scoutingDirectory.listFiles();
         for (File file : files) {
             if (file.isDirectory())
                 continue;
@@ -469,49 +472,59 @@ public class FileService {
         if (teamNumber == null)
             throw new IllegalArgumentException("Team number cannot be null");
 
-        File file = new File(photoDirectory, teamNumber + ".jpg");
+        String prefix = "_" + teamNumber + "_";
 
         // We need to be able to have multiple photos of the same robot, so this handles that.
         int num = 1;
+        File file = new File(photoDirectory, prefix + ".jpg");
         while (file.exists()) {
-            file = new File(photoDirectory, teamNumber + "-" + num + ".jpg");
+            prefix += num;
+            file = new File(photoDirectory, prefix + ".jpg");
             num++;
         }
 
-        boolean success = file.createNewFile();
-        if (!success) {
-            Logger.log("Photo file already exists! Path: \"" + file.getAbsolutePath() + "\"");
-            return null;
-        }
-
+        file.createNewFile();
         return file;
     }
 
     /**
      * Compress a photo file so that Bluetooth transfers will be faster.
+     * @param context Context so that this method can perform necessary operations.
      * @param fileName The file name of the photo.
      * @throws IOException If there was an error compressing or writing the file.
      */
-    public void compressPhoto(String fileName) throws IOException {
+    public void compressPhoto(Context context, String fileName) throws IOException {
         File file = new File(photoDirectory, fileName);
         if (!file.exists())
             throw new FileNotFoundException("File at \"" + file.getPath() + "\" does not exist.");
 
-        try (FileInputStream fileInputStream = new FileInputStream(file);
-             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        // for more useful info on getting the bitmap of an image, look here:
+        // https://stackoverflow.com/questions/40392666/how-can-i-get-bitmap-from-camera-on-android
+        Uri uri = Uri.fromFile(file);
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+
+        // I confess I don't know quite if there are criteria for numbers here, but 3 was used in the above link and it works fine for this
+        options.inSampleSize = 3;
+
+        AssetFileDescriptor fileDescriptor = null;
+        try {
+            fileDescriptor = context.getContentResolver().openAssetFileDescriptor(uri, "r");
+        } catch (FileNotFoundException e) {
+            Logger.log(e.getLocalizedMessage());
+        }
+
+        Bitmap bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor.getFileDescriptor(), null, options);
+
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
              FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-            Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
-            if (bitmap == null) {
-                Logger.log("Bitmap is null");
-                throw new IllegalStateException("Bitmap cannot be null!");
-            }
 
-            // todo: Based on recent tests, it's no longer needed to rotate the photo. Someone should probably test this on more devices, though.
-            /*Matrix matrix = new Matrix();
+            // after taking the photo, it is rotated 90 degrees so we need to rotate it again
+            Matrix matrix = new Matrix();
             matrix.postRotate(90);
-            Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);*/
+            Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
+            rotated.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
 
             fileOutputStream.write(byteArrayOutputStream.toByteArray());
         }

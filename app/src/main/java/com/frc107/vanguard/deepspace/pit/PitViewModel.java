@@ -1,5 +1,7 @@
 package com.frc107.vanguard.deepspace.pit;
 
+import android.content.Context;
+
 import androidx.lifecycle.ViewModel;
 
 import java.io.File;
@@ -60,7 +62,7 @@ public class PitViewModel extends ViewModel {
         return model.createPhotoFile();
     }
 
-    void compressPhoto() throws IOException {
-        model.compressPhoto();
+    void compressPhoto(Context context) throws IOException {
+        model.compressPhoto(context);
     }
 }

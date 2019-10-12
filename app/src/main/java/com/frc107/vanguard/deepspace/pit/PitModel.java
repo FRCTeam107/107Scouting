@@ -1,5 +1,7 @@
 package com.frc107.vanguard.deepspace.pit;
 
+import android.content.Context;
+
 import com.frc107.vanguard.Vanguard;
 import com.frc107.vanguard.core.Logger;
 import com.frc107.vanguard.core.table.Row;
@@ -132,10 +134,10 @@ class PitModel {
         return file;
     }
 
-    void compressPhoto() throws IOException {
+    void compressPhoto(Context context) throws IOException {
         if (!hasCreatedPhotoFile)
-            throw new FileNotFoundException("Photo file named \"" + teamNumber.toString() + ".jpg\" has not been created yet!");
+            throw new FileNotFoundException("Photo file named \"" + photoFileName + "\" has not been created yet!");
 
-        Vanguard.getFileService().compressPhoto(photoFileName);
+        Vanguard.getFileService().compressPhoto(context, photoFileName);
     }
 }
