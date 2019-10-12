@@ -29,13 +29,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="4dp"
         android:layout_marginBottom="8dp"
         android:text="@string/creator_initials"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/file_type_title_view"
+        app:layout_constraintTop_toTopOf="@+id/creator_initials_view"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -85,7 +84,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="3:15 PM, Oct. 27"
+        android:text="12:15 PM, Aug. 27"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/date_created_title_view" />
 </androidx.constraintlayout.widget.ConstraintLayout>
