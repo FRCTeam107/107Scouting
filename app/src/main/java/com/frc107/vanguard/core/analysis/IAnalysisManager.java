@@ -58,4 +58,9 @@ public interface IAnalysisManager {
      * @return The eTableType that you want to analyze data as.
      */
     eTableType getTableType();
+
+    /**
+     * Remove all current values.
+     */
+    void clear();
 }

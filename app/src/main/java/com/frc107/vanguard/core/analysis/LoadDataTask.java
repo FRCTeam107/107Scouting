@@ -13,12 +13,12 @@ import java.io.IOException;
 public class LoadDataTask extends AsyncTask<Void, Void, Boolean> {
     private ICallbackWithParam<Boolean> onDataLoaded;
     private IAnalysisManager analysisManager;
-    private String filePath;
+    private File file;
 
     public LoadDataTask(ICallbackWithParam<Boolean> onDataLoaded, IAnalysisManager analysisManager, String filePath) {
         this.onDataLoaded = onDataLoaded;
         this.analysisManager = analysisManager;
-        this.filePath = filePath;
+        file = new File(filePath);
     }
 
     @Override
@@ -35,7 +35,6 @@ public class LoadDataTask extends AsyncTask<Void, Void, Boolean> {
     private boolean loadData() {
         String data;
         try {
-            File file = new File(filePath);
             data = Vanguard.getFileService().getFileData(file);
         } catch (IOException e) {
             Logger.log(e.getLocalizedMessage());

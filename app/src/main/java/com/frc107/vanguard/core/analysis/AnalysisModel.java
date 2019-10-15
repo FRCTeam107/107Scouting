@@ -26,6 +26,7 @@ public class AnalysisModel extends ViewModel {
         if (analysisManager == null)
             return false;
 
+        analysisManager.clear();
         new LoadDataTask(this::onDataLoaded, analysisManager, filePath).execute();
         return true;
     }

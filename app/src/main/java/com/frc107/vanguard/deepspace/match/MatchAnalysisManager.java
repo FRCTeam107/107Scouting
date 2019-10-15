@@ -261,6 +261,13 @@ public class MatchAnalysisManager implements IAnalysisManager {
         return eTableType.MATCH;
     }
 
+    @Override
+    public void clear() {
+        teamNumbers = null;
+        teamNumberList.clear();
+        teamDetailsSparseArray.clear();
+    }
+
     private class TeamDetails {
         private ArrayList<Integer> matchNums = new ArrayList<>();
         private int cargoNum;
