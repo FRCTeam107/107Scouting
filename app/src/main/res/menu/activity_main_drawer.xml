@@ -38,13 +38,13 @@
         </menu>
     </item>
 
-    <item android:title="@string/advanced">
+    <!--<item android:title="@string/advanced">
         <menu>
             <item
                 android:id="@+id/settings"
                 android:title="@string/settings"
                 android:icon="@drawable/ic_baseline_settings_20px" />
         </menu>
-    </item>
+    </item>-->
 
 </menu>

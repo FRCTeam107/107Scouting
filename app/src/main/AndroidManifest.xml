@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.frc107.vanguard">
+    package="com.frc107.scouting">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -17,11 +17,11 @@
         android:roundIcon="@mipmap/icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.frc107.vanguard.core.file.SendFileActivity"/>
-        <activity android:name="com.frc107.vanguard.core.file.SelectFileForAnalysisActivity"/>
-        <activity android:name="com.frc107.vanguard.core.concat.ConcatActivity" />
+        <activity android:name="com.frc107.scouting.core.file.SendFileActivity"/>
+        <activity android:name="com.frc107.scouting.core.file.SelectFileForAnalysisActivity"/>
+        <activity android:name="com.frc107.scouting.core.concat.ConcatActivity" />
         <activity
-            android:name="com.frc107.vanguard.MainActivity"
+            android:name="com.frc107.scouting.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
@@ -31,14 +31,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".deepspace.match.sandstorm.SandstormActivity" />
-        <activity android:name=".deepspace.match.cycle.CycleActivity" />
-        <activity android:name=".deepspace.match.endgame.EndgameActivity" />
-        <activity android:name=".deepspace.pit.PitActivity" />
+        <activity android:name="com.frc107.scouting.deepspace.match.sandstorm.SandstormActivity" />
+        <activity android:name="com.frc107.scouting.deepspace.match.cycle.CycleActivity" />
+        <activity android:name="com.frc107.scouting.deepspace.match.endgame.EndgameActivity" />
+        <activity android:name="com.frc107.scouting.deepspace.pit.PitActivity" />
         <activity
-            android:name="com.frc107.vanguard.core.csvimport.ImportCsvActivity"
+            android:name="com.frc107.scouting.core.csvimport.ImportCsvActivity"
             android:label="@string/title_open_csv_file"
-            android:parentActivityName="com.frc107.vanguard.MainActivity"
+            android:parentActivityName="com.frc107.scouting.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter android:label="Import CSV">
                 <action android:name="android.intent.action.VIEW" />
@@ -53,7 +53,7 @@
                 <data android:mimeType="text/comma-separated-values" />
             </intent-filter>
         </activity>
-        <activity android:name="com.frc107.vanguard.core.analysis.AnalysisActivity" />
+        <activity android:name="com.frc107.scouting.core.analysis.AnalysisActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

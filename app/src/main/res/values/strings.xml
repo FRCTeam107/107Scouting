@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Vanguard</string>
+    <string name="app_name">107 Scouting</string>
 
     <string name="sendData">Send Data</string>
     <string name="submitInitials">Submit</string>
@@ -97,7 +97,7 @@
 
     <string name="teamNumberHeading">Team Number</string>
 
-    <!--PitAnswers Vanguard Strings-->
+    <!--PitAnswers Scouting Strings-->
     <string name="pitTeamNumber">Team Number</string>
 
     <string name="pitSandstormOperation">Sandstorm Operation</string>
@@ -179,7 +179,7 @@
     <string name="title_activity_main_drawer">MainDrawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Vanguard</string>
+    <string name="nav_header_title">107 Scouting</string>
     <string name="nav_header_subtitle">Developed by FRC Team 107</string>
     <string name="nav_header_desc">quack</string>
     <string name="action_settings">Settings</string>
