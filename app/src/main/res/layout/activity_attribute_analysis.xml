@@ -1,37 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
-    android:layout_marginRight="10dp">
-
-    <!--<Button
-        android:id="@+id/analysisChooseAttributeButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/textview_spacer"
-        android:onClick="attributeButtonPressed"
-        android:text="@string/analysisChooseAttribute" />-->
+    android:layout_marginRight="10dp"
+    android:background="#ffffff">
 
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="horizontal">
-
-        <!--<TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingStart="10dp"
-            android:paddingRight="10dp"
-            android:paddingEnd="10dp"
-            android:text="@string/teamNumberHeading"
-            android:textStyle="bold"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical" />-->
 
         <Spinner
             android:id="@+id/team_spinner"
@@ -61,13 +42,22 @@
         android:layout_height="1dp"
         android:background="?android:attr/listDivider" />
 
-    <ListView
-        android:id="@+id/elementListView"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager"
+        android:background="#ffffff"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:visibility="gone"
-        android:clickable="false" />
+        android:layout_weight="1">
+
+    </androidx.viewpager.widget.ViewPager>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.google.android.material.tabs.TabLayout>
 
     <ProgressBar
         android:id="@+id/analysisProgressBar"

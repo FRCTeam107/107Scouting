@@ -6,29 +6,29 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 
 import com.frc107.scouting.R;
 import com.frc107.scouting.core.ScoutingStrings;
 import com.frc107.scouting.core.file.SelectFileForAnalysisActivity;
 import com.frc107.scouting.core.ui.BaseActivity;
 import com.frc107.scouting.eTableType;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class AnalysisActivity extends BaseActivity {
-    private AnalysisAdapter listAdapter;
-
     private Spinner teamNumberSpinner;
     private Spinner attributeSpinner;
 
     private AnalysisModel model;
+    private AnalysisPagerAdapter pagerAdapter;
 
     private static final int SELECT_FILE_INTENT_CODE = 8213; // no significance to the number, just a random number that doesn't collide with other possible intent/activity result codes.
 
@@ -36,6 +36,13 @@ public class AnalysisActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attribute_analysis);
+        ViewPager pager = findViewById(R.id.pager);
+
+        pagerAdapter = new AnalysisPagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(pagerAdapter);
+
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(pager);
 
         teamNumberSpinner = findViewById(R.id.team_spinner);
         attributeSpinner = findViewById(R.id.attribute_spinner);
@@ -48,6 +55,10 @@ public class AnalysisActivity extends BaseActivity {
             return;
         }
 
+        showTableChooser();
+    }
+
+    private void showTableChooser() {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setTitle("Choose a table");
 
@@ -98,7 +109,7 @@ public class AnalysisActivity extends BaseActivity {
 
         ArrayList<String> teamNumbers = new ArrayList<>();
         teamNumbers.add("All");
-        teamNumbers.addAll(Arrays.asList(model.getTeamNumbers()));
+        teamNumbers.addAll(Arrays.asList(model.getTeamNumberStrings()));
 
         ArrayAdapter<String> teamAdapter = new ArrayAdapter<>(this, R.layout.layout_spinner_element, teamNumbers);
         teamAdapter.notifyDataSetChanged();
@@ -107,7 +118,7 @@ public class AnalysisActivity extends BaseActivity {
         teamNumberSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                model.setTeamNumberAndUpdateElements(position);
+                model.setTeamNumberAndUpdateElements(position - 1);
                 updateUI();
             }
 
@@ -116,21 +127,12 @@ public class AnalysisActivity extends BaseActivity {
                 // We don't care if nothing was selected because nothing has changed.
             }
         });
-
-        ListView elementListView = findViewById(R.id.elementListView);
-        elementListView.setSelectionAfterHeaderView();
-        elementListView.setVisibility(View.VISIBLE);
-
-        listAdapter = new AnalysisAdapter(this, model.getElements());
-        elementListView.setAdapter(listAdapter);
     }
 
     private void updateUI() {
-        teamNumberSpinner.setSelection(model.getCurrentTeamNumberIndex());
+        int teamNumberIndex = model.getCurrentTeamNumberIndex();
+        teamNumberSpinner.setSelection(teamNumberIndex + 1);
         attributeSpinner.setSelection(model.getCurrentAttributeTypeIndex());
-
-        listAdapter.notifyDataSetChanged();
-        listAdapter.sort((element1, element2) -> Double.compare(element2.getAttribute(), element1.getAttribute()));
     }
 
     @Override

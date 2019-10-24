@@ -7,15 +7,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.databinding.ObservableList;
+
 import com.frc107.scouting.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class AnalysisAdapter extends ArrayAdapter<AnalysisElement> {
-    private List<AnalysisElement> elements;
+public class AnalysisAdapter extends ArrayAdapter<ChartElement> {
+    private List<ChartElement> elements;
 
-    AnalysisAdapter(Context context, ArrayList<AnalysisElement> elements) {
+    AnalysisAdapter(Context context, ObservableList<ChartElement> elements) {
         super(context, 0, elements);
         this.elements = elements;
     }
@@ -26,7 +27,7 @@ public class AnalysisAdapter extends ArrayAdapter<AnalysisElement> {
     }
 
     @Override
-    public AnalysisElement getItem(int position) {
+    public ChartElement getItem(int position) {
         return elements.get(position);
     }
 
@@ -37,7 +38,7 @@ public class AnalysisAdapter extends ArrayAdapter<AnalysisElement> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        AnalysisElement element = getItem(position);
+        ChartElement element = getItem(position);
         if (element == null)
             return convertView;
 

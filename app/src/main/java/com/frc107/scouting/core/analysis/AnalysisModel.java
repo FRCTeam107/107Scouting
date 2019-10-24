@@ -1,21 +1,35 @@
 package com.frc107.scouting.core.analysis;
 
+import androidx.databinding.ObservableArrayList;
+import androidx.databinding.ObservableList;
 import androidx.lifecycle.ViewModel;
 
 import com.frc107.scouting.Scouting;
+import com.frc107.scouting.core.utils.callbacks.ICallback;
 import com.frc107.scouting.core.utils.callbacks.ICallbackWithParam;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AnalysisModel extends ViewModel {
-    private String filePath;
-    private ArrayList<AnalysisElement> elements = new ArrayList<>();
+    private static final int ALL_TEAMS_INDEX = -1;
 
-    private int currentAttributeTypeIndex = -1;
-    private int currentTeamNumberIndex = -1;
+    private String[] teamNumberStrings;
+
+    private ObservableList<ChartElement> chartElements = new ObservableArrayList<>();
+    private Map<Integer, Integer> matchNumToAttributeMap = new HashMap<>();
+
+    private int currentAttributeTypeIndex = 0;
+    private int currentTeamNumberIndex = 0;
+
+    private String filePath;
 
     private IAnalysisManager analysisManager;
     private ICallbackWithParam<Boolean> onDataLoaded;
+    private List<ICallback> onElementsUpdatedCallbacks = new ArrayList<>();
 
     void initialize(ICallbackWithParam<Boolean> onDataLoaded) {
         this.analysisManager = Scouting.getInstance().getAnalysisManager();
@@ -35,7 +49,7 @@ public class AnalysisModel extends ViewModel {
 
     private void onDataLoaded(Boolean result) {
         analysisManager.makeFinalCalculations();
-        teamNumbers = analysisManager.getTeamNumbers(); // Set the team numbers so we don't crash
+        //allTeamNumbers = analysisManager.getTeamNumbers(); // Set the team numbers so we don't crash
         hasDataBeenLoaded = true;
         onDataLoaded.call(result); // This should be the only call. Do not call this again.
     }
@@ -43,17 +57,8 @@ public class AnalysisModel extends ViewModel {
     boolean hasDataBeenLoaded() {
         return hasDataBeenLoaded;
     }
-
-    private static final int ALL_TEAMS_INDEX = 0;
-    private Integer[] teamNumbers;
     void setTeamNumberAndUpdateElements(int which) {
         currentTeamNumberIndex = which;
-        if (which == ALL_TEAMS_INDEX) {
-            teamNumbers = analysisManager.getTeamNumbers();
-        } else {
-            int teamNumber = analysisManager.getTeamNumbers()[which - 1];
-            teamNumbers = new Integer[] { teamNumber };
-        }
 
         updateElements();
     }
@@ -73,32 +78,68 @@ public class AnalysisModel extends ViewModel {
     }
 
     private void updateElements() {
-        elements.clear();
+        updateChartElements();
+        updateGraphElements();
 
-        if (teamNumbers == null)
-            teamNumbers = analysisManager.getTeamNumbers();
-
-        for (int teamNumber : teamNumbers) {
-            double attribute = analysisManager.getAttributeValueForTeam(teamNumber);
-            elements.add(new AnalysisElement(teamNumber + "", attribute));
+        for (ICallback callback : onElementsUpdatedCallbacks) {
+            callback.call();
         }
     }
 
-    ArrayList<AnalysisElement> getElements() {
-        return elements;
+    private void updateChartElements() {
+        chartElements.clear();
+        Integer[] teamNumbers = analysisManager.getTeamNumbers();
+        if (currentTeamNumberIndex == ALL_TEAMS_INDEX) {
+            for (int teamNumber : teamNumbers) {
+                double attribute = analysisManager.getAttributeValueForTeam(teamNumber);
+                chartElements.add(new ChartElement(teamNumber + "", attribute));
+            }
+            Collections.sort(chartElements, (e1, e2) -> Double.compare(e2.getAttribute(), e1.getAttribute()));
+        } else {
+            int teamNumber = teamNumbers[currentTeamNumberIndex];
+            double attribute = analysisManager.getAttributeValueForTeam(teamNumber);
+            chartElements.add(new ChartElement(teamNumber + "", attribute));
+        }
+    }
+
+    private void updateGraphElements() {
+        if (currentTeamNumberIndex == ALL_TEAMS_INDEX)
+            return; // if we are looking at all the teams, the graph becomes pointless for now
+
+        matchNumToAttributeMap.clear();
+
+        Integer[] teamNumbers = analysisManager.getTeamNumbers();
+        int teamNumber = teamNumbers[currentTeamNumberIndex];
+        Integer[] matchNumbers = analysisManager.getMatchNumbersForTeam(teamNumbers[currentTeamNumberIndex]);
+        for (int i = 0; i < matchNumbers.length; i++) {
+            int matchNumber = matchNumbers[i];
+            int attribute = analysisManager.getAttributeForTeamAtMatch(teamNumber, matchNumber);
+            matchNumToAttributeMap.put(matchNumber, attribute);
+        }
+    }
+
+    void addOnElementsUpdatedCallback(ICallback callback) {
+        onElementsUpdatedCallbacks.add(callback);
+    }
+
+    ObservableList<ChartElement> getChartElements() {
+        return chartElements;
+    }
+
+    Map<Integer, Integer> getMatchNumAttributeMap() {
+        return Collections.unmodifiableMap(matchNumToAttributeMap);
     }
 
     int getCurrentAttributeTypeIndex() {
         return currentAttributeTypeIndex;
     }
 
-    private String[] teamNumberStrings;
-    String[] getTeamNumbers() {
+    String[] getTeamNumberStrings() {
         // This method just converts the team numbers into strings.
         if (teamNumberStrings == null) {
-            teamNumberStrings = new String[teamNumbers.length];
+            teamNumberStrings = new String[analysisManager.getTeamNumbers().length];
             for (int i = 0; i < teamNumberStrings.length; i++) {
-                teamNumberStrings[i] = teamNumbers[i] + "";
+                teamNumberStrings[i] = analysisManager.getTeamNumbers()[i] + "";
             }
         }
 

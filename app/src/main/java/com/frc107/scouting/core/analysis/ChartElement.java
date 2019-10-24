@@ -1,10 +1,10 @@
 package com.frc107.scouting.core.analysis;
 
-class AnalysisElement {
+class ChartElement {
     private String teamNumber;
     private double attribute;
 
-    AnalysisElement(String teamNumber, double attribute) {
+    ChartElement(String teamNumber, double attribute) {
         if (teamNumber == null)
             throw new IllegalArgumentException("Team number cannot be null");
 

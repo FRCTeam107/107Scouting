@@ -1,5 +1,7 @@
 package com.frc107.scouting.core.analysis;
 
+import android.util.SparseIntArray;
+
 import com.frc107.scouting.eTableType;
 
 import java.io.File;
@@ -35,6 +37,14 @@ public interface IAnalysisManager {
     double getAttributeValueForTeam(int teamNumber);
 
     /**
+     * Get the attributes for a team for each of their matches.
+     * @param teamNumber A team number.
+     * @param matchNumber A match number.
+     * @return The values of the attributes for each of the team's matches.
+     */
+    int getAttributeForTeamAtMatch(int teamNumber, int matchNumber);
+
+    /**
      *  If you need to make any calculations, such as finding averages, then do that here.
      *  This will run after analyzing every row, so this is where you make calculations based on
      *  your whole dataset if you need to.
@@ -52,6 +62,13 @@ public interface IAnalysisManager {
      * @return The team numbers.
      */
     Integer[] getTeamNumbers();
+
+    /**
+     * Get all the sorted match numbers associated with a team.
+     * @param teamNumber A team number.
+     * @return An array containing all the match numbers (sorted) that the team has played.
+     */
+    Integer[] getMatchNumbersForTeam(int teamNumber);
 
     /**
      * Define the associated table here.
