@@ -33,7 +33,7 @@ public class GraphFragment extends Fragment {
         return view;
     }
 
-    void updateUI() {
+    private void updateUI() {
         if (graphView == null)
             return;
 

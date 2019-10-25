@@ -35,7 +35,7 @@ public class ChartFragment extends Fragment {
         return view;
     }
 
-    void initializeUI(View view) {
+    private void initializeUI(View view) {
         ListView elementListView = view.findViewById(R.id.element_list_view);
         elementListView.setSelectionAfterHeaderView();
 
@@ -45,9 +45,9 @@ public class ChartFragment extends Fragment {
         updateUI();
     }
 
-    void updateUI() {
+    private void updateUI() {
         if (listAdapter == null)
-            return; // since this is being used in a tab layout, we don't want to do this if it's not visible.
+            return;
 
         listAdapter.notifyDataSetChanged();
     }

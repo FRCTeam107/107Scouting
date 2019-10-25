@@ -9,15 +9,24 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class GraphView extends View {
-    private Map<Integer, Integer> dataSource;
+    private List<Point> points = new ArrayList<>();
+
     private String nameOfXAxis = "X axis";
     private String nameOfYAxis = "Y axis";
 
-    private int min;
-    private int max;
+    private int actualHeight;
+    private int actualWidth;
+
+    private static final int TEXT_SIZE = 40;
+    private static final int X_PADDING = 80;
+    private static final int Y_PADDING = 80;
+    private static final Paint PAINT = new Paint();
 
     public GraphView(Context context) {
         super(context);
@@ -28,56 +37,87 @@ public class GraphView extends View {
     }
 
     public void setSource(Map<Integer, Integer> dataSource, String nameOfXAxis, String nameOfYAxis) {
-        this.dataSource = dataSource;
-
-        int min = 0;
-        int max = 0;
-        for (int value : dataSource.values()) {
-            if (value < min)
-                min = value;
-
-            if (value > max)
-                max = value;
-        }
-
         this.nameOfXAxis = nameOfXAxis;
         this.nameOfYAxis = nameOfYAxis;
+
+        actualWidth = getWidth() - X_PADDING;
+        actualHeight = getHeight() - Y_PADDING;
+        
+        PAINT.setTextSize(TEXT_SIZE);
+        PAINT.setColor(Color.BLACK);
+        
+        int minX = 0;
+        int minY = 0;
+        int maxX = 0;
+        int maxY = 0;
+        
+        Set<Integer> xValues = dataSource.keySet();
+        for (int x : xValues) {
+            int y = dataSource.get(x);
+
+            if (x < minX)
+                minX = x;
+
+            if (x > maxX)
+                maxX = x;
+            
+            if (y < minY)
+                minY = y;
+
+            if (y > maxY)
+                maxY = y;
+        }
+        
+        points.clear();
+        for (int x : xValues) {
+            int y = dataSource.get(x);
+            
+            int newX = transformValueToRange(x, minX, maxX, X_PADDING, actualWidth - X_PADDING);
+            int newY = transformValueToRange(y, minY, maxY, Y_PADDING, actualHeight - Y_PADDING);
+            points.add(new Point(newX, newY));
+        }
+
         invalidate();
+    }
+
+    private int transformValueToRange(int value, int oldMin, int oldMax, int newMin, int newMax) {
+        int newRange = newMax - newMin;
+        int oldRange = oldMax - oldMin;
+        int valueRatio = (value - oldMin) / oldRange;
+        int newValue = newMin + (valueRatio * newRange);
+        return newValue;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        int textSize = 40;
-        int xPadding = 80;
-        int yPadding = 80;
-        int startX = xPadding;
-        int startY = yPadding;
-        int width = getWidth() - xPadding;
-        int height = getHeight() - yPadding;
-
-        Paint paint = new Paint();
-        paint.setTextSize(textSize);
-        paint.setColor(Color.BLACK);
+        int startX = X_PADDING;
+        int startY = Y_PADDING;
 
         // draw the horizontal and vertical axes
-        canvas.drawLine(startX, startY, startX, height, paint);
-        canvas.drawLine(startX, height, width, height, paint);
+        canvas.drawLine(startX, startY, startX, actualHeight, PAINT);
+        canvas.drawLine(startX, actualHeight, actualWidth, actualHeight, PAINT);
 
         // draw labels
-        canvas.drawText(nameOfXAxis, xPadding, height + textSize, paint);
+        canvas.drawText(nameOfXAxis, X_PADDING, actualHeight + TEXT_SIZE, PAINT);
 
         int distFromYAxis = 15;
         Rect bounds = new Rect();
-        paint.getTextBounds(nameOfYAxis, 0, nameOfYAxis.length(), bounds);
+        PAINT.getTextBounds(nameOfYAxis, 0, nameOfYAxis.length(), bounds);
 
         canvas.save();
-        canvas.rotate(-90, xPadding - distFromYAxis, height);
-        canvas.drawText(nameOfYAxis, xPadding - distFromYAxis, height, paint);
+        canvas.rotate(-90, X_PADDING - distFromYAxis, actualHeight);
+        canvas.drawText(nameOfYAxis, X_PADDING - distFromYAxis, actualHeight, PAINT);
         canvas.restore();
 
-        // test line
-        canvas.drawLine(startX, startY, width, height, paint);
+        // draw lines
+        Point previousPoint = null;
+        for (Point point : points) {
+            if (previousPoint != null)
+                canvas.drawLine(previousPoint.x, previousPoint.y, point.x, point.y, PAINT);  
+            
+            previousPoint = point;
+        }
     }
 }
