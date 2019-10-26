@@ -20,7 +20,8 @@ public class AnalysisModel extends ViewModel {
     private String[] teamNumberStrings;
 
     private ObservableList<ChartElement> chartElements = new ObservableArrayList<>();
-    private Map<Integer, Integer> matchNumToAttributeMap = new HashMap<>();
+    private int[] matchNumbers;
+    private int[] matchAttributes;
 
     private int currentAttributeTypeIndex = 0;
     private int currentTeamNumberIndex = 0;
@@ -103,18 +104,23 @@ public class AnalysisModel extends ViewModel {
     }
 
     private void updateGraphElements() {
-        if (currentTeamNumberIndex == ALL_TEAMS_INDEX)
+        if (currentTeamNumberIndex == ALL_TEAMS_INDEX) {
+            matchNumbers = matchAttributes = new int[0];
             return; // if we are looking at all the teams, the graph becomes pointless for now
-
-        matchNumToAttributeMap.clear();
+        }
 
         Integer[] teamNumbers = analysisManager.getTeamNumbers();
         int teamNumber = teamNumbers[currentTeamNumberIndex];
-        Integer[] matchNumbers = analysisManager.getMatchNumbersForTeam(teamNumbers[currentTeamNumberIndex]);
-        for (int i = 0; i < matchNumbers.length; i++) {
-            int matchNumber = matchNumbers[i];
+        Integer[] teamMatchNumbers = analysisManager.getMatchNumbersForTeam(teamNumbers[currentTeamNumberIndex]);
+
+        matchNumbers = new int[teamMatchNumbers.length];
+        matchAttributes = new int[matchNumbers.length];
+
+        for (int i = 0; i < teamMatchNumbers.length; i++) {
+            int matchNumber = teamMatchNumbers[i];
             int attribute = analysisManager.getAttributeForTeamAtMatch(teamNumber, matchNumber);
-            matchNumToAttributeMap.put(matchNumber, attribute);
+            matchNumbers[i] = matchNumber;
+            matchAttributes[i] = attribute;
         }
     }
 
@@ -126,8 +132,12 @@ public class AnalysisModel extends ViewModel {
         return chartElements;
     }
 
-    Map<Integer, Integer> getMatchNumAttributeMap() {
-        return Collections.unmodifiableMap(matchNumToAttributeMap);
+    int[] getMatchNumbers() {
+        return matchNumbers;
+    }
+
+    int[] getMatchAttributes() {
+        return matchAttributes;
     }
 
     int getCurrentAttributeTypeIndex() {

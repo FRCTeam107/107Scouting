@@ -37,7 +37,10 @@ public class GraphFragment extends Fragment {
         if (graphView == null)
             return;
 
+        if (!model.hasDataBeenLoaded())
+            return;
+
         String attributeName = model.getAttributeNames()[model.getCurrentAttributeTypeIndex()];
-        graphView.setSource(model.getMatchNumAttributeMap(), "Match number", attributeName);
+        graphView.setSource(model.getMatchNumbers(), model.getMatchAttributes(), "Match number", attributeName);
     }
 }

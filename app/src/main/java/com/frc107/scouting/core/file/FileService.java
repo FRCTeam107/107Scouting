@@ -75,6 +75,9 @@ public class FileService {
      */
     public void loadFileDefinitions() {
         File[] files = scoutingDirectory.listFiles();
+        if (files == null)
+            return;
+
         for (File file : files) {
             if (file.isDirectory())
                 continue;
